@@ -7,7 +7,6 @@
   content: "";
   clear: both;
   display: block;
-
 }
 
 [class*="col-"] {
@@ -65,7 +64,6 @@ img {
 }
 
 table {
-  direction: none;
   width: 100%;
 }
 

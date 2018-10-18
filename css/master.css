@@ -85,13 +85,12 @@ img {
 
 .mytable{
   width: 100%;
-  overflow-x: auto;
+  overflow: auto;
+  white-space: nowrap;
 }
 table {
   border-collapse: collapse;
   border: 1px solid #ddd;
-  /* width: 100%; */
-  /* overflow-x: scroll; */
   table-layout: initial;
 }
 
@@ -100,8 +99,7 @@ th {
 }
 
 td {
-  padding-left: 5px;
-  padding-right: 10px;
+  padding: 5px 10px;
 }
 
 tr {
@@ -115,3 +113,22 @@ tr:nth-child(odd) {
 tr:hover {
   background-color: #D4EFDF ;
 } */
+
+/* begin menu scroll */
+div.scrollmenu {
+    background-color: #333;
+    overflow: auto;
+    white-space: nowrap;
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+}
+
+div.scrollmenu a:hover {
+    background-color: #777;
+/* end of menu */

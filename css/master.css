@@ -83,13 +83,16 @@ img {
 }
 
 table {
-  width: 100%;
+  overflow-x: auto;
 }
 
 th {
   background-color: #82E0AA;
 }
+tr:nth-child(odd) {
+  background-color: #D4EFDF
+}
 
 tr:hover {
-  background-color: #D4EFDF;
+  /* background-color: #D4EFDF ; */
 }

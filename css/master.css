@@ -106,10 +106,32 @@ img {
   /* untuk membuat oval pada gambar */
   border-radius: 50%;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
   width: 70%;
   max-width: 200px;
+}
+.avatar{
+  position: relative;
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #2196F3;
+}
+
+avatar:hover .overlay {
+  opacity: 1;
+}
+
+.image {
+  display: block;
 }
 
 .mytable{

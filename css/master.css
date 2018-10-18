@@ -1,8 +1,13 @@
 div.section-1 {
   font-family: Arial, Helvetica, sans-serif;
   background-color: white;
-  text-align: center;
   color: black;
+}
+
+h2 {
+  text-decoration: none;
+  text-transform: uppercase;
+  align: left;
 }
 
 img {

@@ -88,7 +88,13 @@ body {
   text-align: center;
 }
 
-h2,h3,h4,h5 {
+h2 {
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+h3,h4,h5 {
   text-decoration: none;
   text-transform: uppercase;
   align: left;

@@ -60,6 +60,27 @@ body {
   display: inline;
 }
 
+.container {
+  width: 100%;
+  background-color: #ddd;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.skill{
+  text-align: right;
+  vertical-align: middle;
+  padding: 4px;
+  color: white;
+}
+.html {width: 90%; background-color: #2196F3;}
+.css  {width: 70%; background-color: #2196F3;}
+.krita {width: 70%; background-color: #2196F3;}
+.inkscape {width: 70%; background-color: #2196F3;}
+.synfig {width: 75%; background-color: #2196F3;}
+.kdenlive {width: 72%; background-color: #2196F3;}
+.libreoffice {width: 73%; background-color: #2196F3;}
+
 #profil {
   background-color: #ffffff;
   padding:  20px 10px;
@@ -67,10 +88,12 @@ body {
   text-align: center;
 }
 
-h3 {
+h2,h3,h4,h5 {
   text-decoration: none;
   text-transform: uppercase;
   align: left;
+  padding: 0px;
+  margin-bottom: 15px;
 }
 
 img {
@@ -95,7 +118,7 @@ table {
 }
 
 th {
-  background-color: #82E0AA;
+  background-color: #2196F3;
 }
 
 td {
@@ -107,7 +130,7 @@ tr {
 }
 
 tr:nth-child(odd) {
-  background-color: #D4EFDF
+  background-color: #8FDAF5;
 }
 /*
 tr:hover {

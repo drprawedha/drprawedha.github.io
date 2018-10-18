@@ -82,17 +82,35 @@ img {
   width: 70%;
 }
 
-table {
+.mytable{
+  width: 100%;
   overflow-x: auto;
+}
+table {
+  border-collapse: collapse;
+  border: 1px solid #ddd;
+  /* width: 100%; */
+  /* overflow-x: scroll; */
+  table-layout: initial;
 }
 
 th {
   background-color: #82E0AA;
 }
+
+td {
+  padding-left: 5px;
+  padding-right: 10px;
+}
+
+tr {
+  max-height: 5px;
+}
+
 tr:nth-child(odd) {
   background-color: #D4EFDF
 }
-
+/*
 tr:hover {
-  /* background-color: #D4EFDF ; */
-}
+  background-color: #D4EFDF ;
+} */

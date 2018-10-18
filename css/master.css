@@ -1,10 +1,41 @@
+body {
+  display: inline-flex;
+}
 div.section-1 {
   font-family: Arial, Helvetica, sans-serif;
   background-color: white;
   color: black;
+  border-style: solid;
+  width: 25%;
+  margin: 10px;
+  padding: 10px;
 }
 
-h2 {
+div.section-2 {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: white;
+  color: black;
+  border-style: solid;
+  width: 50%;
+  margin: 10px;
+  padding: 10px;
+}
+
+div.section-3 {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: lightblue;
+  color: black;
+  border-style: solid;
+  width: 25%;
+  margin: 10px;
+  padding: 10px;
+}
+
+#profil {
+  /* background-color: grey; */
+}
+
+h3 {
   text-decoration: none;
   text-transform: uppercase;
   align: left;
@@ -13,4 +44,8 @@ h2 {
 img {
   /* untuk membuat oval pada gambar */
   border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 70%;
 }

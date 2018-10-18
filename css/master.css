@@ -155,6 +155,12 @@ div.avatar:hover .overlay {
   overflow: auto;
   white-space: nowrap;
 }
+
+iframe {
+  display: block;
+  width: 100%;
+}
+
 table {
   border-collapse: collapse;
   border: 1px solid #ddd;

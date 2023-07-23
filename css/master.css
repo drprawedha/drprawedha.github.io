@@ -73,13 +73,13 @@ body {
   padding: 4px;
   color: white;
 }
-.html {width: 90%; background-color: #2196F3;}
-.css  {width: 70%; background-color: #2196F3;}
-.krita {width: 70%; background-color: #2196F3;}
-.inkscape {width: 70%; background-color: #2196F3;}
-.synfig {width: 75%; background-color: #2196F3;}
-.kdenlive {width: 72%; background-color: #2196F3;}
-.libreoffice {width: 73%; background-color: #2196F3;}
+.html {width: 0%; background-color: #2196F3;}
+.css  {width: 0%; background-color: #2196F3;}
+.krita {width: 0%; background-color: #2196F3;}
+.inkscape {width: 0%; background-color: #2196F3;}
+.synfig {width: 0%; background-color: #2196F3;}
+.kdenlive {width: 0%; background-color: #2196F3;}
+.libreoffice {width: 0%; background-color: #2196F3;}
 
 #profil {
   background-color: #ffffff;

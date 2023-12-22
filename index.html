@@ -65,16 +65,13 @@
             }
         }
 
-        /* Animasi awan */
-        .cloud {
+        /* SVG untuk animasi awan */
+        .cloud-svg {
             position: fixed;
             top: 50%;
             left: -200px;
             width: 200px;
             height: 100px;
-            background-color: transparent;
-            border-radius: 50%;
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.8);
             animation: moveCloud 20s linear infinite;
         }
 
@@ -83,21 +80,10 @@
                 transform: translateX(calc(100vw + 200px));
             }
         }
-
-        /* Media query untuk responsifitas */
-        @media only screen and (max-width: 768px) {
-            .links {
-                flex-direction: column;
-                align-items: center;
-                overflow-x: hidden; /* Menyembunyikan scroll horizontal pada perangkat kecil */
-            }
-        }
     </style>
 </head>
 <body>
-
-    <!-- Animasi awan -->
-    <div class="cloud"></div>
+    
     <h1>Hello, I'm Rhesa</h1>
 
     <div class="links">
@@ -106,6 +92,20 @@
         <a href="https://instagram.com/picto.gr">[at] picto.gr</a>
         <a href="">Email</a>
     </div>
+        <!-- SVG untuk animasi awan -->
+        <svg class="cloud-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" preserveAspectRatio="xMinYMin meet">
+            <g fill="#fff">
+                <ellipse cx="40" cy="40" rx="30" ry="20">
+                    <animate attributeName="cx" values="-20;240;-20" dur="2s" repeatCount="indefinite" />
+                </ellipse>
+                <ellipse cx="80" cy="30" rx="40" ry="25">
+                    <animate attributeName="cx" values="-20;240;-20" dur="2.5s" repeatCount="indefinite" />
+                </ellipse>
+                <ellipse cx="120" cy="40" rx="30" ry="20">
+                    <animate attributeName="cx" values="-20;240;-20" dur="2s" repeatCount="indefinite" />
+                </ellipse>
+            </g>
+        </svg>
 
     <script>
         // Optionally, you can add JavaScript logic here for further interactions.

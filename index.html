@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>Animated Clouds at Sunset</title>
 
     <!-- Favicon (Icon Page Document) -->
     <link rel="icon" type="image/svg+xml" href="icon-page-document.svg">
@@ -64,19 +64,48 @@
                 transform: translateY(0);
             }
         }
+
+        /* Animasi awan */
+        .cloud {
+            position: fixed;
+            top: 50%;
+            left: -200px;
+            width: 200px;
+            height: 100px;
+            background-color: transparent;
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.8);
+            animation: moveCloud 20s linear infinite;
+        }
+
+        @keyframes moveCloud {
+            to {
+                transform: translateX(calc(100vw + 200px));
+            }
+        }
+
+        /* Media query untuk responsifitas */
+        @media only screen and (max-width: 768px) {
+            .links {
+                flex-direction: column;
+                align-items: center;
+                overflow-x: hidden; /* Menyembunyikan scroll horizontal pada perangkat kecil */
+            }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Animasi awan -->
+    <div class="cloud"></div>
     <h1>Hello, I'm Rhesa</h1>
 
     <div class="links">
         <a href="https://drprawedha.tumblr.com">drprawedha.tumblr</a>
         <a href="https://instagram.com/drprawedha">[at] drprawedha </a>
         <a href="https://instagram.com/picto.gr">[at] picto.gr</a>
-        <a href="mailto:drprawedha@gmail.com">Email</a>
+        <a href="">Email</a>
     </div>
-
 
     <script>
         // Optionally, you can add JavaScript logic here for further interactions.

@@ -3,19 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Page with Clouds</title>
+    <title>Animated Clouds at Sunset</title>
+
+    <!-- Favicon (Icon Page Document) -->
+    <link rel="icon" type="image/svg+xml" href="icon-page-document.svg">
+
     <style>
         body {
             font-family: Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #87CEEB; /* Warna biru langit */
+            background-color: #FFD700; /* Warna langit sore */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             overflow: hidden; /* Mengatasi munculnya scrollbar karena animasi awan */
+            transition: background-color 2s ease; /* Animasi perubahan warna langit */
         }
 
         h1 {
@@ -80,6 +85,9 @@
 </head>
 <body>
 
+    <!-- Animasi awan -->
+    <div class="cloud"></div>
+    
     <h1>Hello, I'm Rhesa</h1>
 
     <div class="links">

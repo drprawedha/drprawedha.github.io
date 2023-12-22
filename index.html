@@ -13,121 +13,6 @@
             font-family: Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #FFD700; /* Warna langit sore */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden; /* Mengatasi munculnya scrollbar karena animasi awan */
-            transition: background-color 2s ease; /* Animasi perubahan warna langit */
-        }
-
-        h1 {
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 2em;
-            margin-bottom: 20px;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s forwards 0.5s;
-        }
-
-        .links {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 1s forwards 1s;
-        }
-
-        .links a {
-            display: block;
-            margin: 10px;
-            padding: 10px 20px;
-            text-decoration: none;
-            color: #fff;
-            background-color: transparent; /* Tombol transparan */
-            border: 2px solid #fff; /* Garis pinggir tombol */
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        .links a:hover {
-            background-color: rgba(255, 255, 255, 0.3); /* Warna latar belakang ketika tombol dihover */
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Animasi awan */
-        .cloud {
-            position: fixed;
-            top: 50%;
-            left: -200px;
-            width: 200px;
-            height: 100px;
-            background-color: transparent;
-            border-radius: 50%;
-            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.8);
-            animation: moveCloud 20s linear infinite;
-        }
-
-        @keyframes moveCloud {
-            to {
-                transform: translateX(calc(100vw + 200px));
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Animasi awan -->
-    <div class="cloud"></div>
-
-    <h1>Dhantel Rhesa Prawedha</h1>
-
-    <div class="links">
-        <a href="link1.html">Link 1</a>
-        <a href="link2.html">Link 2</a>
-        <a href="link3.html">Link 3</a>
-    </div>
-
-    <script>
-        // Optionally, you can add JavaScript logic here for further interactions.
-    </script>
-
-</body>
-</html>
-
-Dalam contoh di atas, saya mengatur background-color: transparent; pada tombol, sehingga tombol menjadi transparan. Tombol akan mendapatkan latar belakang yang semi-transparan (rgba(255, 255, 255, 0.3)) ketika dihover untuk memberikan efek visual. Anda dapat menyesuaikan nilai-nilai ini sesuai dengan preferensi desain Anda.
-User
-ganti background menjadi warna kertas kuno 
-ChatGPT
-
-Untuk mengganti warna latar belakang menjadi warna kertas kuno, Anda dapat mengubah nilai background-color menjadi sesuatu yang menyerupai warna kertas tua. Berikut adalah contoh dengan warna krem tua:
-
-html
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Clouds at Sunset</title>
-
-    <!-- Favicon (Icon Page Document) -->
-    <link rel="icon" type="image/svg+xml" href="icon-page-document.svg">
-
-    <style>
-        body {
-            font-family: Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 0;
             background-color: #F5DEB3; /* Warna krem tua */
             display: flex;
             flex-direction: column;
@@ -202,7 +87,6 @@ html
 <body>
 
     <!-- Animasi awan -->
-    <div class="cloud"></div>
 
     <h1>Hello, I'm Rhesa</h1>
 

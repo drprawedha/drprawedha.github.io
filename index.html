@@ -3,117 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>About Me</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #fdd835; /* Warna kuning */
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
+            background-color: #f8f8f8;
         }
 
         header {
             background-color: #333;
-            padding: 10px;
-            text-align: center;
             color: #fff;
-            position: relative;
-            z-index: 2;
-        }
-
-        section {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 5px;
-            margin: 20px;
+            text-align: center;
             padding: 20px;
         }
 
-        nav {
-            text-align: center;
-            margin-top: 20px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: #333;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            z-index: 1;
-            display: none;
+        section {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
         }
 
-        nav a {
+        h1, h2 {
+            color: #333;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .blog-links {
+            margin-top: 20px;
+        }
+
+        .blog-link {
             display: block;
+            margin-bottom: 10px;
+        }
+
+        .blog-link a {
+            display: inline-block;
             padding: 10px 20px;
-            text-decoration: none;
+            background-color: #333;
             color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
             transition: background-color 0.3s;
         }
 
-        nav a:hover {
+        .blog-link a:hover {
             background-color: #555;
-        }
-
-        .burger-menu {
-            display: none;
-            cursor: pointer;
-            color: #fff;
-            font-size: 24px;
-            margin-right: 15px;
-        }
-
-        @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                position: static;
-                display: none;
-            }
-
-            nav.show {
-                display: flex;
-            }
-
-            .burger-menu {
-                display: block;
-            }
-
-            section {
-                margin-top: 60px;
-            }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <span class="burger-menu" onclick="toggleMenu()">&#9776; Menu</span>
-        <h1>Landing Page</h1>
+        <h1>About Me</h1>
     </header>
 
-    <nav>
-        <a href="halaman1.html">Halaman 1</a>
-        <a href="halaman2.html">Halaman 2</a>
-        <a href="halaman3.html">Halaman 3</a>
-    </nav>
-
     <section>
-        <p>Selamat datang di landing page kami! Silakan pilih salah satu halaman untuk melanjutkan.</p>
-    </section>
+        <h2>Hi, I'm [Your Name]</h2>
+        <p>Welcome to my personal space on the internet. I'm passionate about [your interests/hobbies]. Here's a little bit about me:</p>
 
-    <script>
-        function toggleMenu() {
-            const nav = document.querySelector('nav');
-            nav.classList.toggle('show');
-        }
-    </script>
+        <p>[Write a brief introduction about yourself. You can include information about your background, interests, and what you are currently working on.]</p>
+
+        <div class="blog-links">
+            <h2>Check out my latest blog posts:</h2>
+            <div class="blog-link">
+                <a href="[Link to Blog Post 1]" target="_blank">Blog Post 1</a>
+            </div>
+            <div class="blog-link">
+                <a href="[Link to Blog Post 2]" target="_blank">Blog Post 2</a>
+            </div>
+            <!-- Add more blog links as needed -->
+        </div>
+    </section>
 
 </body>
 </html>

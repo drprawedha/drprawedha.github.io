@@ -35,6 +35,7 @@
         .links {
             display: flex;
             justify-content: center; /* Mencentralkan tautan secara horizontal */
+            overflow-x: auto; /* Mengaktifkan scroll horizontal jika tautan tidak muat dalam layar */
             opacity: 0;
             transform: translateY(20px);
             animation: fadeInUp 1s forwards 1s;
@@ -82,10 +83,21 @@
                 transform: translateX(calc(100vw + 200px));
             }
         }
+
+        /* Media query untuk responsifitas */
+        @media only screen and (max-width: 768px) {
+            .links {
+                flex-direction: column;
+                align-items: center;
+                overflow-x: hidden; /* Menyembunyikan scroll horizontal pada perangkat kecil */
+            }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Animasi awan -->
+    <div class="cloud"></div>
     <h1>Hello, I'm Rhesa</h1>
 
     <div class="links">

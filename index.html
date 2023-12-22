@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Clouds at Sunset</title>
+    <title>Landing Page</title>
 
     <!-- Favicon (Icon Page Document) -->
     <link rel="icon" type="image/svg+xml" href="icon-page-document.svg">
@@ -64,48 +64,19 @@
                 transform: translateY(0);
             }
         }
-
-        /* SVG untuk animasi awan */
-        .cloud-svg {
-            position: fixed;
-            top: 50%;
-            left: -200px;
-            width: 200px;
-            height: 100px;
-            animation: moveCloud 20s linear infinite;
-        }
-
-        @keyframes moveCloud {
-            to {
-                transform: translateX(calc(100vw + 200px));
-            }
-        }
     </style>
 </head>
 <body>
-    
+
     <h1>Hello, I'm Rhesa</h1>
 
     <div class="links">
         <a href="https://drprawedha.tumblr.com">drprawedha.tumblr</a>
         <a href="https://instagram.com/drprawedha">[at] drprawedha </a>
         <a href="https://instagram.com/picto.gr">[at] picto.gr</a>
-        <a href="">Email</a>
+        <a href="mailto:drprawedha@gmail.com">Email</a>
     </div>
-        <!-- SVG untuk animasi awan -->
-        <svg class="cloud-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100" preserveAspectRatio="xMinYMin meet">
-            <g fill="#fff">
-                <ellipse cx="40" cy="40" rx="30" ry="20">
-                    <animate attributeName="cx" values="-20;240;-20" dur="2s" repeatCount="indefinite" />
-                </ellipse>
-                <ellipse cx="80" cy="30" rx="40" ry="25">
-                    <animate attributeName="cx" values="-20;240;-20" dur="2.5s" repeatCount="indefinite" />
-                </ellipse>
-                <ellipse cx="120" cy="40" rx="30" ry="20">
-                    <animate attributeName="cx" values="-20;240;-20" dur="2s" repeatCount="indefinite" />
-                </ellipse>
-            </g>
-        </svg>
+
 
     <script>
         // Optionally, you can add JavaScript logic here for further interactions.

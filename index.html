@@ -9,7 +9,10 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #fdd835; /* Warna kuning */
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
         }
 
         header {
@@ -17,52 +20,100 @@
             padding: 10px;
             text-align: center;
             color: #fff;
+            position: relative;
+            z-index: 2;
         }
 
         section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin: 20px;
+            padding: 20px;
         }
 
         nav {
             text-align: center;
             margin-top: 20px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #333;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1;
+            display: none;
         }
 
         nav a {
-            display: inline-block;
+            display: block;
             padding: 10px 20px;
-            margin: 0 10px;
             text-decoration: none;
-            color: #333;
-            background-color: #f0f0f0;
-            border-radius: 5px;
+            color: #fff;
             transition: background-color 0.3s;
         }
 
         nav a:hover {
-            background-color: #ddd;
+            background-color: #555;
+        }
+
+        .burger-menu {
+            display: none;
+            cursor: pointer;
+            color: #fff;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                position: static;
+                display: none;
+            }
+
+            nav.show {
+                display: flex;
+            }
+
+            .burger-menu {
+                display: block;
+            }
+
+            section {
+                margin-top: 60px;
+            }
         }
     </style>
 </head>
 <body>
 
     <header>
+        <span class="burger-menu" onclick="toggleMenu()">&#9776; Menu</span>
         <h1>Landing Page</h1>
     </header>
 
+    <nav>
+        <a href="halaman1.html">Halaman 1</a>
+        <a href="halaman2.html">Halaman 2</a>
+        <a href="halaman3.html">Halaman 3</a>
+    </nav>
+
     <section>
         <p>Selamat datang di landing page kami! Silakan pilih salah satu halaman untuk melanjutkan.</p>
-
-        <nav>
-            <a href="halaman1.html">Halaman 1</a>
-            <a href="halaman2.html">Halaman 2</a>
-            <a href="halaman3.html">Halaman 3</a>
-        </nav>
     </section>
+
+    <script>
+        function toggleMenu() {
+            const nav = document.querySelector('nav');
+            nav.classList.toggle('show');
+        }
+    </script>
 
 </body>
 </html>

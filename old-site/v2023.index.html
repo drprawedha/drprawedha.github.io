@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhesa's Link</title>
+
+    <!-- Favicon (Icon Page Document) -->
+    <link rel="icon" type="image/svg+xml" href="icon-page-document.svg">
+
+    <style>
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #F5DEB3; /* Warna krem tua */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden; /* Mengatasi munculnya scrollbar karena animasi awan */
+            transition: background-color 2s ease; /* Animasi perubahan warna latar belakang */
+        }
+
+        h1 {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 2em;
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 0.5s;
+        }
+
+        .links {
+            display: flex;
+            justify-content: center; /* Mencentralkan tautan secara horizontal */
+            overflow-x: auto; /* Mengaktifkan scroll horizontal jika tautan tidak muat dalam layar */
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 1s forwards 1s;
+        }
+
+        .links a {
+            display: block;
+            margin: 10px;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #000; /* Warna tulisan hitam */
+            background-color: transparent; /* Tombol transparan */
+            border: 0; /* Menghapus border */
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .links a:hover {
+            background-color: rgba(255, 255, 255, 0.3); /* Warna latar belakang ketika tombol dihover */
+            text-decoration: underline; /* Garis bawah pada hover */
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animasi awan */
+        .cloud {
+            position: fixed;
+            top: 50%;
+            left: -200px;
+            width: 200px;
+            height: 100px;
+            background-color: transparent;
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.8);
+            animation: moveCloud 20s linear infinite;
+        }
+
+        @keyframes moveCloud {
+            to {
+                transform: translateX(calc(100vw + 200px));
+            }
+        }
+
+        /* Media query untuk responsifitas */
+        @media only screen and (max-width: 768px) {
+            .links {
+                flex-direction: column;
+                align-items: center;
+                overflow-x: hidden; /* Menyembunyikan scroll horizontal pada perangkat kecil */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animasi awan -->
+    <h1>Hello, I'm Rhesa</h1>
+
+    <div class="links">
+        <a href="https://drprawedha.tumblr.com">drprawedha.tumblr</a>
+        <a href="https://instagram.com/drprawedha">[at] drprawedha </a>
+        <a href="https://instagram.com/picto.gr">[at] picto.gr</a>
+        <a href="mailto:drprawedha@gmail.com">Email</a>
+    </div>
+
+    <script>
+        // Optionally, you can add JavaScript logic here for further interactions.
+    </script>
+
+</body>
+</html>

@@ -49,6 +49,21 @@ html {
     [class*="col-"] {
         width: 100%;
     }
+    [class*="overlay"] {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      height: 100%;
+      width: 70%;
+      /* width: 50%; */
+      opacity: 0;
+      transition: .5s ease;
+      background-color: #2148f3;
+      border-radius: 50%;
+      margin: auto;
+    }
 }
 
 a {
@@ -131,10 +146,27 @@ img {
   right: 0;
   left: 0;
   height: 100%;
-  width: 50%;
+  width: 70%;
+  /* width: 50%; */
   opacity: 0;
   transition: .5s ease;
-  background-color: #2196F3;
+  background-color: #ffffff;
+  border-radius: 50%;
+  margin: auto;
+}
+
+.overlay-monitor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  /* width: 50%; */
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #f32121;
   border-radius: 50%;
   margin: auto;
 }
@@ -148,7 +180,7 @@ div.avatar:hover .overlay {
 }
 
 .text {
-  color: white;
+  color: rgb(0, 0, 0);
   font-size: 20px;
   position: absolute;
   top: 50%;

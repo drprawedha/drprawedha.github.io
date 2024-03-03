@@ -1,7 +1,9 @@
-function mintadata(x) {
-
-
+function mintadata(x,y,z) {
     console.log(x);
+
+    console.log(y);
+
+    console.log(z);
 }
 
-mintadata(20);
+mintadata("hello","world","all");

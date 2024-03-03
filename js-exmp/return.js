@@ -1,5 +1,6 @@
 function ambil() {
-    var lempar = 'ditangkap'
+    var lempar = 'diterima'
     return lempar
 }
-console.log(ambil());
+var tampung = ambil();
+console.log(tampung);

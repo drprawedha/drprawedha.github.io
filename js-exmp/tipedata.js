@@ -9,8 +9,9 @@ function tipedata() {
     }
     
 }
-// 
+
 console.log(tipedata());
 
 // === menandakan case sensitive
 // == menamdakal tolerir asal datanya StorageManager
+// tipe data diatas menggunakan string dan number

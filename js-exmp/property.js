@@ -6,8 +6,9 @@ function AmbilObject() {
         tahun: [2001,2004,2008,2012] //penambahan terletak disini
     }
     // console.log(mobil);
+    mobil.tahun = 2020, //menambah object property
     mobil.warna = "biru", //perubahan pada object property
-    console.log(mobil.warna);
+    console.log(mobil.tahun);
 }   
 
 AmbilObject();

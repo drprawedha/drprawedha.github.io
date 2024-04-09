@@ -3,7 +3,7 @@ function AmbilObject() {
         type: "Sedan",
         harga: 0,
         warna: "merah",
-        tahun: [2001,2004,2008,2012]
+        tahun: [2001,2004,2008,2012] //penambahan terletak disini
     }
     // console.log(mobil);
     console.log(mobil.tahun[1]);

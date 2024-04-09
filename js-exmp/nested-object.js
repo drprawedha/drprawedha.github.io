@@ -10,7 +10,7 @@ function NestedObject() {
             
 
     }
-    console.log(mahasiswa.ipk.semester1);
+    console.log(mahasiswa.ipk.semester1); //pemanggilan utama, dari sini
 }
 
 NestedObject()

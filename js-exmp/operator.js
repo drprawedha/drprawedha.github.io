@@ -1,7 +1,8 @@
 function panggilOperator() {
-    a=4
-    b=3
-    console.log(a+b);
+    var a = 4;
+    var b = 3;
+    // console.log(a*b);
+    return a+b // =-/* dapat digunakan 
 }
 
-panggilOperator()
+console.log(panggilOperator());

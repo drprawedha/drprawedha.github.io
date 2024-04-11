@@ -4,7 +4,7 @@ function detailMahasiswa() {
         namalengkap : "Dhantel Rhesa Prawedha",
         jurusan : "teknik komputer",
         tahunmasuk : 2011,
-        tingkat : "DIPLOMA-3"
+        tingkat : "DIPLOMA - III"
     }
     for (var x in mahasiswa) {
         console.log(mahasiswa[x]);

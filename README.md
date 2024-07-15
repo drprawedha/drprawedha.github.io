@@ -4,15 +4,14 @@ Halo, nama saya Dhantel Rhesa Prawedha dan ini adalah GitHub Page saya.
 
 ## Tentang Saya
 
-Seorang yang sedang mengembangkan beberapa dokumentasi dari perkejaan harian saya sebagai Asst. IT Manager di SwissbelINN Saripetojo.
+Seorang yang sedang mengembangkan beberapa dokumentasi dari perkejaan harian saya sebagai Asst. IT Manager di Swissbelinn Saripetojo.
 
 ## Proyek
 
 Berikut adalah beberapa proyek yang telah saya kerjakan:
 
-1. **Proyek 1**: [Deskripsi singkat tentang proyek 1]
-2. **Proyek 2**: [Deskripsi singkat tentang proyek 2]
-3. **Proyek 3**: [Deskripsi singkat tentang proyek 3]
+1. **Artwork**: [Deskripsi singkat tentang proyek 1]
+2. **JS**: [Deskripsi singkat tentang proyek 2]
 
 Anda dapat melihat lebih banyak proyek di sini.
 

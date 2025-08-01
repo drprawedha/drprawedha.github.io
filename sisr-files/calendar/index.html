@@ -267,8 +267,19 @@
   }
 
   function toggleSidebar() {
-    const sidebar = document.getElementById('upcomingSidebar');
-    sidebar.classList.toggle('active');
+// Close sidebar if clicked outside
+    document.addEventListener('click', function (e) {
+      const sidebar = document.getElementById('upcomingSidebar');
+      const burgerBtn = document.getElementById('burgerBtn');
+
+      const isClickInsideSidebar = sidebar.contains(e.target);
+      const isClickOnBurger = burgerBtn.contains(e.target);
+
+      if (!isClickInsideSidebar && !isClickOnBurger && sidebar.classList.contains('active')) {
+        sidebar.classList.remove('active');
+      }
+    });
+
   }
 </script>
 

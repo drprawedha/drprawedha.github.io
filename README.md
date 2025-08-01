@@ -1,6 +1,6 @@
 # Hello,
 
-Hi, my name is Dhantel Rhesa Prawedha and this is my GitHub Page.
+My name is Dhantel Rhesa Prawedha and this is my GitHub Page.
 
 ## About Me
 

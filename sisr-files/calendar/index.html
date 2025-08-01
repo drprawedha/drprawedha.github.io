@@ -55,8 +55,8 @@
 
 <!-- Search Menu -->
 <div id="searchBox">
-  <input type="text" id="searchInput" placeholder="Cari pekerjaan (contoh: 'firmware', 'meeting')">
-  <button onclick="searchData()">🔍 Cari</button>
+  <input type="text" id="searchInput" placeholder="Search jobs (ex: 'firmware', 'meeting')">
+  <button onclick="searchData()">🔍 Search</button>
 </div>
 
 <!-- Calendar -->
@@ -68,7 +68,7 @@
 <!-- Modal -->
 <div id="historyModal" class="modal">
   <span class="close" onclick="closeModal()">&times;</span>
-  <h3>History Pekerjaan</h3>
+  <h3>[Job / Project ] History</h3>
   <div id="historyContent"></div>
 </div>
 
@@ -84,8 +84,8 @@
         renderCalendar(pekerjaanData);
       })
       .catch(error => {
-        console.error('Gagal memuat pekerjaan.json:', error);
-        document.getElementById('calendar').innerHTML = '<p style="color:red;">Gagal memuat data pekerjaan. Pastikan server berjalan dan file JSON ada.</p>';
+        console.error('Failed to load pekerjaan.json:', error);
+        document.getElementById('calendar').innerHTML = '<p style="color:red;">Failed to load data pekerjaan. Make sure the server is running and the JSON file exists.</p>';
       });
   });
 
@@ -141,7 +141,7 @@
     resultDiv.innerHTML = '';
 
     if (!keyword) {
-      resultDiv.innerHTML = '<p>Silakan masukkan kata kunci untuk mencari.</p>';
+      resultDiv.innerHTML = '<p>Please input keyword . . . </p>';
       return;
     }
 

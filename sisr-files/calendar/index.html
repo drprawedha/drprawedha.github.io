@@ -8,20 +8,35 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      margin: 0;
+    }
+
+    #header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: #1976d2;
+      color: white;
+    }
+
+    #burgerBtn {
+      font-size: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: white;
+    }
+
+    #container {
       display: flex;
       flex-direction: row;
       gap: 20px;
+      padding: 20px;
     }
 
     #calendarContainer {
-      flex: 3;
-    }
-
-    #upcomingTasks {
       flex: 1;
-      border-left: 1px solid #ddd;
-      padding-left: 20px;
     }
 
     #calendar { max-width: 100%; }
@@ -77,29 +92,58 @@
       padding: 2px;
     }
 
+    /* Upcoming Task Sidebar */
+    #upcomingSidebar {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100%;
+      background-color: #f9f9f9;
+      box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+      padding: 20px;
+      transition: right 0.3s ease;
+      z-index: 10000;
+    }
+
+    #upcomingSidebar.active {
+      right: 0;
+    }
+
+    #upcomingSidebar h3 {
+      margin-top: 0;
+    }
+
     ul { padding-left: 20px; }
   </style>
 </head>
 <body>
 
-<div id="calendarContainer">
-  <h2>📅 Work History Calendar</h2>
+<!-- Header -->
+<div id="header">
+  <h2>📅 Work Calendar</h2>
+  <button id="burgerBtn" onclick="toggleSidebar()">☰</button>
+</div>
 
-  <!-- Search Menu -->
-  <div id="searchBox">
-    <input type="text" id="searchInput" placeholder="Search work history (e.g., 'firmware', 'meeting')">
-    <button onclick="searchData()">🔍 Search</button>
+<!-- Main Container -->
+<div id="container">
+  <div id="calendarContainer">
+    <!-- Search -->
+    <div id="searchBox">
+      <input type="text" id="searchInput" placeholder="Search work history...">
+      <button onclick="searchData()">🔍 Search</button>
+    </div>
+
+    <!-- Calendar -->
+    <div id="calendar"></div>
+
+    <!-- Search Result -->
+    <div id="searchResult"></div>
   </div>
-
-  <!-- Calendar -->
-  <div id="calendar"></div>
-
-  <!-- Search Result -->
-  <div id="searchResult"></div>
 </div>
 
 <!-- Upcoming Task Sidebar -->
-<div id="upcomingTasks">
+<div id="upcomingSidebar">
   <h3>📌 Upcoming Tasks (Next 3 Days)</h3>
   <div id="upcomingList">
     <p>Loading tasks...</p>
@@ -160,7 +204,7 @@
     calendar.render();
 
     document.addEventListener('click', function (event) {
-      const isClickInside = modal.contains(event.target);
+      const isClickInside = modal.contains(event.target) || event.target.closest('.fc-daygrid-day');
       if (!isClickInside && modal.style.display === 'block') {
         closeModal();
       }
@@ -205,7 +249,6 @@
   function renderUpcoming(data) {
     const upcomingDiv = document.getElementById('upcomingList');
     const today = new Date();
-
     let output = '';
     let found = false;
 
@@ -221,6 +264,11 @@
     }
 
     upcomingDiv.innerHTML = found ? output : '<p>No tasks for the next 3 days.</p>';
+  }
+
+  function toggleSidebar() {
+    const sidebar = document.getElementById('upcomingSidebar');
+    sidebar.classList.toggle('active');
   }
 </script>
 

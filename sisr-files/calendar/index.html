@@ -6,21 +6,27 @@
   <title>Work Calendar</title>
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
       margin: 0;
+      padding: 0;
+      overflow-x: hidden;
     }
 
-    #header {
+    header {
+      background-color: #2196F3;
+      color: white;
+      padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 20px;
-      background: #1976d2;
-      color: white;
     }
 
-    #burgerBtn {
+    .burger {
       font-size: 24px;
       cursor: pointer;
       background: none;
@@ -28,30 +34,26 @@
       color: white;
     }
 
-    #container {
+    #mainContent {
       display: flex;
-      flex-direction: row;
-      gap: 20px;
+      flex-direction: column;
       padding: 20px;
     }
 
-    #calendarContainer {
-      flex: 1;
-    }
-
-    #calendar { max-width: 100%; }
-
     #searchBox {
-      max-width: 600px;
-      margin: 10px 0;
       display: flex;
       gap: 10px;
+      margin-bottom: 10px;
     }
 
     #searchInput {
       flex: 1;
       padding: 8px;
       font-size: 1rem;
+    }
+
+    #calendar {
+      max-width: 100%;
     }
 
     #searchResult {
@@ -72,7 +74,9 @@
       display: none;
     }
 
-    .modal h3 { margin-top: 0; }
+    .modal h3 {
+      margin-top: 0;
+    }
 
     .close {
       position: absolute;
@@ -83,7 +87,9 @@
       color: #999;
     }
 
-    .close:hover { color: red; }
+    .close:hover {
+      color: red;
+    }
 
     .fc-event {
       background-color: #2196F3;
@@ -92,18 +98,19 @@
       padding: 2px;
     }
 
-    /* Upcoming Task Sidebar */
+    /* Sidebar */
     #upcomingSidebar {
       position: fixed;
       top: 0;
       right: -300px;
       width: 300px;
       height: 100%;
-      background-color: #f9f9f9;
-      box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+      background: #f9f9f9;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2);
       padding: 20px;
-      transition: right 0.3s ease;
+      transition: right 0.3s ease-in-out;
       z-index: 10000;
+      overflow-y: auto;
     }
 
     #upcomingSidebar.active {
@@ -114,23 +121,22 @@
       margin-top: 0;
     }
 
-    ul { padding-left: 20px; }
+    ul {
+      padding-left: 20px;
+    }
   </style>
 </head>
 <body>
 
-<!-- Header -->
-<div id="header">
-  <h2>📅 Work Calendar</h2>
-  <button id="burgerBtn" onclick="toggleSidebar()">☰</button>
-</div>
+  <header>
+    <h2>📅 Work History Calendar</h2>
+    <button class="burger" id="burgerBtn">☰</button>
+  </header>
 
-<!-- Main Container -->
-<div id="container">
-  <div id="calendarContainer">
+  <div id="mainContent">
     <!-- Search -->
     <div id="searchBox">
-      <input type="text" id="searchInput" placeholder="Search work history...">
+      <input type="text" id="searchInput" placeholder="Search work history (e.g., 'network', 'report')">
       <button onclick="searchData()">🔍 Search</button>
     </div>
 
@@ -140,148 +146,145 @@
     <!-- Search Result -->
     <div id="searchResult"></div>
   </div>
-</div>
 
-<!-- Upcoming Task Sidebar -->
-<div id="upcomingSidebar">
-  <h3>📌 Upcoming Tasks (Next 3 Days)</h3>
-  <div id="upcomingList">
-    <p>Loading tasks...</p>
+  <!-- Sidebar -->
+  <div id="upcomingSidebar">
+    <h3>📌 Upcoming Tasks (Next 3 Days)</h3>
+    <div id="upcomingList">
+      <p>Loading tasks...</p>
+    </div>
   </div>
-</div>
 
-<!-- Modal -->
-<div id="historyModal" class="modal">
-  <span class="close" onclick="closeModal()">&times;</span>
-  <h3>Work History Details</h3>
-  <div id="historyContent"></div>
-</div>
+  <!-- Modal -->
+  <div id="historyModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h3>Work History Details</h3>
+    <div id="historyContent"></div>
+  </div>
 
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-<script>
-  let pekerjaanData = {};
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script>
+    let pekerjaanData = {};
 
-  document.addEventListener('DOMContentLoaded', function () {
-    fetch('pekerjaan.json')
-      .then(response => response.json())
-      .then(data => {
-        pekerjaanData = data;
-        renderCalendar(data);
-        renderUpcoming(data);
-      })
-      .catch(error => {
-        console.error('Failed to load pekerjaan.json:', error);
-        document.getElementById('calendar').innerHTML = '<p style="color:red;">Failed to load work data.</p>';
-        document.getElementById('upcomingList').innerHTML = '<p style="color:red;">Unable to show upcoming tasks.</p>';
+    document.addEventListener('DOMContentLoaded', function () {
+      fetch('pekerjaan.json')
+        .then(response => response.json())
+        .then(data => {
+          pekerjaanData = data;
+          renderCalendar(data);
+          renderUpcoming(data);
+        })
+        .catch(error => {
+          console.error('Failed to load pekerjaan.json:', error);
+          document.getElementById('calendar').innerHTML = '<p style="color:red;">Failed to load work data.</p>';
+          document.getElementById('upcomingList').innerHTML = '<p style="color:red;">Unable to show upcoming tasks.</p>';
+        });
+
+      // Burger button toggle
+      document.getElementById('burgerBtn').addEventListener('click', toggleSidebar);
+
+      // Click outside sidebar to close
+      document.addEventListener('click', function (e) {
+        const sidebar = document.getElementById('upcomingSidebar');
+        const burgerBtn = document.getElementById('burgerBtn');
+
+        const isClickInsideSidebar = sidebar.contains(e.target);
+        const isClickOnBurger = burgerBtn.contains(e.target);
+
+        if (!isClickInsideSidebar && !isClickOnBurger && sidebar.classList.contains('active')) {
+          sidebar.classList.remove('active');
+        }
       });
-  });
-
-  function renderCalendar(data) {
-    const pekerjaanEvents = Object.keys(data).map(date => ({
-      title: `📌 ${data[date].length} task(s)`,
-      start: date,
-      allDay: true
-    }));
-
-    const calendarEl = document.getElementById('calendar');
-    const modal = document.getElementById('historyModal');
-
-    const calendar = new FullCalendar.Calendar(calendarEl, {
-      initialView: 'dayGridMonth',
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: ''
-      },
-      events: pekerjaanEvents,
-      dateClick: function (info) {
-        const date = info.dateStr;
-        const history = data[date] || ['No recorded tasks'];
-        showModal(history, date);
-      }
     });
 
-    calendar.render();
+    function renderCalendar(data) {
+      const pekerjaanEvents = Object.keys(data).map(date => ({
+        title: `📌 ${data[date].length} task(s)`,
+        start: date,
+        allDay: true
+      }));
 
-    document.addEventListener('click', function (event) {
-      const isClickInside = modal.contains(event.target) || event.target.closest('.fc-daygrid-day');
-      if (!isClickInside && modal.style.display === 'block') {
-        closeModal();
-      }
-    });
-  }
+      const calendarEl = document.getElementById('calendar');
+      const modal = document.getElementById('historyModal');
 
-  function showModal(historyList, date) {
-    const modal = document.getElementById('historyModal');
-    const content = document.getElementById('historyContent');
-    content.innerHTML = `<strong>${date}</strong><ul>` + historyList.map(item => `<li>${item}</li>`).join('') + '</ul>';
-    modal.style.display = 'block';
-  }
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: ''
+        },
+        events: pekerjaanEvents,
+        dateClick: function (info) {
+          const date = info.dateStr;
+          const history = data[date] || ['No recorded tasks'];
+          showModal(history, date);
+        }
+      });
 
-  function closeModal() {
-    document.getElementById('historyModal').style.display = 'none';
-  }
-
-  function searchData() {
-    const keyword = document.getElementById('searchInput').value.toLowerCase();
-    const resultDiv = document.getElementById('searchResult');
-    resultDiv.innerHTML = '';
-
-    if (!keyword) {
-      resultDiv.innerHTML = '<p>Please enter a keyword to search.</p>';
-      return;
+      calendar.render();
     }
 
-    let resultHTML = '';
-    let found = false;
-
-    for (const [date, tasks] of Object.entries(pekerjaanData)) {
-      const filteredTasks = tasks.filter(task => task.toLowerCase().includes(keyword));
-      if (filteredTasks.length > 0) {
-        found = true;
-        resultHTML += `<h4>${date}</h4><ul>${filteredTasks.map(task => `<li>${task}</li>`).join('')}</ul>`;
-      }
+    function showModal(historyList, date) {
+      const modal = document.getElementById('historyModal');
+      const content = document.getElementById('historyContent');
+      content.innerHTML = `<strong>${date}</strong><ul>` + historyList.map(item => `<li>${item}</li>`).join('') + '</ul>';
+      modal.style.display = 'block';
     }
 
-    resultDiv.innerHTML = found ? resultHTML : '<p>No matching work found.</p>';
-  }
-
-  function renderUpcoming(data) {
-    const upcomingDiv = document.getElementById('upcomingList');
-    const today = new Date();
-    let output = '';
-    let found = false;
-
-    for (let i = 0; i < 3; i++) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + i);
-      const dateStr = date.toISOString().split('T')[0];
-
-      if (data[dateStr]) {
-        found = true;
-        output += `<h4>${dateStr}</h4><ul>${data[dateStr].map(task => `<li>${task}</li>`).join('')}</ul>`;
-      }
+    function closeModal() {
+      document.getElementById('historyModal').style.display = 'none';
     }
 
-    upcomingDiv.innerHTML = found ? output : '<p>No tasks for the next 3 days.</p>';
-  }
+    function searchData() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      const resultDiv = document.getElementById('searchResult');
+      resultDiv.innerHTML = '';
 
-  function toggleSidebar() {
-// Close sidebar if clicked outside
-    document.addEventListener('click', function (e) {
+      if (!keyword) {
+        resultDiv.innerHTML = '<p>Please enter a keyword to search.</p>';
+        return;
+      }
+
+      let resultHTML = '';
+      let found = false;
+
+      for (const [date, tasks] of Object.entries(pekerjaanData)) {
+        const filteredTasks = tasks.filter(task => task.toLowerCase().includes(keyword));
+        if (filteredTasks.length > 0) {
+          found = true;
+          resultHTML += `<h4>${date}</h4><ul>${filteredTasks.map(task => `<li>${task}</li>`).join('')}</ul>`;
+        }
+      }
+
+      resultDiv.innerHTML = found ? resultHTML : '<p>No matching work found.</p>';
+    }
+
+    function renderUpcoming(data) {
+      const upcomingDiv = document.getElementById('upcomingList');
+      const today = new Date();
+
+      let output = '';
+      let found = false;
+
+      for (let i = 0; i < 3; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        const dateStr = date.toISOString().split('T')[0];
+
+        if (data[dateStr]) {
+          found = true;
+          output += `<h4>${dateStr}</h4><ul>${data[dateStr].map(task => `<li>${task}</li>`).join('')}</ul>`;
+        }
+      }
+
+      upcomingDiv.innerHTML = found ? output : '<p>No tasks for the next 3 days.</p>';
+    }
+
+    function toggleSidebar() {
       const sidebar = document.getElementById('upcomingSidebar');
-      const burgerBtn = document.getElementById('burgerBtn');
-
-      const isClickInsideSidebar = sidebar.contains(e.target);
-      const isClickOnBurger = burgerBtn.contains(e.target);
-
-      if (!isClickInsideSidebar && !isClickOnBurger && sidebar.classList.contains('active')) {
-        sidebar.classList.remove('active');
-      }
-    });
-
-  }
-</script>
-
+      sidebar.classList.toggle('active');
+    }
+  </script>
 </body>
 </html>

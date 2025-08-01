@@ -1,25 +1,25 @@
-# Selamat Datang di GitHub Page Saya
+# Hello,
 
-Halo, nama saya Dhantel Rhesa Prawedha dan ini adalah GitHub Page saya.
+Hi, my name is Dhantel Rhesa Prawedha and this is my GitHub Page.
 
-## Tentang Saya
+## About Me
 
-Seorang yang sedang mengembangkan beberapa dokumentasi dari perkejaan harian saya sebagai Asst. IT Manager di Swissbelinn Saripetojo.
+I’m currently developing documentation based on my daily work as an Assistant IT Manager at Swiss-Belinn Saripetojo.
 
-## Proyek
+## Projects
 
-Berikut adalah beberapa proyek yang telah saya kerjakan:
+Here are some of the projects I’ve worked on:
 
-1. **Artwork**: [Deskripsi singkat tentang proyek 1]
-2. **JS**: [Deskripsi singkat tentang proyek 2]
+1. **Artwork**: *Artwork Team for Paguyuban Linux Solo* [https://github.com/drprawedha/artwork]
+2. **Asst IT Manager**: *Asst IT Manager Files for SISR* [https://drprawedha.github.io/sisr-files/]
 
-Anda dapat melihat lebih banyak proyek di sini.
+You can find more of my projects here.
 
-## Kontak
+## Contact
 
-Jika Anda memiliki pertanyaan atau ingin berkolaborasi, jangan ragu untuk menghubungi saya:
+If you have any questions or would like to collaborate, feel free to reach out to me:
 
-- Email: [dr.prawedha@gmail.com]
-- LinkedIn: [https://www.linkedin.com/in/drprawedha]
+- **Email**: [dr.prawedha@gmail.com](mailto:dr.prawedha@gmail.com)  
+- **LinkedIn**: [https://www.linkedin.com/in/drprawedha](https://www.linkedin.com/in/drprawedha)
 
-Terima kasih telah mengunjungi halaman saya!
+Thank you for visiting my page!

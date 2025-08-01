@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Calendar History Pekerjaan</title>
+  <title>Kalender Pekerjaan</title>
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
   <style>
     body { font-family: Arial, sans-serif; padding: 20px; }
@@ -55,7 +55,7 @@
 
 <!-- Search Menu -->
 <div id="searchBox">
-  <input type="text" id="searchInput" placeholder="Cari pekerjaan (contoh: 'firmware' atau 'meeting')">
+  <input type="text" id="searchInput" placeholder="Cari pekerjaan (contoh: 'firmware', 'meeting')">
   <button onclick="searchData()">🔍 Cari</button>
 </div>
 
@@ -74,21 +74,30 @@
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <script>
-  let pekerjaanData = {
-    "2025-08-01": ["Menyelesaikan laporan mingguan", "Meeting dengan vendor CCTV"],
-    "2025-08-02": ["Instalasi jaringan di lantai 3", "Backup server hotel"],
-    "2025-08-03": ["Desain poster Wedding Expo", "Update firmware STB"]
-  };
+  let pekerjaanData = {};
 
   document.addEventListener('DOMContentLoaded', function () {
-    const calendarEl = document.getElementById('calendar');
-    const modal = document.getElementById('historyModal');
+    fetch('pekerjaan.json')
+      .then(response => response.json())
+      .then(data => {
+        pekerjaanData = data;
+        renderCalendar(pekerjaanData);
+      })
+      .catch(error => {
+        console.error('Gagal memuat pekerjaan.json:', error);
+        document.getElementById('calendar').innerHTML = '<p style="color:red;">Gagal memuat data pekerjaan. Pastikan server berjalan dan file JSON ada.</p>';
+      });
+  });
 
-    const pekerjaanEvents = Object.keys(pekerjaanData).map(date => ({
-      title: `📌 ${pekerjaanData[date].length} tugas`,
+  function renderCalendar(data) {
+    const pekerjaanEvents = Object.keys(data).map(date => ({
+      title: `📌 ${data[date].length} tugas`,
       start: date,
       allDay: true
     }));
+
+    const calendarEl = document.getElementById('calendar');
+    const modal = document.getElementById('historyModal');
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
@@ -100,21 +109,20 @@
       events: pekerjaanEvents,
       dateClick: function (info) {
         const date = info.dateStr;
-        const history = pekerjaanData[date] || ['Tidak ada pekerjaan tercatat'];
+        const history = data[date] || ['Tidak ada pekerjaan tercatat'];
         showModal(history, date);
       }
     });
 
     calendar.render();
 
-    // Klik di luar modal menutup popup
     document.addEventListener('click', function (event) {
       const isClickInside = modal.contains(event.target);
       if (!isClickInside && modal.style.display === 'block') {
         closeModal();
       }
     });
-  });
+  }
 
   function showModal(historyList, date) {
     const modal = document.getElementById('historyModal');

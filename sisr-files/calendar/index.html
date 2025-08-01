@@ -1,16 +1,47 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CalendarIT</title>
+  <title>Work Calendar</title>
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    #calendar { max-width: 900px; margin: 20px auto; }
-    #searchBox { max-width: 600px; margin: 0 auto; display: flex; gap: 10px; }
-    #searchInput { flex: 1; padding: 8px; font-size: 1rem; }
-    #searchResult { max-width: 600px; margin: 20px auto; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+    }
+
+    #calendarContainer {
+      flex: 3;
+    }
+
+    #upcomingTasks {
+      flex: 1;
+      border-left: 1px solid #ddd;
+      padding-left: 20px;
+    }
+
+    #calendar { max-width: 100%; }
+
+    #searchBox {
+      max-width: 600px;
+      margin: 10px 0;
+      display: flex;
+      gap: 10px;
+    }
+
+    #searchInput {
+      flex: 1;
+      padding: 8px;
+      font-size: 1rem;
+    }
+
+    #searchResult {
+      margin-top: 10px;
+    }
 
     .modal {
       position: absolute;
@@ -51,24 +82,34 @@
 </head>
 <body>
 
-<h2 style="text-align:center;">📅 CalendarIT</h2>
+<div id="calendarContainer">
+  <h2>📅 Work History Calendar</h2>
 
-<!-- Search Menu -->
-<div id="searchBox">
-  <input type="text" id="searchInput" placeholder="Search jobs (ex: 'firmware', 'meeting')">
-  <button onclick="searchData()">🔍 Search</button>
+  <!-- Search Menu -->
+  <div id="searchBox">
+    <input type="text" id="searchInput" placeholder="Search work history (e.g., 'firmware', 'meeting')">
+    <button onclick="searchData()">🔍 Search</button>
+  </div>
+
+  <!-- Calendar -->
+  <div id="calendar"></div>
+
+  <!-- Search Result -->
+  <div id="searchResult"></div>
 </div>
 
-<!-- Calendar -->
-<div id="calendar"></div>
-
-<!-- Search Result -->
-<div id="searchResult"></div>
+<!-- Upcoming Task Sidebar -->
+<div id="upcomingTasks">
+  <h3>📌 Upcoming Tasks (Next 3 Days)</h3>
+  <div id="upcomingList">
+    <p>Loading tasks...</p>
+  </div>
+</div>
 
 <!-- Modal -->
 <div id="historyModal" class="modal">
   <span class="close" onclick="closeModal()">&times;</span>
-  <h3>[Job / Project ] History</h3>
+  <h3>Work History Details</h3>
   <div id="historyContent"></div>
 </div>
 
@@ -81,17 +122,19 @@
       .then(response => response.json())
       .then(data => {
         pekerjaanData = data;
-        renderCalendar(pekerjaanData);
+        renderCalendar(data);
+        renderUpcoming(data);
       })
       .catch(error => {
         console.error('Failed to load pekerjaan.json:', error);
-        document.getElementById('calendar').innerHTML = '<p style="color:red;">Failed to load data pekerjaan. Make sure the server is running and the JSON file exists.</p>';
+        document.getElementById('calendar').innerHTML = '<p style="color:red;">Failed to load work data.</p>';
+        document.getElementById('upcomingList').innerHTML = '<p style="color:red;">Unable to show upcoming tasks.</p>';
       });
   });
 
   function renderCalendar(data) {
     const pekerjaanEvents = Object.keys(data).map(date => ({
-      title: `📌 ${data[date].length} tugas`,
+      title: `📌 ${data[date].length} task(s)`,
       start: date,
       allDay: true
     }));
@@ -109,7 +152,7 @@
       events: pekerjaanEvents,
       dateClick: function (info) {
         const date = info.dateStr;
-        const history = data[date] || ['Tidak ada pekerjaan tercatat'];
+        const history = data[date] || ['No recorded tasks'];
         showModal(history, date);
       }
     });
@@ -141,7 +184,7 @@
     resultDiv.innerHTML = '';
 
     if (!keyword) {
-      resultDiv.innerHTML = '<p>Please input keyword . . . </p>';
+      resultDiv.innerHTML = '<p>Please enter a keyword to search.</p>';
       return;
     }
 
@@ -156,7 +199,28 @@
       }
     }
 
-    resultDiv.innerHTML = found ? resultHTML : '<p>Tidak ditemukan pekerjaan yang sesuai.</p>';
+    resultDiv.innerHTML = found ? resultHTML : '<p>No matching work found.</p>';
+  }
+
+  function renderUpcoming(data) {
+    const upcomingDiv = document.getElementById('upcomingList');
+    const today = new Date();
+
+    let output = '';
+    let found = false;
+
+    for (let i = 0; i < 3; i++) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + i);
+      const dateStr = date.toISOString().split('T')[0];
+
+      if (data[dateStr]) {
+        found = true;
+        output += `<h4>${dateStr}</h4><ul>${data[dateStr].map(task => `<li>${task}</li>`).join('')}</ul>`;
+      }
+    }
+
+    upcomingDiv.innerHTML = found ? output : '<p>No tasks for the next 3 days.</p>';
   }
 </script>
 

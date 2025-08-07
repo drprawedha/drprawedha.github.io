@@ -1,0 +1,3 @@
+[submodule "sisr-files/calendar-it"]
+    path = sisr-files/calendar-it
+    url = https://github.com/kamu/sisr-files-calendar-it.git

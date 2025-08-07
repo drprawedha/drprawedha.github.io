@@ -1,0 +1,41 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # Branch yang digunakan untuk deploy, sesuaikan jika menggunakan branch lain
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout kode utama dan submodule
+      - name: Checkout the code
+        uses: actions/checkout@v4
+        with:
+          submodules: true  # Opsi ini memastikan submodule juga di-fetch
+
+      # Step 2: Setup Node.js (Jika menggunakan Node.js, sesuaikan jika pakai stack lain)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Ganti dengan versi Node.js yang sesuai dengan proyekmu
+
+      # Step 3: Install dependensi (sesuaikan dengan cara install dependensi yang kamu butuhkan)
+      - name: Install dependencies
+        run: npm install  # Ganti jika menggunakan package manager lain (misal yarn)
+
+      # Step 4: Build aplikasi (sesuaikan dengan build script yang kamu pakai)
+      - name: Build the project
+        run: npm run build  # Ganti dengan perintah build yang sesuai
+
+      # Step 5: Deploy ke GitHub Pages
+      - name: Deploy to GitHub Pages
+        run: npm run deploy  # Ganti dengan perintah deploy yang sesuai untuk GitHub Pages
+      
+      - name: Checkout the code with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          # token: ${{ secrets.ACCESS_TOKEN }}

@@ -1,39 +1,185 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="Rhesa Prawedha" content="Profile">
-    <!-- <meta http-equiv="refresh" content="1800"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIVE From drprawedha@github</title>
-    <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="shortcut icon" href="assets/img/favicon_io/favicon.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dhantel Rhesa Prawedha | Portfolio</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f6f8;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 18px;
+      color: #d1d5db;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    section {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px;
+    }
+
+    h2 {
+      color: #111827;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skills span {
+      background: #e5e7eb;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: #111827;
+      color: #d1d5db;
+    }
+
+    a {
+      color: #2563eb;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="header">
-        <p>Hello World, <br>
-            Live From <strong>drprawedha pc's</strong></p>
-            <p>My <a href="tugas/html/index.html">latest Project</a> and My Old Site is <a href="old-site/index.html">here</a></p>
+
+  <header>
+    <h1>Hi, I'm Dhantel 👋</h1>
+    <p>Linux System Administrator | DevOps | Ansible Automation</p>
+    <a href="#projects" class="btn">View My Work</a>
+  </header>
+
+  <section>
+    <h2>About Me</h2>
+    <div class="card">
+      <p>
+        I am passionate about Linux server administration, security hardening,
+        automation, and DevOps practices. I help configure, secure, and automate
+        Linux servers using tools like Ansible, Docker, and firewall management.
+      </p>
     </div>
-        <figure>
-        <a href="/old-site/index.html" target="_blank" rel="noopener noreferrer">
-            <img 
-            src="assets/img/image.webp" 
-            alt="Profile Picture" 
-            title="A picture"
-            width="300" 
-            height="300">
-            <figcaption>Panda on Mission #1</figcaption>
-        </a>
-    </figure>
-    <div class="footer">
-        <ul>
-            <li><a href="http://drprawedha.tumblr.com" target="_blank" rel="noopener noreferrer">Blog</a> </li>
-            <!-- <li><a href="mailto:dr.prawedha@gmail.com">Email</a></li> -->
-            <!-- <li><a href="tel:+6281225445935">Phone</a> </li> -->
-        </ul>
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <div class="skills">
+      <span>Linux Server</span>
+      <span>Ubuntu</span>
+      <span>Server Hardening</span>
+      <span>Ansible</span>
+      <span>Firewall / UFW</span>
+      <span>Fail2ban</span>
+      <span>Docker</span>
+      <span>SSH Security</span>
+      <span>System Updates</span>
+      <span>Automation</span>
     </div>
-    <!-- NEED AUDIO ELEMENT TO START -->
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+
+    <div class="card">
+      <h3>🔐 Linux Server Hardening</h3>
+      <p>
+        Secured Linux servers by configuring SSH hardening, disabling root login,
+        setting firewall rules, installing fail2ban, and applying security updates.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>⚙️ Ansible Automation</h3>
+      <p>
+        Created Ansible playbooks to automate server setup, package installation,
+        firewall configuration, user management, and system updates.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🐳 Docker Deployment</h3>
+      <p>
+        Deployed web applications using Docker and Docker Compose to simplify
+        application management and improve deployment consistency.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>🛡️ Firewall Configuration</h3>
+      <p>
+        Configured UFW/firewall rules to allow only required services such as SSH,
+        HTTP, and HTTPS while blocking unnecessary open ports.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    <div class="card">
+      <p><strong>Freelance IT / DevOps Enthusiast</strong></p>
+      <p>
+        Working on Linux administration, server security, automation, and deployment
+        projects to help improve server reliability and security.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Contact</h2>
+    <div class="card">
+      <p>Email: <a href="mailto:dr.prawedha@gmail.com">dr.prawedha@gmail.com</a></p>
+      <p>GitHub: <a href="https://github.com/drprawedha" target="_blank">github.com/drprawedha</a></p>
+      <p>Website: <a href="https://drprawedha.github.io" target="_blank">drprawedha.github.io</a></p>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Dhantel Rhesa Prawedha. All rights reserved.</p>
+  </footer>
 
 </body>
 </html>

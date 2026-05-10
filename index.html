@@ -5,190 +5,266 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dhantel Rhesa Prawedha</title>
+  <style id="main-style">
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #666666;
+      --border: #e0e0e0;
+      --max: 680px;
+    }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.75;
+      padding: 3rem 1.5rem;
+    }
+
+    .wrap { max-width: var(--max); margin: 0 auto; }
+
+    #css-toggle {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 6px 14px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 4px;
+      z-index: 999;
+      transition: all .2s;
+    }
+    #css-toggle:hover { border-color: var(--fg); color: var(--fg); }
+
+    header { margin-bottom: 3rem; }
+    header h1 { font-size: 2rem; font-weight: normal; letter-spacing: -0.5px; margin-bottom: .25rem; }
+    header .sub { color: var(--muted); font-size: .95rem; margin-bottom: .75rem; font-style: italic; }
+    header .links a { color: var(--fg); font-size: .875rem; margin-right: 1.25rem; text-underline-offset: 3px; }
+
+    section { margin-bottom: 2.5rem; }
+    h2 {
+      font-size: .7rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .job { margin-bottom: 1.75rem; }
+    .job h3 { font-size: 1rem; font-weight: normal; }
+    .job .company { font-style: italic; color: var(--muted); font-size: .875rem; margin-bottom: .1rem; }
+    .job .period { font-size: .8rem; color: var(--muted); margin-bottom: .5rem; font-family: monospace; }
+    .job ul { padding-left: 1.25rem; font-size: .9rem; color: #333; }
+    .job ul li { margin-bottom: .2rem; }
+
+    .skill-group { margin-bottom: 1.25rem; }
+    .skill-group h3 { font-size: .85rem; font-weight: bold; margin-bottom: .4rem; }
+    .skill-group ul { padding-left: 1.25rem; font-size: .9rem; color: #333; }
+
+    .edu { margin-bottom: 1rem; }
+    .edu h3 { font-size: .95rem; font-weight: normal; }
+    .edu .period { font-size: .8rem; color: var(--muted); font-family: monospace; }
+
+    .cert-list { padding-left: 1.25rem; font-size: .9rem; }
+    .cert-list li { margin-bottom: .3rem; }
+
+    .two-col { display: grid; grid-template-columns: 120px 1fr; gap: .5rem 1rem; font-size: .9rem; }
+    .two-col dt { color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; padding-top: 2px; }
+    .two-col dd { margin: 0; }
+
+    footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); font-size: .8rem; color: var(--muted); }
+  </style>
 </head>
 <body>
 
+<button id="css-toggle" onclick="toggleCSS()">CSS: ON</button>
+
+<div class="wrap">
+
   <header>
     <h1>Dhantel Rhesa Prawedha</h1>
-    <p>IT Manager &amp; Open Source Enthusiast &mdash; Solo, Jawa Tengah</p>
-    <p>
-      <a href="mailto:dr.prawedha@gmail.com">dr.prawedha@gmail.com</a> &nbsp;|&nbsp;
-      <a href="https://www.linkedin.com/in/drprawedha" target="_blank">LinkedIn</a> &nbsp;|&nbsp;
+    <p class="sub">IT Manager &amp; Open Source Enthusiast &mdash; Solo, Jawa Tengah</p>
+    <div class="links">
+      <a href="mailto:dr.prawedha@gmail.com">dr.prawedha@gmail.com</a>
+      <a href="https://www.linkedin.com/in/drprawedha" target="_blank">LinkedIn</a>
       <a href="https://github.com/drprawedha" target="_blank">GitHub</a>
-    </p>
-    <hr>
+    </div>
   </header>
 
-  <main>
+  <section>
+    <h2>Tentang</h2>
+    <p>IT professional dengan pengalaman lebih dari 6 tahun di industri perhotelan bintang 4 dan 5. Spesialisasi di network infrastructure, server administration (Windows &amp; Linux), dan IT support. Aktif di komunitas Linux Solo dan tertarik pada open source software, cloud computing, serta AI tools.</p>
+  </section>
 
-    <section>
-      <h2>Tentang Saya</h2>
-      <p>
-        IT professional dengan pengalaman lebih dari 6 tahun di industri perhotelan bintang 4 dan 5.
-        Spesialisasi di network infrastructure, server administration (Windows &amp; Linux), dan IT support.
-        Aktif di komunitas Linux Solo (Paguyuban Linux Solo) dan tertarik pada open source software,
-        cloud computing, serta AI tools.
-      </p>
-    </section>
+  <section>
+    <h2>Pengalaman</h2>
 
-    <hr>
+    <div class="job">
+      <h3>IT Manager</h3>
+      <p class="company">Mercure Solo</p>
+      <p class="period">Juni 2024 &ndash; Sekarang</p>
+      <ul>
+        <li>Memimpin project rebranding infrastruktur IT hotel</li>
+        <li>Mengelola tim IT dan koordinasi dengan vendor</li>
+      </ul>
+    </div>
 
-    <section>
-      <h2>Pengalaman Kerja</h2>
+    <div class="job">
+      <h3>Assistant IT Manager &amp; Graphic Designer</h3>
+      <p class="company">Swiss-Belinn Saripetojo Solo</p>
+      <p class="period">Juni 2024 &ndash; Sekarang</p>
+      <ul>
+        <li>Mengelola infrastruktur jaringan dan sistem IT hotel</li>
+        <li>Merancang materi grafis untuk kebutuhan operasional</li>
+      </ul>
+    </div>
 
-      <article>
-        <h3>IT Manager &mdash; Mercure Solo</h3>
-        <p><i>Juni 2024 &ndash; Sekarang</i></p>
-        <ul>
-          <li>Memimpin project rebranding infrastruktur IT hotel</li>
-          <li>Mengelola tim IT dan koordinasi dengan vendor</li>
-        </ul>
-      </article>
+    <div class="job">
+      <h3>Cluster IT Support</h3>
+      <p class="company">The Royal Surakarta Heritage Solo &mdash; MGallery by Sofitel</p>
+      <p class="period">Desember 2019 &ndash; Juni 2024</p>
+      <ul>
+        <li>Maintain jaringan internal dan troubleshoot hardware/software</li>
+        <li>Administrasi PMS Rhapsody, Windows Server, dan Active Directory</li>
+        <li>Mengelola sistem kunci pintu Onity</li>
+      </ul>
+    </div>
 
-      <article>
-        <h3>Assistant IT Manager &amp; Graphic Designer &mdash; Swiss-Belinn Saripetojo Solo</h3>
-        <p><i>Juni 2024 &ndash; Sekarang</i></p>
-        <ul>
-          <li>Mengelola infrastruktur jaringan dan sistem IT hotel</li>
-          <li>Merancang materi grafis untuk kebutuhan operasional</li>
-        </ul>
-      </article>
+    <div class="job">
+      <h3>IT Support Officer</h3>
+      <p class="company">Novotel &amp; ibis Solo</p>
+      <p class="period">Desember 2018 &ndash; Juni 2024</p>
+      <ul>
+        <li>Administrasi Windows Server dan Linux Server</li>
+        <li>Manage Active Directory dan troubleshoot jaringan</li>
+      </ul>
+    </div>
 
-      <article>
-        <h3>Cluster IT Support &mdash; The Royal Surakarta Heritage Solo (MGallery by Sofitel)</h3>
-        <p><i>Desember 2019 &ndash; Juni 2024</i></p>
-        <ul>
-          <li>Maintain jaringan internal kantor dan troubleshoot hardware/software</li>
-          <li>Administrasi PMS Rhapsody, Windows Server, dan Active Directory</li>
-          <li>Mengelola sistem kunci pintu Onity</li>
-        </ul>
-      </article>
+    <div class="job">
+      <h3>Freelance Network Administrator</h3>
+      <p class="company">Self-Employed</p>
+      <p class="period">Juli 2019 &ndash; Desember 2019</p>
+      <ul>
+        <li>Build VPS di Bare Metal Server untuk STIE AUB Surakarta</li>
+        <li>Setup repository Eprints dan web server infrastructure</li>
+        <li>Monthly server maintenance</li>
+      </ul>
+    </div>
 
-      <article>
-        <h3>IT Support Officer &mdash; Novotel &amp; ibis Solo</h3>
-        <p><i>Desember 2018 &ndash; Juni 2024</i></p>
-        <ul>
-          <li>Administrasi Windows Server dan Linux Server</li>
-          <li>Manage Active Directory dan troubleshoot jaringan</li>
-        </ul>
-      </article>
+    <div class="job">
+      <h3>Assistant Admin &amp; Graphic Designer</h3>
+      <p class="company">Khusyu Parenting</p>
+      <p class="period">Maret 2022 &ndash; Maret 2023</p>
+      <ul>
+        <li>Mendukung operasional administrasi dan desain konten</li>
+      </ul>
+    </div>
 
-      <article>
-        <h3>Freelance Network Administrator &mdash; Self-Employed</h3>
-        <p><i>Juli 2019 &ndash; Desember 2019</i></p>
-        <ul>
-          <li>Membangun VPS di Bare Metal Server untuk STIE AUB Surakarta</li>
-          <li>Setup repository Eprints, web server infrastructure</li>
-          <li>Monthly server maintenance</li>
-        </ul>
-      </article>
+    <div class="job">
+      <h3>Graphic Designer</h3>
+      <p class="company">Emine Inspiring Hijab</p>
+      <p class="period">Juli 2017 &ndash; Februari 2018</p>
+      <ul>
+        <li>Merancang materi visual untuk produk dan pemasaran</li>
+      </ul>
+    </div>
+  </section>
 
-      <article>
-        <h3>Assistant Admin &amp; Graphic Designer &mdash; Khusyu Parenting</h3>
-        <p><i>Maret 2022 &ndash; Maret 2023</i></p>
-        <ul>
-          <li>Mendukung operasional administrasi dan desain konten</li>
-        </ul>
-      </article>
-
-      <article>
-        <h3>Graphic Designer &mdash; Emine Inspiring Hijab</h3>
-        <p><i>Juli 2017 &ndash; Februari 2018</i></p>
-        <ul>
-          <li>Merancang materi visual untuk produk dan pemasaran</li>
-        </ul>
-      </article>
-
-    </section>
-
-    <hr>
-
-    <section>
-      <h2>Keahlian</h2>
-
+  <section>
+    <h2>Keahlian</h2>
+    <div class="skill-group">
       <h3>IT Infrastructure &amp; Networking</h3>
       <ul>
         <li>Windows Server &amp; Active Directory</li>
-        <li>Linux Server (administrasi dan troubleshooting)</li>
+        <li>Linux Server (administrasi &amp; troubleshooting)</li>
         <li>Network troubleshooting &amp; maintenance</li>
         <li>VPS &amp; Bare Metal Server setup</li>
       </ul>
-
+    </div>
+    <div class="skill-group">
       <h3>Software &amp; Tools</h3>
       <ul>
         <li>PMS Rhapsody (hotel management system)</li>
         <li>Onity Door Lock System</li>
-        <li>Microsoft Products (Active Directory, server tools)</li>
         <li>Git &amp; GitHub</li>
         <li>Google Cloud Platform</li>
       </ul>
-
+    </div>
+    <div class="skill-group">
       <h3>Desain</h3>
       <ul>
         <li>Graphic Design (materi cetak dan digital)</li>
         <li>Desain konten media sosial</li>
       </ul>
-    </section>
+    </div>
+  </section>
 
-    <hr>
+  <section>
+    <h2>Pendidikan</h2>
+    <div class="edu">
+      <h3>S1 Sistem Komputer &mdash; STMIK AUB Surakarta</h3>
+      <p class="period">2015 &ndash; 2018</p>
+    </div>
+    <div class="edu">
+      <h3>D3 Teknik Komputer &mdash; Politeknik Pratama Mulia</h3>
+      <p class="period">2011 &ndash; 2014</p>
+    </div>
+    <div class="edu">
+      <h3>Teknik Komputer Jaringan &mdash; SMK Negeri 2 Surakarta</h3>
+      <p class="period">2008 &ndash; 2011</p>
+    </div>
+  </section>
 
-    <section>
-      <h2>Pendidikan</h2>
+  <section>
+    <h2>Sertifikasi</h2>
+    <ul class="cert-list">
+      <li>AI-Powered Performance Ads Certification</li>
+      <li>Build a Website on Google Cloud &mdash; Skill Badge</li>
+      <li>Build Real World AI Applications with Gemini and Imagen &mdash; Skill Badge</li>
+      <li>Cloud Speech API: 3 Ways &mdash; Skill Badge</li>
+      <li>Technical Support Fundamentals</li>
+    </ul>
+  </section>
 
-      <article>
-        <h3>S1 Sistem Komputer &mdash; STMIK AUB Surakarta</h3>
-        <p><i>2015 &ndash; 2018</i></p>
-      </article>
-
-      <article>
-        <h3>D3 Teknik Komputer &mdash; Politeknik Pratama Mulia</h3>
-        <p><i>2011 &ndash; 2014</i></p>
-      </article>
-
-      <article>
-        <h3>Teknik Komputer Jaringan &mdash; SMK Negeri 2 Surakarta</h3>
-        <p><i>2008 &ndash; 2011</i></p>
-      </article>
-    </section>
-
-    <hr>
-
-    <section>
-      <h2>Sertifikasi</h2>
-      <ul>
-        <li>AI-Powered Performance Ads Certification</li>
-        <li>Build a Website on Google Cloud &mdash; Skill Badge</li>
-        <li>Build Real World AI Applications with Gemini and Imagen &mdash; Skill Badge</li>
-        <li>Cloud Speech API: 3 Ways &mdash; Skill Badge</li>
-        <li>Technical Support Fundamentals</li>
-      </ul>
-    </section>
-
-    <hr>
-
-    <section>
-      <h2>Bahasa</h2>
-      <ul>
-        <li>Indonesia &mdash; Native</li>
-        <li>Inggris &mdash; Elementary</li>
-      </ul>
-    </section>
-
-    <hr>
-
-    <section>
-      <h2>Komunitas</h2>
-      <ul>
-        <li>Paguyuban Linux Solo &mdash; Support Design</li>
-      </ul>
-    </section>
-
-  </main>
+  <section>
+    <h2>Lainnya</h2>
+    <dl class="two-col">
+      <dt>Bahasa</dt>
+      <dd>Indonesia (Native), Inggris (Elementary)</dd>
+      <dt>Komunitas</dt>
+      <dd>Paguyuban Linux Solo &mdash; Support Design</dd>
+    </dl>
+  </section>
 
   <footer>
-    <hr>
     <p>&copy; 2025 Dhantel Rhesa Prawedha &mdash; Solo, Indonesia</p>
   </footer>
+
+</div>
+
+<script>
+  let cssOn = true;
+  const style = document.getElementById('main-style');
+  const btn = document.getElementById('css-toggle');
+
+  function toggleCSS() {
+    cssOn = !cssOn;
+    style.disabled = !cssOn;
+    btn.textContent = cssOn ? 'CSS: ON' : 'CSS: OFF';
+    btn.style.cssText = cssOn
+      ? ''
+      : 'position:fixed;top:10px;right:10px;z-index:999;cursor:pointer;font-family:monospace;font-size:12px;';
+  }
+</script>
 
 </body>
 </html>

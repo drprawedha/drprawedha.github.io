@@ -12,17 +12,96 @@
 
     <div class="wrap">
         <section>
-        <h2>Preambule</h2>
-        <p class="sub">...</p>
+            <h2>Kasus Jaringan yang Menghilang di Tengah Malam</h2>
+            <p class="sub">Kabut tipis menyelimuti halaman belakang hotel tua itu ketika saya pertama kali menerima surat dari Sherlock Holmes. Tulisan tangannya rapi, seperti biasa, namun ada satu hal yang berbeda: ia meminta saya untuk segera datang—tanpa penjelasan panjang, hanya satu kalimat, “Ada misteri yang melibatkan teknologi modern, Watson.”
+            
+            Setibanya di lokasi, saya menemukan Holmes berdiri di ruang kontrol hotel, ditemani seorang pria muda yang tampak gelisah. Ia memperkenalkan dirinya sebagai Assistant IT Manager—seorang penjaga sunyi dari seluruh sistem digital hotel itu. Namanya tidak terlalu penting bagi Holmes; baginya, yang menarik adalah masalahnya.
+            
+            “Setiap malam, tepat pukul dua,” kata pria itu, “jaringan utama hotel tiba-tiba lumpuh. Server tetap berjalan, tetapi sistem PMS tidak dapat diakses, PBX terputus, dan semua komunikasi internal gagal.”
+
+            Holmes mengangguk pelan, matanya menyapu ruangan yang penuh dengan kabel, server rack, dan monitor yang berkedip. “Menarik. Sangat menarik. Anda mengatakan ini terjadi tanpa jejak?”
+            
+            “Benar, Tuan Holmes. Kami sudah memeriksa log, firewall, bahkan kemungkinan serangan eksternal. Tidak ada yang mencurigakan.”
+            
+            Saya melihat Holmes tersenyum tipis—senyum yang selalu muncul ketika ia menemukan teka-teki yang layak.</p>
         </section>
 
         <section>
-            <h2>Task</h2>
-            <ul class="links">
-                <li>...</li>
-                <p>...</p>
-            </ul>
+            <h2>Bab I: Pola yang Tersembunyi</h2>
+            <p>
+                Holmes memulai dengan hal sederhana: observasi. Ia meminta akses ke dokumentasi sistem, kebijakan IT, serta catatan maintenance. Dengan ketelitian luar biasa, ia memeriksa setiap detail—dari konfigurasi server hingga jadwal backup.
+
+                “Watson,” katanya sambil menunjuk layar, “perhatikan ini. Backup otomatis dijadwalkan pukul 01:55.”
+
+                “Lima menit sebelum gangguan,” jawab saya.
+
+                “Tepat. Namun backup sendiri tidak seharusnya menyebabkan kegagalan total… kecuali ada sesuatu yang salah dalam implementasinya.”
+
+                Assistant IT Manager itu tampak terkejut. “Kami memang baru mengimplementasikan sistem backup baru bulan lalu…”
+
+                Holmes tidak menjawab. Ia sudah berjalan menuju ruang server.
+
+            </p>
         </section>
+
+        <section>
+            <h2>Bab II: Jejak yang Tidak Terlihat</h2>
+            <p>
+                Di dalam ruang server yang dingin, Holmes memeriksa kabel jaringan satu per satu—sebuah kebiasaan lama yang tampaknya tidak pernah ia tinggalkan, meskipun dunia telah berubah.
+
+                “Teknologi modern tidak menghapus prinsip dasar, Watson,” katanya. “Masalah besar sering kali berasal dari hal kecil.”
+
+                Ia berhenti di satu titik. Sebuah switch jaringan berkedip tidak stabil.
+
+                “Siapa yang mengonfigurasi perangkat ini?”
+
+                “Saya… dan vendor eksternal,” jawab sang IT Manager.
+
+                Holmes berjongkok, memeriksa konfigurasi melalui terminal. Beberapa detik kemudian, ia berdiri.
+
+                “Di sinilah masalahnya.”
+
+            </p>
+        </section>
+
+        <section>
+            <h2>Bab III: Kebenaran Terungkap</h2>
+            <p>
+                Holmes menjelaskan dengan tenang:
+
+                “Backup sistem Anda berjalan bersamaan dengan proses sinkronisasi server. Namun, switch ini memiliki konfigurasi loop yang tidak stabil. Ketika traffic meningkat saat backup, terjadi broadcast storm—melumpuhkan seluruh jaringan.”
+
+                Saya mengerutkan kening. “Jadi bukan serangan?”
+
+                “Bukan. Ini adalah hasil dari konfigurasi yang tidak sempurna—diperparah oleh kurangnya pengujian saat implementasi.”
+
+                Assistant IT Manager itu menarik napas panjang. “Jadi… semua ini hanya karena kesalahan teknis?”
+
+                Holmes menatapnya tajam. “Dalam dunia Anda, Tuan, kesalahan teknis adalah kejahatan—karena dampaknya sama: kekacauan.”
+
+            </p>
+        </section>
+
+        <section>
+            <h2>Epilog</h2>
+            <p>
+                Masalah itu diperbaiki malam itu juga. Dengan konfigurasi ulang dan pengujian yang tepat, jaringan hotel kembali stabil. Tidak ada lagi gangguan pukul dua pagi.
+
+                Saat kami meninggalkan hotel, saya bertanya kepada Holmes, “Apakah kasus ini memuaskan?”
+
+                Ia tersenyum tipis.
+
+                “Watson, dunia mungkin berubah—dari jejak kaki di lumpur menjadi log digital di server—namun hakikat misteri tetap sama. Selalu ada pola… dan selalu ada seseorang yang cukup teliti untuk menemukannya.”
+
+                Dan dengan itu, satu lagi kasus terselesaikan—bukan dengan pistol atau kejar-kejaran, tetapi dengan logika, observasi, dan sedikit pemahaman tentang jaringan komputer.
+            </p>
+        </section>
+
+        <section>
+            <img src="../assets/img/post/Sample_Topology_Wifi.png" alt="Sample Topology Wifi at Ballroom" style="max-width:500px ; margin: 0 auto;"  >
+        </section>
+
+
         <footer><a href="../index.html">back to home</a></footer>
 
     </div>

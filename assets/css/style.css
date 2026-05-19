@@ -18,6 +18,8 @@ body {
 
 .wrap { max-width: var(--max); margin: 0 auto; }
 
+img { max-width: var(--max); margin: 0 auto; }
+
 #css-toggle {
   position: fixed;
   top: 1.2rem;

@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colcomm - Doorlock</title>
+    <link id="main-style" rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
     <section>
         <h2>Preambule</h2>
-        <p>Doorlock hotel menggunakan onity doorlock system</p>
+        <p>Doorlock hotel menggunakan colcomm doorlock system</p>
     </section>
     
     <section>
@@ -18,5 +19,19 @@
             <img src="https://sicurezza.co.id/wp-content/uploads/2025/11/Colcom-Hotel-Lock-CC-9032-scaled.jpg"/>
 
     </section>
+    <script>
+    let cssOn = true;
+    const link = document.getElementById('main-style');
+    const btn = document.getElementById('css-toggle');
+
+    function toggleCSS() {
+        cssOn = !cssOn;
+        link.disabled = !cssOn;
+        btn.textContent = cssOn ? 'CSS: ON' : 'CSS: OFF';
+        btn.style.cssText = cssOn
+        ? ''
+        : 'position:fixed;top:10px;right:10px;z-index:999;cursor:pointer;font-family:monospace;font-size:12px;';
+    }
+    </script>
 </body>
 </html>

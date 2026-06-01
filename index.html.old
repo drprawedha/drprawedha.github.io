@@ -1,0 +1,235 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhantel Rhesa Prawedha</title>
+  <link id="main-style" rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<button id="css-toggle" onclick="toggleCSS()">CSS: ON</button>
+
+<div class="wrap">
+
+  <header>
+    <h1>Dhantel Rhesa Prawedha</h1>
+    <p class="sub">
+      IT Manager • Infrastructure Engineer • Open Source Enthusiast —
+      Solo, Central Java, Indonesia
+    </p>
+
+    <div class="links">
+      <a href="mailto:dr.prawedha@gmail.com">dr.prawedha@gmail.com</a>
+      <a href="https://www.linkedin.com/in/drprawedha" target="_blank">LinkedIn</a>
+      <a href="https://github.com/drprawedha" target="_blank">GitHub</a>
+      <a href="https://rhesaprawedha.my.canva.site/portfolio" target="_blank">Portfolio</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>About</h2>
+    <p>
+      IT professional with more than six years of experience in the
+      four-star and five-star hospitality industry. Specialized in
+      network infrastructure, server administration (Windows & Linux),
+      virtualization, and enterprise IT support.
+      Active in the Solo Linux Community and passionate about open source
+      technologies, cloud computing, automation, and artificial intelligence.
+    </p>
+  </section>
+
+  <section>
+    <h2>Professional Experience</h2>
+
+    <div class="job">
+      <h3>IT Manager</h3>
+      <p class="company">Mercure Solo</p>
+      <p class="period">December 2025 – Present</p>
+      <ul>
+        <li>Leading hotel IT infrastructure modernization and rebranding projects.</li>
+        <li>Managing IT operations, security, and vendor coordination.</li>
+        <li>Overseeing network, server, and business application environments.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3>Assistant IT Manager & Graphic Designer</h3>
+      <p class="company">Swiss-Belinn Saripetojo Solo</p>
+      <p class="period">June 2024 – December 2025</p>
+      <ul>
+        <li>Managed hotel network infrastructure and IT systems.</li>
+        <li>Provided technical support for operational departments.</li>
+        <li>Designed visual and promotional materials for hotel operations.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3>Cluster IT Support</h3>
+      <p class="company">The Royal Surakarta Heritage Solo – MGallery by Sofitel</p>
+      <p class="period">December 2019 – June 2024</p>
+      <ul>
+        <li>Maintained enterprise network infrastructure and IT services.</li>
+        <li>Administered PMS Rhapsody, Windows Server, and Active Directory.</li>
+        <li>Managed Onity and Colcomm electronic door lock systems.</li>
+        <li>Provided support for hardware, software, and user-related issues.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3>IT Support Officer</h3>
+      <p class="company">Novotel & ibis Solo</p>
+      <p class="period">December 2018 – June 2024</p>
+      <ul>
+        <li>Administered Windows and Linux server environments.</li>
+        <li>Managed Active Directory services.</li>
+        <li>Performed network troubleshooting and preventive maintenance.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3>Freelance Network Administrator</h3>
+      <p class="company">Self-Employed</p>
+      <p class="period">July 2019 – December 2019</p>
+      <ul>
+        <li>Built VPS infrastructure on bare metal servers for STIE AUB Surakarta.</li>
+        <li>Deployed EPrints repositories and web server infrastructure.</li>
+        <li>Performed monthly server maintenance and monitoring.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3>Assistant Administrator & Graphic Designer</h3>
+      <p class="company">Khusyu Parenting</p>
+      <p class="period">March 2022 – March 2023</p>
+      <ul>
+        <li>Supported administrative operations and content creation activities.</li>
+      </ul>
+    </div>
+
+    <div class="job">
+      <h3>Graphic Designer</h3>
+      <p class="company">Emine Inspiring Hijab</p>
+      <p class="period">July 2017 – February 2018</p>
+      <ul>
+        <li>Designed promotional materials and product marketing content.</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <section>
+    <h2>Technical Skills</h2>
+
+    <div class="skill-group">
+      <h3>Infrastructure & Networking</h3>
+      <ul>
+        <li>Windows Server Administration</li>
+        <li>Linux Server Administration</li>
+        <li>Active Directory Management</li>
+        <li>Network Troubleshooting & Maintenance</li>
+        <li>Virtual Private Server (VPS) Deployment</li>
+        <li>Bare Metal Server Infrastructure</li>
+        <li>Website Administration & Malware Removal</li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <h3>Software & Platforms</h3>
+      <ul>
+        <li>PMS Rhapsody</li>
+        <li>Google Cloud Platform</li>
+        <li>Git & GitHub</li>
+        <li>Onity Door Lock System</li>
+        <li>Colcomm Door Lock System</li>
+        <li>SLiMS Library Management System</li>
+      </ul>
+    </div>
+
+    <div class="skill-group">
+      <h3>Design & Media</h3>
+      <ul>
+        <li>Graphic Design</li>
+        <li>Digital Content Creation</li>
+        <li>Marketing Materials Design</li>
+        <li>Social Media Visual Assets</li>
+      </ul>
+    </div>
+
+  </section>
+
+  <section>
+    <h2>Education</h2>
+
+    <div class="edu">
+      <h3>Bachelor of Computer Systems</h3>
+      <p>STMIK AUB Surakarta</p>
+      <p class="period">2015 – 2018</p>
+    </div>
+
+    <div class="edu">
+      <h3>Associate Degree in Computer Engineering</h3>
+      <p>Politeknik Pratama Mulia</p>
+      <p class="period">2011 – 2014</p>
+    </div>
+
+    <div class="edu">
+      <h3>Computer & Network Engineering</h3>
+      <p>SMK Negeri 2 Surakarta</p>
+      <p class="period">2008 – 2011</p>
+    </div>
+
+  </section>
+
+  <section>
+    <h2>Certifications</h2>
+    <ul class="cert-list">
+      <li>AI-Powered Performance Ads Certification</li>
+      <li>Build a Website on Google Cloud – Skill Badge</li>
+      <li>Build Real World AI Applications with Gemini and Imagen – Skill Badge</li>
+      <li>Cloud Speech API: 3 Ways – Skill Badge</li>
+      <li>Technical Support Fundamentals</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Additional Information</h2>
+
+    <dl class="two-col">
+      <dt>Languages</dt>
+      <dd>Indonesian (Native), English (Professional Working Proficiency)</dd>
+
+      <dt>Community</dt>
+      <dd>Solo Linux Community – Design Support Volunteer</dd>
+
+      <dt>Interests</dt>
+      <dd>Open Source Software, Cloud Infrastructure, AI Tools, Linux Systems, and IT Automation</dd>
+    </dl>
+
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Dhantel Rhesa Prawedha — Solo, Indonesia</p>
+  </footer>
+
+</div>
+
+<script>
+let cssOn = true;
+const link = document.getElementById('main-style');
+const btn = document.getElementById('css-toggle');
+
+function toggleCSS() {
+  cssOn = !cssOn;
+  link.disabled = !cssOn;
+  btn.textContent = cssOn ? 'CSS: ON' : 'CSS: OFF';
+  btn.style.cssText = cssOn
+    ? ''
+    : 'position:fixed;top:10px;right:10px;z-index:999;cursor:pointer;font-family:monospace;font-size:12px;';
+}
+</script>
+
+</body>
+</html>
+```

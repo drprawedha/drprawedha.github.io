@@ -53,15 +53,6 @@ h2 {
   border-bottom: 1px solid var(--border);
 }
 
-h3 {
-  font-size: .7rem;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 2rem;
-  margin-bottom: 1.25rem;
-  padding-bottom: .5rem;
-}
 
 .job { margin-bottom: 1.75rem; }
 .job h3 { font-size: 1rem; font-weight: normal; }

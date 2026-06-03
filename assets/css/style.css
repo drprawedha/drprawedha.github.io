@@ -53,9 +53,6 @@ h2 {
   border-bottom: 1px solid var(--border);
 }
 
-h3 { font-size: 1rem; font-weight: normal; }
-
-
 .job { margin-bottom: 1.75rem; }
 .job h3 { font-size: 1rem; font-weight: normal; }
 .job .company { font-style: italic; color: var(--muted); font-size: .875rem; margin-bottom: .1rem; }

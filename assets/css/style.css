@@ -62,7 +62,7 @@ h3 {
   padding-top: .5rem;
   }
 
-p.links  { color: var(--fg)}
+.freebies.links  { color: var(--fg)}
 
 .job { margin-bottom: 1.75rem; }
 .job h3 { font-size: 1rem; font-weight: normal; }

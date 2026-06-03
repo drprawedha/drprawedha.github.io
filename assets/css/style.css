@@ -83,7 +83,6 @@ h3 {
 .edu .period { font-size: .8rem; color: var(--muted); font-family: monospace; }
 .edu p a.links  { color: var(--fg); font-size: .875rem; text-underline-offset: 3px; }
 
-
 .cert-list { padding-left: 1.25rem; font-size: .9rem; }
 .cert-list li { margin-bottom: .3rem; }
 

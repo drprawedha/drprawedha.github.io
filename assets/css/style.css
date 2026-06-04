@@ -64,6 +64,11 @@ h3 {
 
 .freebies a.links { color: var(--fg); font-size: .875rem; text-underline-offset: 3px; }
 
+.blog-content p {
+    text-indent: 7ch;
+    margin-bottom: 1.5em;
+    line-height: 1.8;
+}
 
 .job { margin-bottom: 1.75rem; }
 .job h3 { font-size: 1rem; font-weight: normal; }

@@ -12,14 +12,247 @@
 
     <div class="wrap">
     <section>
-        <h2>Preambule</h2>
-        <p>Doorlock hotel menggunakan colcomm doorlock system</p>
+        <h2>Preamble</h2>
+
+        <p>
+        As part of the hotel's ongoing commitment to enhancing security, operational efficiency, and guest experience, 
+        the existing Onity Magnetic Stripe Door Lock System has been upgraded to the Colcomm RFID Door Lock System. 
+        This technology migration represents a significant modernization of the hotel's access control infrastructure, 
+        covering guest room door locks, RFID key cards, and elevator access control integration.
+        </p>
+
+        <p>
+        The previous Onity system utilized magnetic stripe card technology, where access credentials were stored on 
+        a magnetic strip embedded in the card. While the system had been reliable for many years, it presented limitations 
+        in terms of security, card durability, and integration capabilities. One notable advantage of the Onity lockset 
+        design was its flexibility; a single lock model could typically be adapted for both left-hand and right-hand door 
+        configurations simply by reversing the handle or latch mechanism during installation.
+        </p>
+
+        <p>
+        The newly implemented Colcomm system employs RFID (Radio Frequency Identification) technology, enabling contactless 
+        authentication and improved access security. The system provides integrated access management for guest rooms and 
+        elevators, allowing guests to access only authorized floors and areas based on their assigned credentials. 
+        This integration enhances both guest safety and overall building security.
+        </p>
+
+        <p>
+        Unlike the previous Onity system, Colcomm door locks are manufactured in specific door-hand configurations, 
+        namely Left-Hand Door Locks and Right-Hand Door Locks. Consequently, accurate identification of door orientation 
+        became a critical requirement during the migration process. Any incorrect classification could result in 
+        installation issues, improper lock operation, project delays, and additional replacement costs.
+        </p>
+
+        <p>
+        This document outlines the technical background, migration drivers, implementation challenges, action plan, 
+        lessons learned, and conclusions associated with the transition from the Onity Magnetic Stripe System to the 
+        Colcomm RFID Access Control System.
+        </p>
+
+        <h2>Technical Overview of the Migration</h2>
+
+        <h3>Legacy System: Onity Magnetic Stripe Door Lock</h3>
+
+        <p>
+        The legacy Onity system utilized magnetic stripe key cards as the primary authentication method for guest room access. 
+        Access credentials were encoded onto a magnetic strip, which was read by the lock whenever a guest inserted the card. 
+        While the technology served the hotel effectively for many years, it became increasingly vulnerable to card wear, 
+        magnetic interference, and operational limitations.
+        </p>
+
+        <p>
+        One of the key advantages of the Onity lockset design was its mechanical flexibility. A single lock model could 
+        often be configured for both left-hand and right-hand doors through simple field adjustments, reducing inventory 
+        complexity and simplifying maintenance activities.
+        </p>
+
+        <p>
+        However, magnetic stripe technology requires physical contact between the card and reader, increasing wear and 
+        tear over time. Additionally, magnetic cards are more susceptible to damage and accidental demagnetization, 
+        resulting in higher card replacement rates and guest inconvenience.
+        </p>
+
+        <h3>New System: Colcomm RFID Door Lock</h3>
+
+        <p>
+        The Colcomm system introduces RFID-based access control technology, allowing contactless authentication through radio 
+        frequency communication. Guests simply present their RFID card to the lock reader, eliminating physical contact and 
+        reducing mechanical wear on the system.
+        </p>
+
+        <p>
+        The new platform integrates guest room access control with elevator access management. Upon check-in, guests receive 
+        RFID credentials that grant access not only to their assigned room but also to authorized floors within the building. 
+        This significantly enhances overall security and access control management.
+        </p>
+
+        <p>
+        The Colcomm platform also supports centralized administration, audit trail recording, staff access management, 
+        emergency credentials, and master card functionality. These features provide improved visibility and control over hotel 
+        access operations.
+        </p>
+
+        <p>
+        Unlike the Onity system, Colcomm locksets are manufactured according to specific door orientations. Each lock must be 
+        designated as either Left-Hand or Right-Hand based on the physical door configuration, making accurate door surveys 
+        essential before procurement and installation.
+        </p>
+
+        <h2>Reasons for the Upgrade</h2>
+
+        <h3>Technology Modernization</h3>
+
+        <p>
+        The hospitality industry continues to adopt RFID technology due to its superior reliability, scalability, and compatibility 
+        with modern access control systems. Migrating to Colcomm aligns the hotel with current industry standards and future 
+        operational requirements.
+        </p>
+
+        <h3>Enhanced Security</h3>
+
+        <p>
+        RFID technology provides stronger protection against unauthorized access through encrypted credentials and improved 
+        access control mechanisms. Compared to magnetic stripe cards, RFID cards are significantly more difficult to duplicate 
+        or manipulate.
+        </p>
+
+        <h3>Operational Efficiency</h3>
+
+        <p>
+        The integration of room access and elevator access into a single platform simplifies guest management while reducing 
+        administrative workload. Hotel staff can manage access rights more effectively through centralized software tools.
+        </p>
+
+        <h3>Reduced Maintenance Costs</h3>
+
+        <p>
+        RFID cards have a longer service life and are less susceptible to damage compared to magnetic stripe cards. 
+        This reduces card replacement frequency and lowers long-term maintenance costs.
+        </p>
+
+        <h2>Implementation Challenges</h2>
+
+        <h3>Door Handing Identification</h3>
+
+        <p>
+        One of the most significant challenges encountered during the migration involved door handing identification. 
+        While the Onity system permitted flexible lock orientation, the Colcomm system requires dedicated lock models 
+        for left-hand and right-hand doors.
+        </p>
+
+        <p>
+        Any misidentification during the survey process could result in installation failure, incorrect handle orientation, 
+        operational malfunctions, and additional procurement costs.
+        </p>
+
+        <h3>Comprehensive Door Survey</h3>
+
+        <p>
+        A detailed site survey was required to identify door orientations, hinge locations, room configurations, and physical 
+        installation requirements. Accurate documentation became a critical component of project success.
+        </p>
+
+        <h3>Elevator Access Integration</h3>
+
+        <p>
+        The implementation required additional planning and configuration to synchronize room assignments, floor access permissions, and guest credentials with the elevator control system. Proper mapping and testing were necessary to ensure seamless operation.
+        </p>
+
+        <h3>User Adaptation</h3>
+
+        <p>
+        Front Office, Housekeeping, Engineering, and Security personnel required training to understand the operation of the new RFID platform, including card issuance procedures, access management, troubleshooting, and emergency response protocols.
+        </p>
+
+        <h2>Action Plan</h2>
+
+        <h3>Phase 1 – Site Survey and Assessment</h3>
+
+        <p>
+        Conduct a complete inventory of all guest room doors, verify left-hand and right-hand configurations, assess physical door conditions, and create a detailed documentation database supported by photographic records.
+        </p>
+
+        <h3>Phase 2 – Procurement</h3>
+
+        <p>
+        Procure the required quantities of Left-Hand and Right-Hand Colcomm RFID door locks, RFID cards, card encoding equipment, and elevator access control components based on verified survey data.
+        </p>
+
+        <h3>Phase 3 – Installation</h3>
+
+        <p>
+        Remove the existing Onity locksets, perform any required door modifications, install Colcomm RFID locks, and deploy elevator access control hardware according to approved installation standards.
+        </p>
+
+        <h3>Phase 4 – System Configuration</h3>
+
+        <p>
+        Configure access control software, register room and floor information, establish access privileges, synchronize databases, and verify communication between all system components.
+        </p>
+
+        <h3>Phase 5 – Testing and Commissioning</h3>
+
+        <p>
+        Perform comprehensive testing of guest cards, staff cards, master cards, emergency credentials, elevator access restrictions, and audit trail functionality to ensure full operational readiness.
+        </p>
+
+        <h3>Phase 6 – Training and Handover</h3>
+
+        <p>
+        Provide structured training sessions for Front Office, Housekeeping, Engineering, and Security teams. Training should include card management, access control administration, battery replacement procedures, emergency access handling, and basic troubleshooting techniques.
+        </p>
+
+        <h2>Lessons Learned</h2>
+
+        <h3>Importance of Accurate Surveys</h3>
+
+        <p>
+        Detailed site surveys are essential when migrating between different technology platforms. Hardware compatibility and installation requirements can vary significantly between manufacturers.
+        </p>
+
+        <h3>Migration Extends Beyond Hardware Replacement</h3>
+
+        <p>
+        Successful migration requires process changes, updated operational procedures, user training, documentation improvements, and stakeholder coordination in addition to physical equipment replacement.
+        </p>
+
+        <h3>Integration Delivers Additional Value</h3>
+
+        <p>
+        The integration of guest room access with elevator access control provides enhanced security, improved operational oversight, and a better overall guest experience.
+        </p>
+
+        <h3>User Training is Critical</h3>
+
+        <p>
+        The effectiveness of any new technology depends heavily on the ability of operational staff to use and maintain the system correctly. Continuous training and knowledge transfer are therefore essential.
+        </p>
+
+        <h3>Documentation Supports Long-Term Success</h3>
+
+        <p>
+        Maintaining accurate records of door orientations, lock serial numbers, room assignments, and system configurations significantly improves future maintenance, troubleshooting, and expansion activities.
+        </p>
+
+        <h2>Conclusion</h2>
+
+        <p>
+        The migration from the Onity Magnetic Stripe Door Lock System to the Colcomm RFID Door Lock System represents a strategic investment in the hotel's security infrastructure, operational efficiency, and guest experience. The new RFID platform introduces modern access control capabilities, improved reliability, centralized management, and integrated elevator access functionality.
+        </p>
+
+        <p>
+        Although the project presented technical challenges, particularly regarding door handing classification and hardware compatibility, these challenges were successfully addressed through careful planning, comprehensive surveys, accurate procurement, systematic implementation, and effective staff training.
+        </p>
+
+        <p>
+        The migration demonstrates that successful technology transformation requires more than simply replacing hardware. Long-term success depends on accurate data collection, detailed planning, operational readiness, proper documentation, and continuous stakeholder engagement. The Colcomm RFID ecosystem now provides a secure, scalable, and future-ready platform capable of supporting the hotel's operational and security objectives for years to come.
+        </p>
     </section>
     
     <section>
         <h2>Parts</h2>
-        <p>Untuk part doorlock dapat dilihat 
-            <a href="https://sicurezza.co.id/kunci-hotel-colcom/">disini</a></a></p>
+        <p>Sample Spareparts is 
+            <a href="https://sicurezza.co.id/kunci-hotel-colcom/">here</a></a></p>
             <img src="https://sicurezza.co.id/wp-content/uploads/2025/11/Colcom-Hotel-Lock-CC-9032-scaled.jpg"/>
 
     </section>

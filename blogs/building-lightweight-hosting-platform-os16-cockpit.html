@@ -1,0 +1,264 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Lightweight Hosting Platform with openSUSE 16 + Cockpit</title>
+    <link id="main-style" rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<button id="css-toggle" onclick="toggleCSS()">CSS: ON</button>
+
+<div class="wrap">
+
+<section>
+    <h2>Preambule</h2>
+    <p>
+        This project started as an experiment to explore <strong>openSUSE 16</strong>
+        as an alternative lightweight hosting platform. Instead of using a traditional
+        control panel, the goal was to combine Cockpit, Nginx, PHP-FPM and MariaDB
+        behind an existing reverse proxy infrastructure.
+    </p>
+</section>
+
+<section>
+    <h2>Architecture Overview</h2>
+
+<pre>
+Internet
+    │
+    ▼
+192.168.1.200
+Ubuntu + Nginx + SSL
+(Reverse Proxy)
+    │
+    ├── 192.168.1.201
+    │      HestiaCP
+    │
+    └── 192.168.1.50
+           openSUSE 16
+           + Cockpit
+           + Nginx
+           + PHP-FPM
+           + MariaDB
+           + SELinux
+</pre>
+
+    <p>
+        SSL termination was handled by the Ubuntu reverse proxy while the openSUSE
+        server only provided internal HTTP services.
+    </p>
+</section>
+
+<section>
+    <h2>Initial Setup</h2>
+    <ul>
+        <li>Installed openSUSE 16.</li>
+        <li>Installed Cockpit for administration.</li>
+        <li>Configured Nginx.</li>
+        <li>Installed PHP 8.4 and PHP-FPM.</li>
+        <li>Installed MariaDB.</li>
+        <li>Enabled Firewalld and Fail2ban.</li>
+        <li>Prepared WordPress deployment environment.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>First Problems Encountered</h2>
+    <ul>
+        <li>403 Forbidden after deploying WordPress.</li>
+        <li>502 Bad Gateway from PHP-FPM.</li>
+        <li>SELinux denied access to files.</li>
+        <li>WordPress installer appeared without CSS.</li>
+        <li>Mixed Content errors due to reverse proxy.</li>
+        <li>HTTP 500 caused by malformed wp-config.php.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Virtual Host Discovery</h2>
+
+    <p>
+        Initially, nginx virtual hosts were placed inside:
+    </p>
+
+<pre>
+/etc/nginx/conf.d
+</pre>
+
+    <p>
+        However, openSUSE uses:
+    </p>
+
+<pre>
+/etc/nginx/vhosts.d
+</pre>
+
+    <p>
+        Moving the configuration to the correct directory solved the
+        403 Forbidden problem.
+    </p>
+</section>
+
+<section>
+    <h2>PHP-FPM Troubleshooting</h2>
+
+    <p>
+        The first configuration assumed PHP-FPM used a Unix socket:
+    </p>
+
+<pre>
+/run/php-fpm/www.sock
+</pre>
+
+    <p>
+        After inspection, openSUSE 16 was configured to listen on:
+    </p>
+
+<pre>
+127.0.0.1:9000
+</pre>
+
+    <p>
+        Updating nginx to use the correct backend resolved the 502 Bad Gateway issue.
+    </p>
+</section>
+
+<section>
+    <h2>SELinux Challenges</h2>
+
+    <p>
+        WordPress files extracted from temporary directories inherited incorrect
+        labels:
+    </p>
+
+<pre>
+user_tmp_t
+</pre>
+
+    <p>
+        This caused multiple access denied errors.
+    </p>
+
+    <p>
+        The issue was resolved using:
+    </p>
+
+<pre>
+restorecon -RFv /srv/www
+setsebool -P httpd_can_network_connect on
+</pre>
+
+</section>
+
+<section>
+    <h2>Mixed Content and Reverse Proxy</h2>
+
+    <p>
+        WordPress installer loaded successfully but appeared without CSS.
+        Browser Developer Tools reported:
+    </p>
+
+<pre>
+Mixed Content
+</pre>
+
+    <p>
+        Since HTTPS terminated at the reverse proxy, WordPress generated HTTP URLs
+        internally.
+    </p>
+
+    <p>
+        Additional FastCGI parameters were added:
+    </p>
+
+<pre>
+fastcgi_param HTTPS on;
+fastcgi_param SERVER_PORT 443;
+fastcgi_param HTTP_X_FORWARDED_PROTO https;
+</pre>
+
+    <p>
+        After forwarding HTTPS variables properly, the installer loaded normally.
+    </p>
+</section>
+
+<section>
+    <h2>Final Status</h2>
+    <ul>
+        <li>openSUSE 16 server successfully deployed.</li>
+        <li>Nginx and PHP-FPM operating correctly.</li>
+        <li>MariaDB configured.</li>
+        <li>SELinux working properly.</li>
+        <li>Cockpit administration available.</li>
+        <li>WordPress successfully installed.</li>
+        <li>HTTPS handled through reverse proxy.</li>
+        <li>rhesaprawedha.my.id fully operational.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Future Plans</h2>
+
+    <p>
+        The next objective is to transform Cockpit into a lightweight hosting panel
+        called:
+    </p>
+
+<pre>
+oS-Hosting
+</pre>
+
+    <p>
+        Planned features include:
+    </p>
+
+    <ul>
+        <li>Domain Management</li>
+        <li>Database Management</li>
+        <li>WordPress Installer</li>
+        <li>Backup and Restore</li>
+        <li>SSL Management</li>
+        <li>Multi-user Hosting</li>
+        <li>Role Based Access</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Lessons Learned</h2>
+    <ul>
+        <li>Always verify nginx directory conventions on different distributions.</li>
+        <li>Never assume PHP-FPM socket locations.</li>
+        <li>SELinux contexts are as important as file permissions.</li>
+        <li>Browser Developer Tools reveal problems faster than logs.</li>
+        <li>Reverse proxy deployments require proper HTTPS forwarding.</li>
+        <li>Understanding the underlying stack is more valuable than depending solely on a control panel.</li>
+    </ul>
+</section>
+
+<footer>
+    <a href="../index.html">back to home</a>
+</footer>
+
+</div>
+
+<script>
+let cssOn = true;
+const link = document.getElementById('main-style');
+const btn = document.getElementById('css-toggle');
+
+function toggleCSS() {
+    cssOn = !cssOn;
+    link.disabled = !cssOn;
+    btn.textContent = cssOn ? 'CSS: ON' : 'CSS: OFF';
+    btn.style.cssText = cssOn
+        ? ''
+        : 'position:fixed;top:10px;right:10px;z-index:999;cursor:pointer;font-family:monospace;font-size:12px;';
+}
+</script>
+
+</body>
+</html>
+```

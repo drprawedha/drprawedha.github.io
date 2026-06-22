@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting HestiaCP, MariaDB and WordPress Behind Reverse Proxy</title>
+
+    <link id="main-style" rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<button id="css-toggle" onclick="toggleCSS()">CSS: ON</button>
+
+<div class="wrap">
+
+<section>
+<h2>Preambule</h2>
+
+<p>
+While validating a new WordPress deployment using the HestiaCP Application Installer,
+an unexpected error appeared:
+</p>
+
+<pre>
+sh: 1: /usr/sbin/sendmail: not found
+Error: Connection to localhost failed
+</pre>
+
+<p>
+Although the web server and MariaDB service were running normally,
+WordPress installation could not proceed. What started as a simple test
+eventually became a full troubleshooting session involving MariaDB,
+HestiaCP, reverse proxy configuration, SSL, and WordPress HTTPS handling.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Architecture Overview</h2>
+
+<pre>
+Internet
+    │
+    ▼
+Ubuntu + Nginx + SSL
+(Reverse Proxy)
+    │
+    ▼
+Ubuntu + HestiaCP
+    + Nginx
+    + Apache
+    + PHP-FPM
+    + MariaDB
+    + WordPress
+</pre>
+
+<p>
+SSL termination is handled by the reverse proxy while the backend server
+provides internal HTTP services.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>First Problems Encountered</h2>
+
+<ul>
+
+<li>WordPress installation failed.</li>
+
+<li>Connection to localhost failed.</li>
+
+<li>sendmail not found.</li>
+
+<li>Nginx conflicting server_name warning.</li>
+
+<li>SSL certificate errors.</li>
+
+<li>WordPress installer loaded without CSS.</li>
+
+<li>Mixed Content issues.</li>
+
+<li>Reverse proxy HTTPS detection problems.</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Investigating MariaDB</h2>
+
+<p>
+The first suspicion was that MariaDB itself had failed.
+However, the service was healthy and running correctly.
+</p>
+
+<p>
+Attention shifted toward HestiaCP configuration.
+Several files were inspected:
+</p>
+
+<pre>
+/root/.my.cnf
+/usr/local/hestia/conf/.mysql.localhost
+/usr/local/hestia/conf/mysql.conf
+</pre>
+
+<p>
+Eventually it was discovered that HestiaCP still contained outdated
+database connection settings.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Fixing HestiaCP Database Connectivity</h2>
+
+<p>
+After synchronizing HestiaCP database configuration with MariaDB,
+database provisioning became functional again.
+</p>
+
+<p>
+Testing with the command:
+</p>
+
+<pre>
+v-add-database
+</pre>
+
+<p>
+confirmed that database creation worked normally.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Nginx Server Name Conflict</h2>
+
+<p>
+While testing the reverse proxy, nginx reported:
+</p>
+
+<pre>
+conflicting server name
+</pre>
+
+<p>
+Multiple virtual hosts were serving the same hostname.
+Removing duplicate server blocks solved the problem.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>SSL Configuration</h2>
+
+<p>
+After cleaning nginx configuration, HTTPS setup still failed because
+certificates were missing.
+</p>
+
+<p>
+Using Certbot generated the required certificates and HTTPS became available.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Reverse Proxy Configuration</h2>
+
+<p>
+Ubuntu nginx acts as the SSL endpoint and reverse proxy.
+The backend receives forwarded headers including:
+</p>
+
+<ul>
+
+<li>Host</li>
+
+<li>X-Forwarded-Proto</li>
+
+<li>X-Forwarded-Host</li>
+
+<li>X-Forwarded-For</li>
+
+<li>HTTPS information</li>
+
+</ul>
+
+<p>
+This allows backend applications to reconstruct the original request.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>WordPress Without CSS</h2>
+
+<p>
+After WordPress installation succeeded,
+the dashboard loaded without stylesheets.
+</p>
+
+<p>
+Only plain HTML was displayed.
+</p>
+
+<p>
+Browser Developer Tools revealed mixed content issues.
+WordPress was generating HTTP URLs because HTTPS terminated
+at the reverse proxy.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Temporary Solution</h2>
+
+<p>
+A reverse-proxy detection snippet was added to:
+</p>
+
+<pre>
+wp-config.php
+</pre>
+
+<p>
+Once HTTPS forwarding was recognized,
+WordPress assets and CSS loaded normally.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Permanent Solution</h2>
+
+<p>
+Editing every wp-config.php file is not scalable.
+Instead, Hestia templates were modified.
+</p>
+
+<pre>
+/usr/local/hestia/data/templates/web/nginx/php-fpm/default.tpl
+
+/usr/local/hestia/data/templates/web/nginx/php-fpm/default.stpl
+</pre>
+
+<p>
+Additional FastCGI parameters were introduced so future WordPress
+installations automatically recognize HTTPS behind reverse proxy.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Final Status</h2>
+
+<ul>
+
+<li>Reverse proxy operational.</li>
+
+<li>SSL working properly.</li>
+
+<li>MariaDB healthy.</li>
+
+<li>HestiaCP database connectivity restored.</li>
+
+<li>Automatic database creation functional.</li>
+
+<li>WordPress installation successful.</li>
+
+<li>CSS and assets loaded correctly.</li>
+
+<li>HTTPS detection fixed.</li>
+
+<li>Future deployments simplified.</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Lessons Learned</h2>
+
+<ul>
+
+<li>Always verify database credentials stored by control panels.</li>
+
+<li>Reverse proxy deployments require proper HTTPS forwarding.</li>
+
+<li>Browser Developer Tools reveal problems faster than logs.</li>
+
+<li>Duplicate nginx server blocks create unexpected behavior.</li>
+
+<li>Control panels are convenient, but understanding the stack remains essential.</li>
+
+<li>Template customization is preferable to repetitive manual fixes.</li>
+
+</ul>
+
+</section>
+
+
+<footer>
+
+<a href="../index.html">
+back to home
+</a>
+
+</footer>
+
+</div>
+
+
+<script>
+
+let cssOn = true;
+
+const link = document.getElementById('main-style');
+
+const btn = document.getElementById('css-toggle');
+
+function toggleCSS() {
+
+    cssOn = !cssOn;
+
+    link.disabled = !cssOn;
+
+    btn.textContent = cssOn ? 'CSS: ON' : 'CSS: OFF';
+
+    btn.style.cssText = cssOn
+        ? ''
+        : 'position:fixed;top:10px;right:10px;z-index:999;cursor:pointer;font-family:monospace;font-size:12px;';
+}
+
+</script>
+
+</body>
+</html>

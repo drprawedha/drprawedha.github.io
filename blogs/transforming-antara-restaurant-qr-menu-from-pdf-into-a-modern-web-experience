@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Transforming ANTARA Restaurant QR Menu from PDF into a Modern Web Experience</title>
+
+<link id="main-style" rel="stylesheet" href="../assets/css/style.css">
+
+</head>
+<body>
+
+<button id="css-toggle" onclick="toggleCSS()">CSS: ON</button>
+
+<div class="wrap">
+
+<section>
+
+<h2>Preambule</h2>
+
+<p>
+For years, guests at ANTARA Restaurant scanned a QR code placed on each table and opened a shared PDF document containing the entire menu. While practical and easy to maintain, the experience was far from ideal on smartphones. Guests often needed to zoom, scroll through multiple pages and manually search for dishes and beverages.
+</p>
+
+<p>
+To improve accessibility and create a more premium digital experience, the menu was redesigned into a lightweight web application built using HTML, CSS, JavaScript and JSON. The objective was to provide a faster, cleaner and more intuitive experience without sacrificing maintainability.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Original Workflow</h2>
+
+<pre>
+Guest
+   │
+   ▼
+QR Code
+   │
+   ▼
+Shared PDF Menu
+   │
+   ▼
+Zoom
+Scroll
+Search Manually
+</pre>
+
+<p>
+Although functional, the PDF workflow lacked interaction and required additional effort from guests to navigate through menu categories.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Project Goals</h2>
+
+<ul>
+
+<li>Replace the PDF menu with a responsive website.</li>
+
+<li>Improve user experience on smartphones.</li>
+
+<li>Create category-based navigation.</li>
+
+<li>Implement instant search functionality.</li>
+
+<li>Provide a more premium visual presentation.</li>
+
+<li>Simplify menu maintenance using JSON.</li>
+
+<li>Prepare the foundation for future digital dining features.</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Technology Stack</h2>
+
+<pre>
+HTML5
+CSS3
+Vanilla JavaScript
+JSON Database
+
+Responsive Design
+Mobile First
+Lightweight Architecture
+</pre>
+
+<p>
+Menu content is separated from presentation, allowing easier maintenance and future scalability.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>User Experience Improvements</h2>
+
+<ul>
+
+<li>Responsive desktop and mobile layout.</li>
+
+<li>Dynamic category navigation.</li>
+
+<li>Instant search functionality.</li>
+
+<li>Hero image changes based on category.</li>
+
+<li>Drag-scroll navigation similar to touch devices.</li>
+
+<li>Premium typography and spacing.</li>
+
+<li>Fast loading without backend dependencies.</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Hero System</h2>
+
+<pre>
+HOME
+  ↓
+home.png
+
+GRILL
+  ↓
+grill.png
+
+DESSERT
+  ↓
+dessert.png
+
+COFFEE
+  ↓
+coffee.png
+
+TRADITIONAL
+  ↓
+traditional.png
+</pre>
+
+<p>
+Each category presents a different hero image and description to enhance the browsing experience.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Search Experience</h2>
+
+<p>
+Instead of scrolling through several PDF pages, guests can simply type keywords through:
+</p>
+
+<pre>
+Start here to find your menu
+</pre>
+
+<p>
+Search results are displayed instantly without page reloads.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Responsive Design</h2>
+
+<p>
+Since QR menus are mostly accessed through smartphones, the interface was designed with a mobile-first approach.
+</p>
+
+<ul>
+
+<li>Desktop optimized.</li>
+
+<li>Tablet optimized.</li>
+
+<li>Mobile friendly.</li>
+
+<li>Horizontal draggable navigation.</li>
+
+<li>Adaptive typography.</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Current Features</h2>
+
+<ul>
+
+<li>Home page and welcome section.</li>
+
+<li>Dynamic category navigation.</li>
+
+<li>Search menu.</li>
+
+<li>Hero image per category.</li>
+
+<li>Hero descriptions.</li>
+
+<li>Responsive layout.</li>
+
+<li>Horizontal drag navigation.</li>
+
+<li>Active menu indicator.</li>
+
+<li>JSON-based menu system.</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Results</h2>
+
+<p>
+The redesigned menu has been integrated into the official ANTARA Restaurant page:
+</p>
+
+<pre>
+https://mercure-solo.com/restaurant/
+</pre>
+
+<p>
+The source code is available publicly at:
+</p>
+
+<pre>
+https://github.com/drprawedha/menu-antara-solo
+</pre>
+
+<p>
+By replacing the traditional PDF with a web application, guests now enjoy a more seamless and elegant experience while browsing the menu.
+</p>
+
+</section>
+
+
+<section>
+
+<h2>Benefits</h2>
+
+<ul>
+
+<li>Faster navigation.</li>
+
+<li>Improved readability.</li>
+
+<li>Better smartphone experience.</li>
+
+<li>Reduced friction when searching menus.</li>
+
+<li>Easier content maintenance.</li>
+
+<li>More premium digital identity.</li>
+
+<li>Scalable platform for future features.</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Future Enhancements</h2>
+
+<ul>
+
+<li>Auto-scroll active category.</li>
+
+<li>Hero transition animation.</li>
+
+<li>Food image cards.</li>
+
+<li>Dark mode.</li>
+
+<li>Multi-language support.</li>
+
+<li>QR ordering system.</li>
+
+<li>Reservation integration.</li>
+
+<li>Table ordering system.</li>
+
+</ul>
+
+</section>
+
+
+<section>
+
+<h2>Lessons Learned</h2>
+
+<ul>
+
+<li>PDF documents are practical but limited for mobile interaction.</li>
+
+<li>Simple technologies can provide excellent user experiences.</li>
+
+<li>JSON-based content simplifies maintenance.</li>
+
+<li>Micro interactions significantly improve usability.</li>
+
+<li>Mobile-first design should always be prioritized.</li>
+
+<li>Small UX improvements can dramatically enhance perceived quality.</li>
+
+</ul>
+
+</section>
+
+
+<footer>
+
+<a href="../index.html">back to home</a>
+
+</footer>
+
+</div>
+
+<script>
+
+let cssOn = true;
+
+const link = document.getElementById('main-style');
+const btn = document.getElementById('css-toggle');
+
+function toggleCSS() {
+
+    cssOn = !cssOn;
+
+    link.disabled = !cssOn;
+
+    btn.textContent = cssOn ? 'CSS: ON' : 'CSS: OFF';
+
+    btn.style.cssText = cssOn
+        ? ''
+        : 'position:fixed;top:10px;right:10px;z-index:999;cursor:pointer;font-family:monospace;font-size:12px;';
+}
+
+</script>
+
+</body>
+</html>

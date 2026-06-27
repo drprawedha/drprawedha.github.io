@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freebies - @RrhesaPRAWEDHA </title>
+    <link id="main-style" rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+    <button id="css-toggle" onclick="toggleCSS()">CSS: ON</button>
+
+    <div class="wrap">
+    <section>
+        <h2>Preamble</h2>
+
+        <p>
+            This project was initiated to build a centralized and easy-to-maintain
+            <strong>Mercure Solo Email Signature Generator</strong>.
+            The main objective was to eliminate manual signature editing while ensuring
+            consistent branding across Microsoft Outlook Desktop and Outlook Web.
+        </p>
+
+        <p>
+            Instead of distributing HTML signatures individually, the project uses a
+            dynamic employee database and a reusable signature template that automatically
+            generates personalized signatures based on URL parameters.
+        </p>
+
+    </section>
+
+    <section>
+
+    <h2>Project Objectives</h2>
+
+    <ul>
+        <li>Create a single reusable HTML email signature.</li>
+        <li>Separate employee data from presentation layer.</li>
+        <li>Provide consistent branding for every employee.</li>
+        <li>Support Outlook Desktop and Outlook Web.</li>
+        <li>Host assets centrally on the Mercure Solo website.</li>
+        <li>Simplify future maintenance.</li>
+    </ul>
+
+    </section>
+
+    <section>
+        <h2>Architecture Overview</h2>
+    <pre>
+
+    Employee Database
+    (employees.js)
+            │
+            ▼
+    index.html?user=rhesa
+            │
+            ▼
+    JavaScript
+            │
+            ▼
+    Dynamic HTML Rendering
+            │
+            ▼
+    Mercure Email Signature
+            │
+            ▼
+    Copy & Paste
+            │
+            ▼
+    Microsoft Outlook
+
+    </pre>
+
+    <p>
+
+    The signature template reads employee information from a dedicated JavaScript
+    database and renders the appropriate signature based on the "user" URL parameter.
+
+    </p>
+
+    </section>
+
+    <section>
+
+    <h2>Project Structure</h2>
+
+    <pre>
+
+    signateur/
+    │
+    ├── index.html
+    ├── employees.js
+    ├── style.css
+    │
+    └── assets/
+        ├── banner/
+        │      banner.gif
+        │
+        └── ico/
+            all.png
+            fb.png
+            ig.png
+            in.png
+            yt.png
+    </pre>
+
+    </section>
+
+    <section>
+
+    <h2>Employee Database</h2>
+    <p>
+    Rather than hardcoding employee information inside HTML,
+    all personal information is maintained inside
+    <strong>employees.js</strong>.
+    </p>
+
+    <p>
+    Each employee record contains:
+    </p>
+
+    <ul>
+        <li>Full Name</li>
+        <li>Job Title</li>
+        <li>Hotel</li>
+        <li>Address</li>
+        <li>City</li>
+        <li>Phone Number</li>
+        <li>Email Address</li>
+    </ul>
+
+    <p>
+    Adding a new employee only requires creating another object inside
+    employees.js without modifying the HTML template.
+    </p>
+
+    </section>
+
+    <section>
+    <h2>Dynamic URL Parameter</h2>
+    <p>
+    The signature page supports URL parameters to determine which employee
+    information should be rendered.
+    </p>
+
+    <pre>
+    index.html?user=rhesa
+    index.html?user=dodit
+    index.html?user=weni
+    index.html?user=emma
+    </pre>
+
+    <p>
+    JavaScript automatically loads the matching employee profile and updates the
+    signature contents without requiring multiple HTML files.
+    </p>
+
+    </section>
+
+    <section>
+    <h2>Dynamic Rendering</h2>
+    <p>
+    JavaScript updates the following placeholders dynamically:
+    </p>
+
+    <ul>
+        <li>Name</li>
+        <li>Job Title</li>
+        <li>Hotel Name</li>
+        <li>Address</li>
+        <li>City</li>
+        <li>Phone Number</li>
+        <li>Email Address</li>
+    </ul>
+
+    <p>
+    This allows a single HTML template to be reused by every employee.
+    </p>
+
+    </section>
+
+    <section>
+
+    <h2>Brand Assets</h2>
+
+    <p>
+    All branding assets are centrally hosted to guarantee consistency across all
+    generated signatures.
+    </p>
+
+    <ul>
+        <li>Mercure Banner</li>
+        <li>ALL Logo</li>
+        <li>Facebook Icon</li>
+        <li>Instagram Icon</li>
+        <li>LinkedIn Icon</li>
+        <li>YouTube Icon</li>
+    </ul>
+
+    <p>
+    Because all images are referenced by absolute URLs,
+    updating an asset automatically updates every generated signature.
+    </p>
+
+    </section>
+
+    <section>
+    <h2>Outlook Compatibility Challenges</h2>
+        <ul>
+            <li>Outlook Desktop uses Microsoft Word rendering engine.</li>
+            <li>External CSS is often ignored after Copy & Paste.</li>
+            <li>Images may lose proportions.</li>
+            <li>Banner width may expand unexpectedly.</li>
+            <li>Table layouts behave differently between browsers and Outlook.</li>
+        </ul>
+    </section>
+
+    <section>
+    <h2>Solutions Implemented</h2>
+        <ul>
+            <li>Used HTML table layout for maximum compatibility.</li>
+            <li>Hosted all images on HTTPS.</li>
+            <li>Added explicit width and height attributes to images.</li>
+            <li>Prepared inline-friendly HTML structure.</li>
+            <li>Separated employee data from presentation.</li>
+            <li>Created reusable dynamic signature template.</li>
+        </ul>
+    </section>
+
+    <section>
+
+    <h2>Testing</h2>
+    <p>
+    The generated signature was tested in several environments:
+    </p>
+    <ul>
+        <li>Google Chrome</li>
+        <li>Microsoft Edge</li>
+        <li>Mozilla Firefox</li>
+        <li>Outlook Web</li>
+        <li>Microsoft Outlook Desktop</li>
+    </ul>
+
+    <p>
+    Testing focused on typography, spacing, image rendering,
+    hyperlinks, and responsive behavior after copy-paste.
+    </p>
+
+    </section>
+
+    <section>
+
+    <h2>Current Status</h2>
+    <ul>
+    <li>Dynamic employee database completed.</li>
+    <li>Single reusable signature template completed.</li>
+    <li>Brand assets centralized.</li>
+    <li>Dynamic URL loading implemented.</li>
+    <li>Automatic email generation completed.</li>
+    <li>Hosted on Mercure Solo infrastructure.</li>
+    <li>Ready for organization-wide deployment.</li>
+    </ul>
+
+    </section>
+
+    <section>
+        <h2>Future Improvements</h2>
+        <ul>
+            <li>Employee selection dashboard.</li>
+            <li>Automatic Copy Signature button.</li>
+            <li>Generate Outlook-ready inline HTML.</li>
+            <li>Administrator panel for employee management.</li>
+            <li>CSV import/export.</li>
+            <li>REST API integration.</li>
+            <li>QR Code support.</li>
+            <li>Department-based templates.</li>
+        </ul>
+    </section>
+
+    <section>
+    <h2>Lessons Learned</h2>
+        <ul>
+            <li>Separate data from presentation whenever possible.</li>
+            <li>HTML email development differs significantly from standard web development.</li>
+            <li>Outlook rendering requires careful table-based layouts.</li>
+            <li>Centralized assets simplify long-term maintenance.</li>
+            <li>Dynamic templates reduce duplication and improve scalability.</li>
+            <li>Reusable components make future enhancements significantly easier.</li>
+        </ul>
+    </section>
+        
+    </section>
+      <footer><a href="../index.html">back to home</a></footer>
+
+    </div>
+    <script>
+    let cssOn = true;
+    const link = document.getElementById('main-style');
+    const btn = document.getElementById('css-toggle');
+
+    function toggleCSS() {
+        cssOn = !cssOn;
+        link.disabled = !cssOn;
+        btn.textContent = cssOn ? 'CSS: ON' : 'CSS: OFF';
+        btn.style.cssText = cssOn
+        ? ''
+        : 'position:fixed;top:10px;right:10px;z-index:999;cursor:pointer;font-family:monospace;font-size:12px;';
+    }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolving PHP-FPM SELinux Port Binding on openSUSE 16</title>
+    <link id="main-style" rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+<button id="css-toggle" onclick="toggleCSS()">CSS: ON</button>
+
+<div class="wrap">
+
+<section>
+    <h2>Preamble</h2>
+
+    <p>
+        After successfully deploying WordPress behind an Ubuntu reverse proxy,
+        another issue appeared unexpectedly. PHP-FPM refused to start even though
+        the configuration syntax was valid. The service repeatedly failed during
+        boot, preventing all PHP applications from running.
+    </p>
+
+    <p>
+        This investigation demonstrates how SELinux policies can affect network
+        services even when Linux file permissions and application configurations
+        appear to be correct.
+    </p>
+</section>
+
+<section>
+    <h2>Environment</h2>
+
+<ul>
+    <li>Operating System: openSUSE 16</li>
+    <li>Web Server: Nginx</li>
+    <li>PHP Version: PHP 8.x</li>
+    <li>PHP Backend: PHP-FPM</li>
+    <li>Security: SELinux (Enforcing)</li>
+    <li>Reverse Proxy: Ubuntu Nginx</li>
+</ul>
+
+</section>
+
+<section>
+    <h2>Problem Symptoms</h2>
+
+<p>
+    Cockpit displayed the PHP-FPM service as failed immediately after startup.
+</p>
+
+<pre>
+php-fpm.service
+Failed with result 'exit-code'
+</pre>
+
+<p>
+    Running the systemd status command produced the following message:
+</p>
+
+<pre>
+ERROR: unable to bind listening socket for address
+127.0.0.1:9001
+
+Permission denied (13)
+
+ERROR: FPM initialization failed
+</pre>
+
+<p>
+    Since the configuration itself appeared valid, the next step was to inspect
+    the operating system security logs.
+</p>
+
+</section>
+
+<section>
+    <h2>Investigating the Failure</h2>
+
+<p>
+    System logs confirmed that PHP-FPM was unable to bind to TCP port 9001.
+</p>
+
+<pre>
+sudo systemctl status php-fpm.service
+</pre>
+
+<p>
+    The service returned exit code 78, indicating that initialization failed
+    before PHP-FPM could start listening for incoming requests.
+</p>
+
+<p>
+    SELinux audit logs revealed the actual reason:
+</p>
+
+<pre>
+sudo ausearch -m AVC -ts recent
+</pre>
+
+<pre>
+avc: denied { name_bind }
+
+comm="php-fpm"
+
+src=9001
+
+tcontext=tor_port_t
+</pre>
+
+</section>
+
+<section>
+    <h2>Root Cause Analysis</h2>
+
+<p>
+    SELinux classified TCP port <strong>9001</strong> as
+    <strong>tor_port_t</strong>, a security label reserved for the Tor service.
+</p>
+
+<p>
+    PHP-FPM operates under the <strong>httpd_t</strong> security domain.
+    Because the SELinux policy does not allow HTTP services to bind to ports
+    labeled as Tor ports, the operating system blocked PHP-FPM before it could
+    start.
+</p>
+
+<p>
+    This explains why Linux permissions appeared correct while the service still
+    failed with "Permission denied".
+</p>
+
+</section>
+
+<section>
+    <h2>Resolution Options</h2>
+
+<p>
+    Two possible solutions were identified.
+</p>
+
+<h3>Option 1 — Use the Default PHP-FPM Port</h3>
+
+<p>
+    Modify the PHP-FPM pool configuration to listen on the standard port:
+</p>
+
+<pre>
+127.0.0.1:9000
+</pre>
+
+<p>
+    This option requires no SELinux policy modification and is the recommended
+    approach for single-server deployments.
+</p>
+
+<h3>Option 2 — Allow Port 9001 for HTTP Services</h3>
+
+<p>
+    If port 9001 must be retained, its SELinux label should be updated:
+</p>
+
+<pre>
+sudo semanage port -m -t http_port_t -p tcp 9001
+</pre>
+
+<p>
+    After modifying the policy, PHP-FPM can successfully bind to the port
+    without disabling SELinux.
+</p>
+
+</section>
+
+<section>
+    <h2>Verification</h2>
+
+<p>
+    After correcting the port configuration or updating the SELinux policy,
+    PHP-FPM started normally.
+</p>
+
+<pre>
+sudo systemctl restart php-fpm
+
+sudo systemctl status php-fpm
+</pre>
+
+<p>
+    Once the service became active, Nginx resumed forwarding FastCGI requests
+    successfully and WordPress operated normally behind the reverse proxy.
+</p>
+
+</section>
+
+<section>
+    <h2>Lessons Learned</h2>
+
+<ul>
+    <li>SELinux policies are independent from Linux file permissions.</li>
+    <li>A "Permission denied" error does not always indicate incorrect ownership or file modes.</li>
+    <li>Audit logs provide far more useful information than application logs when SELinux blocks a service.</li>
+    <li>Always verify SELinux port labels before assigning custom service ports.</li>
+    <li>Keeping SELinux enabled is preferable to disabling an important security layer.</li>
+</ul>
+
+</section>
+
+<section>
+    <h2>Conclusion</h2>
+
+<p>
+    This troubleshooting exercise reinforced the importance of understanding
+    Linux security mechanisms beyond basic service configuration.
+    Rather than disabling SELinux to make the service work, identifying the
+    underlying policy conflict resulted in a cleaner and more secure solution.
+</p>
+
+<p>
+    The experience also demonstrated how Cockpit, systemd, and SELinux audit
+    logs complement each other when diagnosing infrastructure problems on
+    enterprise Linux systems.
+</p>
+
+</section>
+
+<footer>
+    <a href="../index.html">back to home</a>
+</footer>
+
+</div>
+
+<script>
+let cssOn = true;
+const link = document.getElementById('main-style');
+const btn = document.getElementById('css-toggle');
+
+function toggleCSS() {
+    cssOn = !cssOn;
+    link.disabled = !cssOn;
+    btn.textContent = cssOn ? 'CSS: ON' : 'CSS: OFF';
+    btn.style.cssText = cssOn
+        ? ''
+        : 'position:fixed;top:10px;right:10px;z-index:999;cursor:pointer;font-family:monospace;font-size:12px;';
+}
+</script>
+
+</body>
+</html>

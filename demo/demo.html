@@ -1,0 +1,2667 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Meeting Room Blocking (Local Preview)</title>
+<style>
+  :root {
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-danger: #e74c3c;
+    --color-danger-dark: #c0392b;
+    --color-success: #27ae60;
+    --color-text: #1f2937;
+    --color-text-muted: #6b7280;
+    --color-border: #e5e7eb;
+    --color-bg: #f8fafc;
+    --color-surface: #ffffff;
+    --color-weekend: #e9ecef;
+    --color-weekend-cell: #f6f7f8;
+    --color-holiday: #fdebd0;
+    --color-holiday-cell: #fef8ef;
+    --color-holiday-text: #b9770e;
+    --radius: 8px;
+    --room-col: 160px;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--color-text);
+    background: var(--color-bg);
+  }
+  .hidden { display: none !important; }
+  h1, h2, h3 { margin: 0; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--color-text-muted); margin: 12px 0 4px; }
+  input, select {
+    width: 100%; padding: 9px 10px; font-size: 14px;
+    border: 1px solid var(--color-border); border-radius: var(--radius);
+    background: var(--color-surface); color: var(--color-text);
+  }
+  input:focus, select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+  input[type="color"] { padding: 3px; height: 40px; }
+
+  .demo-banner {
+    background: #111827; color: #fbbf24; font-size: 12px; text-align: center;
+    padding: 6px 10px; font-weight: 600;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 9px 16px; font-size: 14px; font-weight: 600; cursor: pointer;
+    border: 1px solid transparent; border-radius: var(--radius);
+    background: var(--color-surface); color: var(--color-text);
+    transition: background .15s, border-color .15s;
+  }
+  .btn:disabled { opacity: .6; cursor: not-allowed; }
+  .btn-primary { background: var(--color-primary); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: var(--color-primary-dark); }
+  .btn-ghost { background: transparent; border-color: var(--color-border); }
+  .btn-ghost:hover:not(:disabled) { background: var(--color-bg); }
+  .btn-danger { background: #fff; color: var(--color-danger); border-color: var(--color-danger); }
+  .btn-danger:hover:not(:disabled) { background: var(--color-danger); color: #fff; }
+  .btn-icon { padding: 6px 12px; }
+  .btn-block { width: 100%; }
+  .btn-small { padding: 5px 10px; font-size: 12px; }
+
+  .error-text { color: var(--color-danger); font-size: 13px; min-height: 18px; margin-top: 8px; }
+
+  .login-screen {
+    min-height: calc(100vh - 28px); display: flex; align-items: center; justify-content: center;
+    padding: 20px; background: linear-gradient(135deg, #1d4ed8, #2563eb 60%, #3b82f6);
+  }
+  .login-card {
+    width: 100%; max-width: 380px; background: var(--color-surface);
+    border-radius: 14px; padding: 32px 28px; box-shadow: 0 20px 40px rgba(0,0,0,.2);
+  }
+  .login-card h1 { font-size: 20px; text-align: center; }
+  .login-card .subtitle { text-align: center; color: var(--color-text-muted); font-size: 13px; margin: 6px 0 20px; }
+  .login-card .btn-block { margin-top: 18px; }
+  .login-card .hint { text-align: center; font-size: 12px; color: var(--color-text-muted); margin-top: 14px; }
+
+  .app { display: flex; flex-direction: column; min-height: calc(100vh - 28px); }
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;
+    padding: 12px 20px; background: var(--color-surface); border-bottom: 1px solid var(--color-border);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .topbar h1 { font-size: 17px; white-space: nowrap; }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .user-chip { font-size: 13px; font-weight: 600; color: var(--color-text-muted); }
+
+  .tabs { display: flex; gap: 4px; }
+  .tab-btn {
+    padding: 7px 14px; font-size: 13px; font-weight: 600; color: var(--color-text-muted);
+    background: transparent; border: none; border-radius: var(--radius); cursor: pointer;
+  }
+  .tab-btn.active { background: var(--color-primary); color: #fff; }
+  .tab-btn:not(.active):hover { background: var(--color-bg); }
+
+  .tab-panel { display: none; padding: 16px 20px 40px; }
+  .tab-panel.active { display: block; }
+
+  .calendar-toolbar {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .month-nav { display: flex; align-items: center; gap: 10px; }
+  .month-label { font-size: 15px; font-weight: 700; min-width: 150px; text-align: center; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--color-text-muted); }
+  .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+  .legend-item .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+  .calendar-wrapper {
+    overflow-x: auto; overflow-y: hidden; border: 1px solid var(--color-border);
+    border-radius: var(--radius); background: var(--color-surface);
+  }
+  .calendar-grid { display: grid; min-width: max-content; }
+  .cg-cell { border-bottom: 1px solid var(--color-border); border-right: 1px solid var(--color-border); }
+  .cg-corner { position: sticky; left: 0; top: 0; z-index: 3; background: var(--color-surface); }
+  .cg-date-header {
+    position: sticky; top: 0; z-index: 2; background: var(--color-surface);
+    padding: 8px 6px; text-align: center; font-size: 13px; font-weight: 700;
+  }
+  .cg-date-header .dow { display: block; font-size: 10px; font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; }
+  .cg-date-header.weekend { background: var(--color-weekend); }
+  .cg-date-header.holiday { background: var(--color-holiday); color: var(--color-holiday-text); }
+  .cg-room-name {
+    position: sticky; left: 0; z-index: 1; background: var(--color-surface);
+    padding: 10px 12px; font-size: 13px; font-weight: 600; display: flex; align-items: center;
+  }
+  .view-switch { display: inline-flex; border: 1px solid var(--color-border); border-radius: var(--radius); overflow: hidden; }
+  .view-btn {
+    padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer;
+    background: var(--color-surface); color: var(--color-text-muted); border: none;
+    border-right: 1px solid var(--color-border);
+  }
+  .view-btn:last-child { border-right: none; }
+  .view-btn.active { background: var(--color-primary); color: #fff; }
+  .view-btn:not(.active):hover { background: var(--color-bg); }
+
+  /* -------------------- Report -------------------- */
+  .report-controls {
+    display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius); padding: 12px 14px;
+  }
+  .report-controls > div { flex: 1 1 150px; min-width: 0; }
+  .report-controls label { margin-top: 0; }
+  .stat-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .stat-card {
+    flex: 1 1 170px; background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius); padding: 12px 14px;
+  }
+  .stat-card .stat-label {
+    font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--color-text-muted);
+  }
+  .stat-card .stat-value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+  .report-block {
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius); padding: 16px; margin-bottom: 16px;
+  }
+  .report-block h2 { font-size: 15px; margin-bottom: 10px; }
+  .data-table td.num, .data-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .data-table tr.total-row td { font-weight: 700; border-top: 2px solid var(--color-border); }
+  .rank { color: var(--color-text-muted); width: 36px; }
+  .share-bar { background: var(--color-border); border-radius: 999px; height: 6px; min-width: 60px; }
+  .share-bar > span { display: block; height: 100%; border-radius: 999px; background: var(--color-primary); }
+
+  .cg-cell.weekend { background: var(--color-weekend-cell); }
+  .cg-cell.holiday { background: var(--color-holiday-cell); }
+  /* Body cells stack every booking for that room/day, so they grow with
+     content instead of holding a single full-height block. */
+  .cg-slot { min-height: 72px; padding: 4px; display: flex; flex-direction: column; gap: 4px; }
+  .cg-slot.clickable { cursor: pointer; transition: background .1s; }
+  .cg-slot.clickable:hover { background: #eef2ff; }
+
+  .block { border-radius: 6px; padding: 5px 7px; color: #fff; cursor: pointer; font-size: 11px; line-height: 1.3; overflow: hidden; }
+  .year-cell { justify-content: center; align-items: center; text-align: center; font-size: 11px; }
+  .year-count { font-weight: 700; color: var(--color-primary); }
+  .year-meta { color: var(--color-text-muted); font-variant-numeric: tabular-nums; }
+
+  .block-time { font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+  .block-company { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .block-meta { opacity: .9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* Sales badge sits inside the status-coloured block, so it carries its own
+     background to stay readable against any status colour. */
+  .sales-badge {
+    display: inline-block; margin-top: 4px; padding: 1px 6px; border-radius: 999px;
+    font-size: 10px; font-weight: 700; color: #fff; max-width: 100%;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.55);
+  }
+  /* Meal chips on a calendar block: compact so several fit a narrow cell. */
+  .block-meals { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .meal-chip {
+    font-size: 9px; font-weight: 700; line-height: 1.5; padding: 0 4px; border-radius: 4px;
+    background: rgba(255,255,255,.28); box-shadow: inset 0 0 0 1px rgba(255,255,255,.4);
+    white-space: nowrap;
+  }
+
+  /* Meal editor rows inside the booking modal. */
+  .meal-row {
+    border: 1px solid var(--color-border); border-radius: var(--radius);
+    padding: 10px 12px; margin-bottom: 8px; background: var(--color-bg);
+  }
+  .meal-row-head { display: flex; align-items: center; gap: 8px; }
+  .meal-row-head .meal-label { font-weight: 700; font-size: 13px; flex: 1; }
+  .meal-row label { margin-top: 8px; }
+  .meal-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .meal-grid > div { flex: 1 1 110px; min-width: 0; }
+  .meal-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+
+  .legend-sales { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .legend-sales .sales-badge { margin-top: 0; }
+
+  .field-row { display: flex; gap: 10px; }
+  .field-row > div { flex: 1; min-width: 0; }
+
+  .modal-wide { max-width: 720px; }
+  textarea {
+    width: 100%; padding: 9px 10px; font-size: 13px; font-family: inherit; resize: vertical;
+    border: 1px solid var(--color-border); border-radius: var(--radius);
+    background: var(--color-surface); color: var(--color-text);
+  }
+  textarea:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+  .beo-group {
+    margin: 22px 0 4px; padding-top: 12px; border-top: 1px solid var(--color-border);
+    font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--color-primary);
+  }
+  .beo-summary {
+    background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius);
+    padding: 10px 12px; font-size: 13px; line-height: 1.5; margin-top: 10px;
+  }
+  .beo-hint { font-size: 12px; color: var(--color-text-muted); margin: 6px 0 0; }
+
+  /* -------------------- BEO printable document -------------------- */
+  #beoPrintOverlay { position: fixed; inset: 0; background: #fff; z-index: 300; overflow: auto; }
+  #beoPrintOverlay .beo-toolbar {
+    position: sticky; top: 0; z-index: 2; background: #1f2937;
+    padding: 10px; display: flex; gap: 8px; justify-content: center;
+  }
+  /* The default ghost button is dark-on-transparent, which disappears
+     against the dark toolbar. */
+  #beoPrintOverlay .beo-toolbar .btn-ghost {
+    background: #fff; color: var(--color-text); border-color: transparent;
+  }
+  #beoPrintOverlay .beo-toolbar .btn-ghost:hover { background: var(--color-border); }
+  #beoPrintArea {
+    max-width: 210mm; margin: 0 auto; padding: 10mm;
+    font-family: Arial, Helvetica, sans-serif; font-size: 10px; color: #000; line-height: 1.4;
+  }
+  #beoPrintArea h1 { font-size: 17px; text-align: center; margin: 0 0 2px; }
+  #beoPrintArea .brand { font-size: 13px; letter-spacing: 3px; font-weight: bold; }
+  #beoPrintArea .brand small { display: block; font-size: 8px; letter-spacing: 4px; font-weight: normal; }
+  #beoPrintArea .top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+  #beoPrintArea .page-of { font-size: 8px; }
+  #beoPrintArea .tent {
+    border: 2px solid #c0392b; color: #c0392b; font-size: 20px; font-weight: bold;
+    text-align: center; letter-spacing: 8px; padding: 4px; margin: 0 0 8px;
+  }
+  /* Room labels: full name on desktop, short code on tablet/phone. Both are
+     in the DOM so the switch is pure CSS and follows the real viewport. */
+  .room-short { display: none; }
+  .cg-room-name .room-full { overflow: hidden; text-overflow: ellipsis; }
+
+  #beoPrintArea .head { display: flex; gap: 24px; margin-bottom: 8px; }
+  #beoPrintArea .head table { border-collapse: collapse; }
+  #beoPrintArea .head td { vertical-align: top; padding: 1px 0; }
+  #beoPrintArea .head .lbl { font-weight: bold; white-space: nowrap; padding-right: 6px; }
+  #beoPrintArea .head .col { padding-right: 6px; }
+  #beoPrintArea table.grid { width: 100%; border-collapse: collapse; }
+  #beoPrintArea table.grid td, #beoPrintArea table.grid th { border: 1px solid #000; padding: 3px 5px; }
+  #beoPrintArea table.grid th { background: #e8eaed; font-size: 9px; }
+  #beoPrintArea .daterow { background: #e8eaed; text-align: center; font-weight: bold; }
+  #beoPrintArea .depts { width: 100%; border-collapse: collapse; margin-top: 6px; table-layout: fixed; }
+  #beoPrintArea .depts > tbody > tr > td { border: 1px solid #000; vertical-align: top; padding: 0; width: 50%; }
+  #beoPrintArea .sec-h {
+    background: #e8eaed; border-bottom: 1px solid #000; text-align: center;
+    font-weight: bold; font-size: 9px; padding: 2px;
+  }
+  #beoPrintArea .sec-b { padding: 4px 6px; min-height: 26px; }
+  #beoPrintArea .sec + .sec .sec-h { border-top: 1px solid #000; }
+  #beoPrintArea table.sign { width: 100%; border-collapse: collapse; margin-top: 6px; }
+  #beoPrintArea table.sign td { border: 1px solid #000; padding: 3px 5px; font-size: 9px; }
+  #beoPrintArea .sign-head { font-weight: bold; }
+  #beoPrintArea .sign-box { height: 46px; }
+  #beoPrintArea .sign-name { text-align: center; font-weight: bold; }
+  #beoPrintArea .sign-name span { font-weight: normal; }
+  #beoPrintArea .dist { text-align: center; font-style: italic; font-weight: bold; font-size: 9px; margin: 4px 0 0; }
+  #beoPrintArea .tent-note { font-size: 9px; font-style: italic; color: #c0392b; margin: 6px 0 0; }
+
+  @page { size: A4 portrait; margin: 10mm; }
+  @media print {
+    /* Print only the BEO: everything else in the app is hidden. */
+    body.beo-printing > *:not(#beoPrintOverlay) { display: none !important; }
+    body.beo-printing #beoPrintOverlay { position: static !important; overflow: visible !important; }
+    body.beo-printing .beo-toolbar { display: none !important; }
+    body.beo-printing #beoPrintArea { max-width: none; padding: 0; }
+  }
+
+  /* -------------------- Management tab -------------------- */
+  .mgmt-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .mgmt-tab-btn {
+    padding: 7px 14px; font-size: 13px; font-weight: 600; color: var(--color-text-muted);
+    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 999px; cursor: pointer;
+  }
+  .mgmt-tab-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+
+  .mgmt-body { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 16px; }
+  .mgmt-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+
+  .table-wrapper { overflow-x: auto; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
+  .data-table th, .data-table td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+  .data-table th { color: var(--color-text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: .03em; }
+  .data-table .empty-row td { color: var(--color-text-muted); text-align: center; padding: 24px; }
+  .row-actions { display: flex; gap: 6px; }
+  .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: middle; margin-right: 6px; border: 1px solid var(--color-border); }
+
+  /* -------------------- Modal -------------------- */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(15,23,42,.5);
+    display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 100;
+  }
+  .modal {
+    width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto;
+    background: var(--color-surface); border-radius: 12px; box-shadow: 0 24px 48px rgba(0,0,0,.25);
+  }
+  .modal-small { max-width: 380px; }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-bottom: 1px solid var(--color-border);
+  }
+  .modal-header h3 { font-size: 16px; }
+  .modal-close { background: none; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: var(--color-text-muted); }
+  .modal-body { padding: 6px 20px 20px; }
+  .modal-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; gap: 10px; }
+  .modal-actions-right { display: flex; gap: 8px; margin-left: auto; }
+
+  /* -------------------- Toast -------------------- */
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: #1f2937; color: #fff; padding: 10px 18px; border-radius: 999px;
+    font-size: 13px; box-shadow: 0 10px 24px rgba(0,0,0,.25); z-index: 200;
+  }
+  .toast.error { background: var(--color-danger-dark); }
+
+  /* -------------------- Responsive: tablet -------------------- */
+  @media (max-width: 900px) {
+    :root { --room-col: 56px; }
+    .topbar { padding: 10px 14px; }
+    .tab-panel { padding: 14px 14px 32px; }
+    .month-label { min-width: 120px; }
+    /* Short room codes: centred in a narrow sticky column. */
+    .cg-room-name {
+      padding: 8px 4px; font-size: 12px; font-weight: 700;
+      justify-content: center; text-align: center;
+    }
+    .room-full { display: none; }
+    .room-short { display: inline; }
+  }
+
+  /* -------------------- Responsive: mobile -------------------- */
+  @media (max-width: 640px) {
+    .topbar-left { gap: 12px; }
+    .topbar h1 { font-size: 15px; }
+    .calendar-toolbar { flex-direction: column; align-items: stretch; }
+    .calendar-toolbar .btn-primary { width: 100%; }
+    .legend { justify-content: center; }
+    .mgmt-header { flex-direction: column; align-items: stretch; gap: 8px; }
+    .mgmt-header .btn { width: 100%; }
+    .modal { max-width: 100%; }
+  }
+
+
+  .mgmt-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .mgmt-tab-btn {
+    padding: 7px 14px; font-size: 13px; font-weight: 600; color: var(--color-text-muted);
+    background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 999px; cursor: pointer;
+  }
+  .mgmt-tab-btn.active { background: var(--color-primary); color: #fff; border-color: var(--color-primary); }
+
+  .mgmt-body { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius); padding: 16px; }
+  .mgmt-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+
+  .table-wrapper { overflow-x: auto; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 420px; }
+  .data-table th, .data-table td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+  .data-table th { color: var(--color-text-muted); font-size: 11px; text-transform: uppercase; letter-spacing: .03em; }
+  .data-table .empty-row td { color: var(--color-text-muted); text-align: center; padding: 24px; }
+  .row-actions { display: flex; gap: 6px; }
+  .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: middle; margin-right: 6px; border: 1px solid var(--color-border); }
+
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(15,23,42,.5);
+    display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 100;
+  }
+  .modal {
+    width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto;
+    background: var(--color-surface); border-radius: 12px; box-shadow: 0 24px 48px rgba(0,0,0,.25);
+  }
+  .modal-small { max-width: 380px; }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; border-bottom: 1px solid var(--color-border);
+  }
+  .modal-header h3 { font-size: 16px; }
+  .modal-close { background: none; border: none; font-size: 22px; line-height: 1; cursor: pointer; color: var(--color-text-muted); }
+  .modal-body { padding: 6px 20px 20px; }
+  .modal-actions { display: flex; align-items: center; justify-content: space-between; margin-top: 20px; gap: 10px; }
+  .modal-actions-right { display: flex; gap: 8px; margin-left: auto; }
+
+  .toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: #1f2937; color: #fff; padding: 10px 18px; border-radius: 999px;
+    font-size: 13px; box-shadow: 0 10px 24px rgba(0,0,0,.25); z-index: 200;
+  }
+  .toast.error { background: var(--color-danger-dark); }
+
+  @media (max-width: 900px) {
+    .topbar { padding: 10px 14px; }
+    .tab-panel { padding: 14px 14px 32px; }
+    .month-label { min-width: 120px; }
+    .cg-room-name { padding: 8px; font-size: 12px; }
+  }
+  @media (max-width: 640px) {
+    .topbar-left { gap: 12px; }
+    .topbar h1 { font-size: 15px; }
+    .calendar-toolbar { flex-direction: column; align-items: stretch; }
+    .calendar-toolbar .btn-primary { width: 100%; }
+    .legend { justify-content: center; }
+    .mgmt-header { flex-direction: column; align-items: stretch; gap: 8px; }
+    .mgmt-header .btn { width: 100%; }
+    .modal { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">LOCAL PREVIEW — mock backend (no real Google Sheets). See README.md to deploy the real Apps Script version.</div>
+
+<div id="loginScreen" class="login-screen">
+  <form id="loginForm" class="login-card">
+    <h1>Meeting Room Blocking</h1>
+    <p class="subtitle">Silakan login untuk melanjutkan</p>
+    <label>Username</label>
+    <input type="text" id="loginUsername" autocomplete="username" required>
+    <label>Password</label>
+    <input type="password" id="loginPassword" autocomplete="current-password" required>
+    <div id="loginError" class="error-text"></div>
+    <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Login</button>
+    <p class="hint">admin / admin123 &nbsp;·&nbsp; viewer / viewer123 (lihat saja)</p>
+  </form>
+</div>
+
+<div id="app" class="app hidden">
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1>Meeting Room Blocking</h1>
+      <nav class="tabs">
+        <button class="tab-btn active" data-tab="calendar">Calendar</button>
+        <button class="tab-btn" data-tab="report">Report</button>
+        <button class="tab-btn" data-tab="management">Management</button>
+      </nav>
+    </div>
+    <div class="topbar-right">
+      <span class="user-chip" id="userChip"></span>
+      <button class="btn btn-ghost" id="changePwBtn">Ganti Password</button>
+        <button class="btn btn-ghost" id="logoutBtn">Logout</button>
+    </div>
+  </header>
+
+  <section id="tab-calendar" class="tab-panel active">
+    <div class="calendar-toolbar">
+      <div class="month-nav">
+        <button id="prevMonth" class="btn btn-icon" aria-label="Periode sebelumnya">&#8592;</button>
+        <span id="monthLabel" class="month-label"></span>
+        <button id="nextMonth" class="btn btn-icon" aria-label="Periode berikutnya">&#8594;</button>
+        <button id="todayBtn" class="btn btn-ghost btn-small">Hari ini</button>
+      </div>
+      <div class="view-switch" id="viewSwitch">
+        <button class="view-btn" data-view="day">Day</button>
+        <button class="view-btn" data-view="week">Week</button>
+        <button class="view-btn active" data-view="month">Month</button>
+        <button class="view-btn" data-view="year">Year</button>
+      </div>
+      <div class="legend">
+        <span class="legend-item"><i class="dot" style="background:#e74c3c"></i>Tentative</span>
+        <span class="legend-item"><i class="dot" style="background:#27ae60"></i>Definite</span>
+        <span class="legend-item"><i class="dot" style="background:#f39c12"></i>Public Holiday</span>
+        <span class="legend-item"><i class="dot" style="background:#95a5a6"></i>Weekend</span>
+      </div>
+      <button class="btn btn-primary" id="addBookingBtn">+ Add Booking</button>
+    </div>
+    <div class="legend-sales" id="salesLegend"></div>
+    <div class="calendar-wrapper">
+      <div id="calendarGrid" class="calendar-grid"></div>
+    </div>
+  </section>
+
+    <section id="tab-report" class="tab-panel">
+    <div class="report-controls">
+      <div>
+        <label>Periode</label>
+        <select id="rpPeriod">
+          <option value="month">Bulan tertentu</option>
+          <option value="year">Satu tahun penuh</option>
+          <option value="all">Semua data</option>
+        </select>
+      </div>
+      <div id="rpMonthWrap">
+        <label>Bulan</label>
+        <select id="rpMonth"></select>
+      </div>
+      <div id="rpYearWrap">
+        <label>Tahun</label>
+        <select id="rpYear"></select>
+      </div>
+      <div>
+        <label>Tipe Bisnis</label>
+        <select id="rpSegment"></select>
+      </div>
+      <div>
+        <label>Status</label>
+        <select id="rpStatus">
+          <option value="">Semua status</option>
+        </select>
+      </div>
+      <div>
+        <label>Urutkan</label>
+        <select id="rpSort">
+          <option value="revenue">Revenue tertinggi</option>
+          <option value="pax">Pax terbanyak</option>
+          <option value="events">Jumlah event terbanyak</option>
+        </select>
+      </div>
+      <div>
+        <label>Tampilkan</label>
+        <select id="rpTop">
+          <option value="10">Top 10</option>
+          <option value="30">Top 30</option>
+          <option value="0">Semua</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="stat-row" id="rpStats"></div>
+
+    <div class="report-block">
+      <h2>Ringkasan per Tipe Bisnis</h2>
+      <div class="table-wrapper">
+        <table class="data-table" id="rpSegmentTable">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="report-block">
+      <h2 id="rpRankTitle">Ranking Company</h2>
+      <div class="table-wrapper">
+        <table class="data-table" id="rpCompanyTable">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="report-block">
+      <h2>Ringkasan per Sales</h2>
+      <div class="table-wrapper">
+        <table class="data-table" id="rpSalesTable">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="report-block">
+      <h2>Ringkasan per Meeting Room</h2>
+      <div class="table-wrapper">
+        <table class="data-table" id="rpRoomTable">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-management" class="tab-panel">
+    <nav class="mgmt-tabs">
+      <button class="mgmt-tab-btn active" data-entity="Rooms">Room Data</button>
+      <button class="mgmt-tab-btn" data-entity="Statuses">Status Data</button>
+      <button class="mgmt-tab-btn" data-entity="Packages">Package Data</button>
+      <button class="mgmt-tab-btn" data-entity="PICs">Sales</button>
+      <button class="mgmt-tab-btn" data-entity="Setups">Setup</button>
+      <button class="mgmt-tab-btn" data-entity="SpecialDates">Special Date</button>
+      <button class="mgmt-tab-btn" data-entity="MarketSegments">Tipe Bisnis</button>
+      <button class="mgmt-tab-btn" data-entity="MealTypes">Jenis Konsumsi</button>
+      <button class="mgmt-tab-btn" data-entity="Users">User Login</button>
+    </nav>
+    <div class="mgmt-body">
+      <div class="mgmt-header">
+        <h2 id="mgmtTitle">Room Data</h2>
+        <button class="btn btn-primary" id="mgmtAddBtn">+ Add</button>
+      </div>
+      <div class="table-wrapper">
+        <table id="mgmtTable" class="data-table">
+          <thead id="mgmtThead"></thead>
+          <tbody id="mgmtTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="bookingModal" class="modal-overlay hidden">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="bookingModalTitle">Add Booking</h3>
+      <button class="modal-close" id="bookingModalClose">&times;</button>
+    </div>
+    <form id="bookingForm" class="modal-body">
+      <input type="hidden" id="bkId">
+      <label>Room</label>
+      <select id="bkRoom" required></select>
+      <label>Date</label>
+      <input type="date" id="bkDate" required>
+      <div class="field-row">
+        <div>
+          <label>Jam Mulai</label>
+          <input type="time" id="bkStart" required>
+        </div>
+        <div>
+          <label>Jam Selesai</label>
+          <input type="time" id="bkEnd" required>
+        </div>
+      </div>
+      <label>Company Name</label>
+      <input type="text" id="bkCompany" required>
+      <label>Sales</label>
+      <select id="bkPic" required></select>
+      <div class="beo-group">Data Tamu (untuk marketing)</div>
+      <label>Contact Person</label>
+      <input type="text" id="bkGuestName">
+      <div class="field-row">
+        <div><label>No. Telepon / WA</label><input type="text" id="bkGuestPhone" inputmode="tel"></div>
+        <div><label>Email</label><input type="text" id="bkGuestEmail" inputmode="email"></div>
+      </div>
+      <div class="beo-group">Detail Acara</div>
+      <label>Package</label>
+      <select id="bkPackage" required></select>
+      <label>Pax</label>
+      <input type="text" id="bkPax" inputmode="numeric" required>
+      <label>Status</label>
+      <select id="bkStatus" required></select>
+      <label>Setup</label>
+      <select id="bkSetup" required></select>
+      <label>Tipe Bisnis</label>
+      <select id="bkSegment"></select>
+      <div class="field-row">
+        <div><label>Harga / pax (Rp)</label><input type="text" id="bkPricePerPax" inputmode="numeric"></div>
+        <div><label>Revenue total (Rp)</label><input type="text" id="bkRevenue" inputmode="numeric"></div>
+      </div>
+      <p class="beo-hint">Revenue terisi otomatis dari harga &times; pax, dan tetap bisa diubah manual.</p>
+
+      <div class="beo-group">Konsumsi</div>
+      <div id="mealRows"></div>
+      <div class="meal-actions">
+        <button type="button" class="btn btn-ghost btn-small" id="mealAddBtn">+ Tambah konsumsi</button>
+        <button type="button" class="btn btn-ghost btn-small" id="mealPresetBtn">Isi paket Full-board</button>
+      </div>
+      <p class="beo-hint" id="mealSummary"></p>
+      <div id="bookingError" class="error-text"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-danger hidden" id="bkDeleteBtn">Delete</button>
+        <div class="modal-actions-right">
+          <button type="button" class="btn btn-ghost hidden" id="bkBeoBtn">Buat BEO</button>
+          <button type="button" class="btn btn-ghost" id="bkCancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="bkSaveBtn">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="mgmtModal" class="modal-overlay hidden">
+  <div class="modal modal-small">
+    <div class="modal-header">
+      <h3 id="mgmtModalTitle">Add</h3>
+      <button class="modal-close" id="mgmtModalClose">&times;</button>
+    </div>
+    <form id="mgmtForm" class="modal-body">
+      <input type="hidden" id="mgmtId">
+      <div id="mgmtFormFields"></div>
+      <div id="mgmtError" class="error-text"></div>
+      <div class="modal-actions">
+        <div></div>
+        <div class="modal-actions-right">
+          <button type="button" class="btn btn-ghost" id="mgmtCancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="beoModal" class="modal-overlay hidden">
+  <div class="modal modal-wide">
+    <div class="modal-header">
+      <h3 id="beoModalTitle">Banquet Event Order</h3>
+      <button class="modal-close" id="beoModalClose">&times;</button>
+    </div>
+    <form id="beoForm" class="modal-body">
+      <input type="hidden" id="beoId">
+      <input type="hidden" id="beoBookingId">
+
+      <div id="beoSummary" class="beo-summary"></div>
+      <p class="beo-hint" id="beoStatusHint"></p>
+
+      <h4 class="beo-group">Header</h4>
+      <div class="field-row">
+        <div><label>No BEO</label><input type="text" id="beoNo"></div>
+        <div><label>Date Of Issue</label><input type="date" id="beoDateOfIssue"></div>
+      </div>
+      <label>Event Title</label>
+      <input type="text" id="beoEventTitle">
+      <label>Company / Organizer</label>
+      <input type="text" id="beoOrganizer">
+      <div class="field-row">
+        <div><label>Contact Person</label><input type="text" id="beoContactPerson"></div>
+        <div><label>Tel. No</label><input type="text" id="beoPhone"></div>
+      </div>
+      <label>Address</label>
+      <textarea id="beoAddress" rows="2"></textarea>
+      <div class="field-row">
+        <div><label>Email</label><input type="text" id="beoEmail"></div>
+        <div><label>Market Segment</label><input type="text" id="beoMarketSegment"></div>
+      </div>
+      <div class="field-row">
+        <div><label>Sales</label><input type="text" id="beoSales"></div>
+        <div><label>Arrangement</label><input type="text" id="beoArrangement"></div>
+      </div>
+      <div class="field-row">
+        <div><label>Floor</label><input type="text" id="beoFloor"></div>
+        <div><label>Harga / pax (Rp)</label><input type="text" id="beoPricePerPax" inputmode="numeric"></div>
+      </div>
+
+      <h4 class="beo-group">Instruksi Departemen</h4>
+      <label>Kitchen — Prepare &amp; Breakdown</label>
+      <textarea id="beoKitchenPrepare" rows="4"></textarea>
+      <label>Kitchen — Menu</label>
+      <textarea id="beoKitchenMenu" rows="4"></textarea>
+      <label>F &amp; B Banquet (Please set up)</label>
+      <textarea id="beoFbBanquet" rows="4"></textarea>
+      <label>Front Office</label>
+      <textarea id="beoFrontOffice" rows="3"></textarea>
+      <label>Housekeeping</label>
+      <textarea id="beoHousekeeping" rows="2"></textarea>
+      <label>Engineering</label>
+      <textarea id="beoEngineering" rows="2"></textarea>
+      <label>Security</label>
+      <textarea id="beoSecurity" rows="2"></textarea>
+      <label>IT (teks yang tampil di signage)</label>
+      <textarea id="beoIt" rows="3"></textarea>
+
+      <div id="beoMoneyFields">
+        <h4 class="beo-group">Cashier &amp; Accounting</h4>
+        <p class="beo-hint">Bagian ini hanya dicetak untuk booking berstatus <strong>Definite</strong>.</p>
+        <label>Cashier — Internal breakdown</label>
+        <textarea id="beoCashier" rows="3"></textarea>
+        <label>Accounting — Invoice</label>
+        <textarea id="beoAccounting" rows="3"></textarea>
+      </div>
+
+      <h4 class="beo-group">Tanda Tangan</h4>
+      <div class="field-row">
+        <div><label>Prepared &amp; Issue by</label><input type="text" id="beoPreparedBy"></div>
+        <div><label>DOSM</label><input type="text" id="beoDosm"></div>
+      </div>
+      <div class="field-row">
+        <div><label>F &amp; B Product</label><input type="text" id="beoFbProduct"></div>
+        <div><label>F &amp; B Service</label><input type="text" id="beoFbService"></div>
+      </div>
+      <div class="field-row">
+        <div><label>Accounting Manager</label><input type="text" id="beoAccountingManager"></div>
+        <div><label>General Manager</label><input type="text" id="beoGeneralManager"></div>
+      </div>
+      <label>Distribution</label>
+      <input type="text" id="beoDistribution">
+
+      <div id="beoError" class="error-text"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="beoPrintBtn">Cetak / Print</button>
+        <div class="modal-actions-right">
+          <button type="button" class="btn btn-ghost" id="beoCancelBtn">Tutup</button>
+          <button type="submit" class="btn btn-primary" id="beoSaveBtn">Simpan BEO</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="pwModal" class="modal-overlay hidden">
+  <div class="modal modal-small">
+    <div class="modal-header">
+      <h3>Ganti Password</h3>
+      <button class="modal-close" id="pwModalClose">&times;</button>
+    </div>
+    <form id="pwForm" class="modal-body">
+      <p class="beo-hint" id="pwWho"></p>
+      <label>Password Lama</label>
+      <input type="password" id="pwCurrent" autocomplete="current-password" required>
+      <label>Password Baru</label>
+      <input type="password" id="pwNew" autocomplete="new-password" required>
+      <label>Ulangi Password Baru</label>
+      <input type="password" id="pwConfirm" autocomplete="new-password" required>
+      <p class="beo-hint">Minimal 6 karakter.</p>
+      <div id="pwError" class="error-text"></div>
+      <div class="modal-actions">
+        <div></div>
+        <div class="modal-actions-right">
+          <button type="button" class="btn btn-ghost" id="pwCancelBtn">Batal</button>
+          <button type="submit" class="btn btn-primary" id="pwSaveBtn">Simpan</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="beoPrintOverlay" class="hidden">
+  <div class="beo-toolbar">
+    <button type="button" class="btn btn-primary" id="beoDoPrint">Cetak / Simpan PDF</button>
+    <button type="button" class="btn btn-ghost" id="beoClosePrint">Tutup preview</button>
+  </div>
+  <div id="beoPrintArea"></div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script>
+// ===========================================================================
+// MOCK BACKEND — stands in for Code.gs + Google Sheets, in-memory only.
+// The real deployment (see README.md) replaces this with google.script.run.
+// ===========================================================================
+(function () {
+  function uuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  // Sample data is dated in the current month so the calendar never opens
+  // on an empty grid.
+  function sampleDate(day) {
+    var n = new Date();
+    return n.getFullYear() + '-' + ('0' + (n.getMonth() + 1)).slice(-2) + '-' + ('0' + day).slice(-2);
+  }
+
+  var SAMPLE_GUESTS = [
+    ['Mrs. Afifah Raisya', '0877-4815-0403', 'afifah@astra.co.id'],
+    ['Bp. Hendra Kusuma', '0812-2650-1188', 'hendra@sinarmas.co.id'],
+    ['Ibu Retno Wulandari', '0813-9004-7721', 'retno@pariwisata.go.id'],
+    ['Bp. Aditya Nugroho', '0811-2938-4455', 'aditya@telkom.co.id'],
+    ['Ibu Maya Sari', '0856-7712-3390', 'maya@indosat.com'],
+    ['Bp. Rizal Effendi', '0815-4420-9987', 'rizal@bankmandiri.co.id'],
+    ['Ibu Nurul Hidayah', '0857-3321-6654', 'nurul@ui.ac.id'],
+    ['Bp. Gunawan Saputra', '0812-8876-4432', 'gunawan@pertamina.com'],
+    ['Bp. Santoso', '0878-1123-9900', 'santoso.keluarga@gmail.com'],
+    ['Ibu Dewi Anggraini', '0813-5567-2210', 'dewi@unilever.co.id'],
+    ['Bp. Arif Rahman', '0811-7765-3321', 'arif@bca.co.id'],
+    ['Ibu Sinta Melati', '0852-9987-1123', 'sinta@bni.co.id'],
+    ['Bp. Bambang Priyono', '0813-2234-8876', 'bambang@dephub.go.id'],
+    ['Ibu Lestari Wijaya', '0819-4432-7765', 'lestari@dwidayatour.co.id'],
+    ['Bp. Yusuf Hamdani', '0877-3390-5541', 'yusuf@panoramatours.com'],
+    ['Ibu Wijaya', '0812-6654-3398', 'wijaya.keluarga@gmail.com'],
+    ['Bp. Teguh Prasetyo', '0856-2219-8843', 'teguh@bankmega.co.id'],
+    ['Ibu Ratna Dewi', '0815-8890-2234', 'ratna@goldenrama.com']
+  ];
+
+  var DB = {
+    users: [
+      { id: uuid(), username: 'admin', password: 'admin123', displayName: 'Administrator', role: 'admin' },
+      { id: uuid(), username: 'viewer', password: 'viewer123', displayName: 'Viewer (Lihat Saja)', role: 'viewer' }
+    ],
+    rooms: [['Keraton Ballroom', 'KB'], ['Keraton 1', 'K1'], ['Keraton 2', 'K2'], ['Keraton 3', 'K3'],
+      ['Keraton 2-3', 'K23'], ['Saripetojo 1', 'S1'], ['Saripetojo 2', 'S2'], ['Saripetojo 3', 'S3'],
+      ['Saripetojo 4', 'S4'], ['Saripetojo 1-2', 'S12'], ['Restaurant', 'RE'], ['Joglo', 'JG'],
+      ['Pool', 'PO'], ['Boardroom', 'BR'], ['Basement 1', 'B1']]
+      .map(function (r) { return { id: uuid(), name: r[0], shortName: r[1] }; }),
+    statuses: [{ id: uuid(), name: 'Tentative', color: '#e74c3c' }, { id: uuid(), name: 'Definite', color: '#27ae60' }],
+    packages: ['Half-day', 'Full-day', 'Full-board', 'Coffee break', 'Wedding', 'Room Rental', 'Birthday']
+      .map(function (n) { return { id: uuid(), name: n }; }),
+    pics: [['Siti Jubaidah', '#8e44ad'], ['Icha', '#16a085'], ['James', '#2980b9'], ['Deri', '#d35400'],
+      ['Anzha', '#7f8c8d'], ['Diah', '#2c3e50'], ['Bela', '#c2185b'], ['Bayhaqi', '#00838f']]
+      .map(function (p) { return { id: uuid(), name: p[0], color: p[1] }; }),
+    setups: ['Round Table', 'U-shape', 'Classroom', 'Teater', 'Block-style', 'Board room', 'Standing', 'Bean bag']
+      .map(function (n) { return { id: uuid(), name: n }; }),
+    specialDates: [
+      { id: uuid(), date: sampleDate(17), type: 'Public Holiday', label: 'Contoh hari libur' }
+    ],
+    segments: ['Corporate', 'Government', 'Travel Agent', 'Individual']
+      .map(function (n) { return { id: uuid(), name: n }; }),
+    mealTypes: [['Coffee Break', 30000], ['Lunch', 100000], ['Dinner', 110000]]
+      .map(function (t) { return { id: uuid(), name: t[0], defaultPrice: t[1] }; }),
+    meals: [],
+    bookings: [
+      // Several same-day bookings per room, to show the stacked layout.
+      ['Keraton Ballroom', 5, '08:00', '12:00', 'PT Astra International', 'Siti Jubaidah', 'Half-day', '250', 'Definite', 'Classroom', 'Corporate', 160000],
+      ['Keraton Ballroom', 5, '13:00', '17:00', 'PT Sinar Mas', 'Deri', 'Half-day', '180', 'Tentative', 'Teater', 'Corporate', 150000],
+      ['Keraton Ballroom', 22, '09:00', '22:00', 'Dinas Pariwisata Prov.', 'Icha', 'Wedding', '400', 'Tentative', 'Round Table', 'Government', 225000],
+      ['Saripetojo 4', 10, '08:00', '12:00', 'PT Telkom Indonesia', 'James', 'Half-day', '60', 'Definite', 'U-shape', 'Corporate', 165000],
+      ['Saripetojo 4', 10, '13:00', '16:00', 'PT Indosat', 'Anzha', 'Coffee break', '35', 'Definite', 'Round Table', 'Corporate', 75000],
+      ['Saripetojo 4', 24, '08:00', '17:00', 'Bank Mandiri', 'Deri', 'Full-board', '80', 'Tentative', 'Classroom', 'Corporate', 285000],
+      ['Saripetojo 1-2', 12, '10:00', '12:00', 'Universitas Indonesia', 'Anzha', 'Coffee break', '40', 'Definite', 'Teater', 'Government', 70000],
+      ['Saripetojo 1-2', 27, '08:00', '17:00', 'PT Pertamina', 'Diah', 'Full-day', '120', 'Definite', 'Board room', 'Corporate', 195000],
+      ['Joglo', 14, '18:00', '22:00', 'Keluarga Santoso', 'Bela', 'Birthday', '30', 'Tentative', 'Bean bag', 'Individual', 175000],
+      ['Joglo', 19, '09:00', '15:00', 'PT Unilever Indonesia', 'Bayhaqi', 'Room Rental', '25', 'Definite', 'Block-style', 'Corporate', 120000],
+      ['Boardroom', 6, '09:00', '11:00', 'PT Bank BCA', 'Siti Jubaidah', 'Half-day', '15', 'Definite', 'Board room', 'Corporate', 180000],
+      ['Boardroom', 6, '14:00', '16:30', 'PT Bank BNI', 'Bela', 'Half-day', '18', 'Tentative', 'U-shape', 'Corporate', 180000],
+      ['Boardroom', 21, '08:00', '17:00', 'Kementerian Perhubungan', 'Icha', 'Full-day', '20', 'Tentative', 'U-shape', 'Government', 210000],
+      ['Keraton 1', 8, '09:00', '16:00', 'Dwidaya Tour', 'James', 'Full-day', '55', 'Definite', 'Classroom', 'Travel Agent', 140000],
+      ['Keraton 2-3', 25, '08:00', '12:00', 'Panorama Tours', 'Diah', 'Half-day', '45', 'Definite', 'U-shape', 'Travel Agent', 130000],
+      ['Restaurant', 18, '10:00', '14:00', 'Keluarga Wijaya', 'Bela', 'Birthday', '40', 'Definite', 'Round Table', 'Individual', 165000],
+      ['Pool', 20, '18:00', '22:00', 'PT Bank Mega', 'Anzha', 'Coffee break', '70', 'Definite', 'Standing', 'Corporate', 95000],
+      ['Basement 1', 11, '08:00', '17:00', 'Golden Rama Tours', 'Bayhaqi', 'Full-day', '90', 'Tentative', 'Classroom', 'Travel Agent', 125000]
+    ].map(function (b, i) {
+      return {
+        id: uuid(), roomName: b[0], date: sampleDate(b[1]), startTime: b[2], endTime: b[3],
+        companyName: b[4], pic: b[5], package: b[6], pax: b[7], status: b[8], setup: b[9],
+        marketSegment: b[10], pricePerPax: b[11], revenue: b[11] * Number(b[7]),
+        guestName: (SAMPLE_GUESTS[i] || [])[0] || '',
+        guestPhone: (SAMPLE_GUESTS[i] || [])[1] || '',
+        guestEmail: (SAMPLE_GUESTS[i] || [])[2] || ''
+      };
+    }),
+    beos: []
+  };
+  // Sample meal services. Bank Mandiri (index 5) is the Full-board example
+  // with two coffee breaks, lunch and dinner on the same day.
+  Object.keys({0:1, 5:1, 7:1}).forEach(function (key) {
+    var defs = {
+      0: [['Coffee Break', '09:00', 250, 30000, 'Foyer Keraton Ballroom', 'Sosis Basah, Brownis Oven, Mineral, Tea & Coffee'],
+          ['Lunch', '12:00', 250, 100000, 'Foyer Keraton Ballroom', 'Chicken Cream Soup, Nasi Putih, Mie Goreng, Roasted Chicken Mushroom']],
+      5: [['Coffee Break', '09:00', 80, 30000, 'Foyer Saripetojo 4', 'Risol Mayo, Banana Cake, Mineral, Tea & Coffee'],
+          ['Lunch', '12:00', 80, 100000, 'Foyer Saripetojo 4', 'Soto Ayam, Nasi Putih, Ikan Goreng Saus Bangkok, Orak-arik Sayur, Buah'],
+          ['Coffee Break', '15:00', 80, 30000, 'Foyer Saripetojo 4', 'Pastel, Klepon, Mineral, Tea & Coffee'],
+          ['Dinner', '19:00', 80, 110000, 'Foyer Saripetojo 4', 'Sup Jagung, Nasi Goreng, Ayam Bakar, Cah Kangkung, Es Buah']],
+      7: [['Coffee Break', '09:30', 120, 30000, 'Foyer Saripetojo 1-2', 'Lumpia, Bolu Kukus, Mineral, Tea & Coffee'],
+          ['Lunch', '12:30', 120, 100000, 'Foyer Saripetojo 1-2', 'Sop Buntut, Nasi Putih, Gurame Asam Manis, Tumis Buncis'],
+          ['Coffee Break', '15:30', 120, 30000, 'Foyer Saripetojo 1-2', 'Tahu Isi, Dadar Gulung, Mineral, Tea & Coffee']]
+    };
+    var booking = DB.bookings[Number(key)];
+    if (!booking) return;
+    defs[key].forEach(function (m, i) {
+      DB.meals.push({
+        id: uuid(), bookingId: booking.id, sortOrder: i + 1, type: m[0], time: m[1],
+        pax: m[2], pricePerPax: m[3], location: m[4], menu: m[5]
+      });
+    });
+  });
+
+  var sessions = {};
+  var ENTITY_TO_KEY = { Rooms: 'rooms', Statuses: 'statuses', Packages: 'packages', PICs: 'pics', Setups: 'setups', SpecialDates: 'specialDates', MarketSegments: 'segments', MealTypes: 'mealTypes' };
+
+  function requireAuth(token) {
+    if (!sessions[token]) throw new Error('Sesi berakhir. Silakan login kembali.');
+    return sessions[token];
+  }
+  function roleOf(u) { return (u.role || '').toLowerCase() === 'viewer' ? 'viewer' : 'admin'; }
+  // Mirrors requireEditor_ in Code.gs: writes are rejected server-side for
+  // viewers, not merely hidden in the UI.
+  function requireEditor(token) {
+    var session = requireAuth(token);
+    if (session.role === 'viewer') {
+      throw new Error('Akun Anda hanya bisa melihat data (view only), tidak bisa mengubah.');
+    }
+    return session;
+  }
+  function redactUser(u) { return { id: u.id, username: u.username, displayName: u.displayName, role: roleOf(u) }; }
+
+  // Mirrors toMinutes_/overlaps_/assertBookingTimes_ in Code.gs.
+  function srvToMinutes(hhmm) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec((hhmm == null ? '' : hhmm).toString().trim());
+    if (!m) return null;
+    var h = parseInt(m[1], 10), min = parseInt(m[2], 10);
+    if (h > 23 || min > 59) return null;
+    return h * 60 + min;
+  }
+  function assertBookingTimes(booking) {
+    var start = srvToMinutes(booking.startTime);
+    var end = srvToMinutes(booking.endTime);
+    if (start === null || end === null) {
+      throw new Error('Jam mulai dan jam selesai wajib diisi dengan format HH:mm.');
+    }
+    if (end <= start) throw new Error('Jam selesai harus lebih besar dari jam mulai.');
+    var clash = DB.bookings.filter(function (b) {
+      // Guard on booking.id: a new booking has none, and `undefined ===
+      // undefined` would make it skip rows instead of checking them.
+      if (booking.id && b.id === booking.id) return false;
+      if (b.roomName !== booking.roomName || b.date !== booking.date) return false;
+      var bStart = srvToMinutes(b.startTime), bEnd = srvToMinutes(b.endTime);
+      if (bStart === null || bEnd === null) return false;
+      return start < bEnd && bStart < end;
+    })[0];
+    if (clash) {
+      throw new Error('Jadwal bentrok: ' + clash.roomName + ' pada ' + clash.date +
+        ' sudah dipakai ' + clash.companyName + ' (' + clash.startTime + '-' + clash.endTime + ').');
+    }
+  }
+  function buildBootstrap(user) {
+    return {
+      user: user,
+      rooms: DB.rooms, statuses: DB.statuses, packages: DB.packages, pics: DB.pics,
+      setups: DB.setups, specialDates: DB.specialDates, segments: DB.segments,
+      mealTypes: DB.mealTypes, meals: DB.meals, bookings: DB.bookings,
+      users: DB.users.map(redactUser)
+    };
+  }
+
+  var mockServer = {
+    login: function (username, password) {
+      var match = DB.users.filter(function (u) { return u.username.toLowerCase() === (username || '').toLowerCase(); })[0];
+      if (!match) return { success: false, message: 'Username tidak ditemukan.' };
+      if (match.password !== password) return { success: false, message: 'Password salah.' };
+      var token = uuid();
+      var session = { username: match.username, displayName: match.displayName, role: roleOf(match) };
+      sessions[token] = session;
+      return { success: true, token: token, displayName: session.displayName, role: session.role };
+    },
+    logout: function (token) { delete sessions[token]; return true; },
+    getBootstrapData: function (token) { return buildBootstrap(requireAuth(token)); },
+
+    listMaster: function (token, entity) { requireAuth(token); return DB[ENTITY_TO_KEY[entity]]; },
+    addMaster: function (token, entity, data) {
+      requireEditor(token);
+      var rec = Object.assign({ id: uuid() }, data);
+      DB[ENTITY_TO_KEY[entity]].push(rec);
+      return rec;
+    },
+    updateMaster: function (token, entity, id, data) {
+      requireEditor(token);
+      var arr = DB[ENTITY_TO_KEY[entity]];
+      var rec = arr.filter(function (r) { return r.id === id; })[0];
+      if (!rec) throw new Error('Record not found: ' + id);
+      Object.assign(rec, data);
+      return rec;
+    },
+    deleteMaster: function (token, entity, id) {
+      requireEditor(token);
+      var key = ENTITY_TO_KEY[entity];
+      DB[key] = DB[key].filter(function (r) { return r.id !== id; });
+      return true;
+    },
+
+    addUserAccount: function (token, data) {
+      requireEditor(token);
+      var username = (data.username || '').trim();
+      if (!username) throw new Error('Username wajib diisi.');
+      if (!data.password) throw new Error('Password wajib diisi untuk user baru.');
+      if (DB.users.some(function (u) { return u.username.toLowerCase() === username.toLowerCase(); })) {
+        throw new Error('Username sudah dipakai.');
+      }
+      var rec = {
+        id: uuid(), username: username, password: data.password,
+        displayName: data.displayName || username, role: roleOf(data)
+      };
+      DB.users.push(rec);
+      return redactUser(rec);
+    },
+    updateUserAccount: function (token, id, data) {
+      var current = requireEditor(token);
+      var rec = DB.users.filter(function (u) { return u.id === id; })[0];
+      if (!rec) throw new Error('Record not found: ' + id);
+      if (data.username) rec.username = data.username.trim();
+      if (data.displayName !== undefined) rec.displayName = data.displayName;
+      if (data.password) rec.password = data.password;
+      if (data.role !== undefined) {
+        if (rec.username === current.username && roleOf(data) === 'viewer') {
+          throw new Error('Tidak bisa mengubah akun Anda sendiri menjadi view only.');
+        }
+        rec.role = roleOf(data);
+      }
+      return redactUser(rec);
+    },
+    deleteUserAccount: function (token, id) {
+      var current = requireEditor(token);
+      var target = DB.users.filter(function (u) { return u.id === id; })[0];
+      if (target && target.username === current.username) {
+        throw new Error('Tidak bisa menghapus akun yang sedang Anda gunakan untuk login.');
+      }
+      DB.users = DB.users.filter(function (u) { return u.id !== id; });
+      return true;
+    },
+
+    saveBooking: function (token, booking) {
+      requireEditor(token);
+      assertBookingTimes(booking);
+      var meals = booking.meals || null;
+      delete booking.meals;
+      function writeMeals(bookingId) {
+        DB.meals = DB.meals.filter(function (m) { return m.bookingId !== bookingId; });
+        var out = [];
+        (meals || []).forEach(function (m, i) {
+          if (!m || !m.type) return;
+          var row = Object.assign({}, m, { id: uuid(), bookingId: bookingId, sortOrder: i + 1 });
+          DB.meals.push(row);
+          out.push(row);
+        });
+        return out;
+      }
+      if (booking.id) {
+        var rec = DB.bookings.filter(function (b) { return b.id === booking.id; })[0];
+        if (!rec) throw new Error('Record not found: ' + booking.id);
+        Object.assign(rec, booking);
+        var updated = Object.assign({}, rec);
+        if (meals) updated.meals = writeMeals(rec.id);
+        return updated;
+      }
+      // id last: the payload carries `id: undefined` for new bookings, which
+      // would otherwise overwrite the generated one (matching addRow_ in
+      // Code.gs, which only fills in an id when the payload has none).
+      var created = Object.assign({}, booking, { id: uuid() });
+      DB.bookings.push(created);
+      var result = Object.assign({}, created);
+      if (meals) result.meals = writeMeals(created.id);
+      return result;
+    },
+    deleteBooking: function (token, id) {
+      requireEditor(token);
+      DB.beos = DB.beos.filter(function (r) { return r.bookingId !== id; });
+      DB.meals = DB.meals.filter(function (m) { return m.bookingId !== id; });
+      DB.bookings = DB.bookings.filter(function (b) { return b.id !== id; });
+      return true;
+    },
+
+    changeOwnPassword: function (token, currentPassword, newPassword) {
+      var session = requireAuth(token);
+      if (!newPassword || newPassword.length < 6) throw new Error('Password baru minimal 6 karakter.');
+      var me = DB.users.filter(function (u) { return u.username === session.username; })[0];
+      if (!me) throw new Error('Akun tidak ditemukan.');
+      if (me.password !== currentPassword) throw new Error('Password lama salah.');
+      me.password = newPassword;
+      return { success: true };
+    },
+
+    getBeo: function (token, bookingId) {
+      requireAuth(token);
+      var existing = DB.beos.filter(function (r) { return r.bookingId === bookingId; })[0] || null;
+      var booking = DB.bookings.filter(function (b) { return b.id === bookingId; })[0];
+      var seq = ('00' + (DB.beos.length + 1)).slice(-3);
+      var m = /^(\d{4})-(\d{2})-\d{2}$/.exec((booking ? booking.date : '') || '');
+      return {
+        beo: existing,
+        suggestedNo: existing ? existing.beoNo : 'BEO/SM/' + seq + '/' + (m ? m[2] + '-' + m[1].slice(2) : '')
+      };
+    },
+    saveBeo: function (token, data) {
+      requireEditor(token);
+      if (!data.bookingId) throw new Error('BEO harus terkait dengan satu booking.');
+      var existing = DB.beos.filter(function (r) { return r.bookingId === data.bookingId; })[0];
+      if (existing) { Object.assign(existing, data); return existing; }
+      var created = Object.assign({}, data, { id: uuid() });
+      DB.beos.push(created);
+      return created;
+    }
+  };
+
+  // Simulates google.script.run's async round trip so the client code below
+  // (identical in shape to the real JavaScript.html) behaves the same way.
+  window.google = {
+    script: {
+      run: (function () {
+        function makeRunner(handlers) {
+          var proxy = {};
+          Object.keys(mockServer).forEach(function (name) {
+            proxy[name] = function () {
+              var args = Array.prototype.slice.call(arguments);
+              setTimeout(function () {
+                try {
+                  var result = mockServer[name].apply(null, args);
+                  if (handlers.onSuccess) handlers.onSuccess(result);
+                } catch (e) {
+                  if (handlers.onFailure) handlers.onFailure(e);
+                }
+              }, 120 + Math.random() * 120);
+            };
+          });
+          proxy.withSuccessHandler = function (fn) { return makeRunner({ onSuccess: fn, onFailure: handlers.onFailure }); };
+          proxy.withFailureHandler = function (fn) { return makeRunner({ onSuccess: handlers.onSuccess, onFailure: fn }); };
+          return proxy;
+        }
+        return makeRunner({});
+      })()
+    }
+  };
+})();
+
+// ===========================================================================
+// CLIENT APP — same logic/shape as JavaScript.html, running against the
+// mock google.script.run defined above instead of the real Apps Script one.
+// ===========================================================================
+(function () {
+  'use strict';
+
+  var state = {
+    token: null,
+    user: null,
+    rooms: [], statuses: [], packages: [], pics: [], setups: [], specialDates: [], segments: [],
+    mealTypes: [], meals: [], bookings: [], users: [],
+    viewDate: new Date(), // anchor date for the calendar
+    view: 'month'         // day | week | month | year
+  };
+
+  var DOW_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+    'August', 'September', 'October', 'November', 'December'];
+
+  var ENTITIES = {
+    Rooms: {
+      label: 'Room Data', stateKey: 'rooms',
+      fields: [
+        { key: 'name', label: 'Room Name', type: 'text' },
+        { key: 'shortName', label: 'Singkatan (tablet/mobile)', type: 'text', required: false }
+      ]
+    },
+    Statuses: { label: 'Status Data', stateKey: 'statuses', fields: [{ key: 'name', label: 'Status Name', type: 'text' }, { key: 'color', label: 'Color', type: 'color' }] },
+    Packages: { label: 'Package Data', stateKey: 'packages', fields: [{ key: 'name', label: 'Package Name', type: 'text' }] },
+    PICs: {
+      label: 'Sales', stateKey: 'pics',
+      fields: [
+        { key: 'name', label: 'Nama Sales', type: 'text' },
+        { key: 'color', label: 'Warna Badge', type: 'color' }
+      ]
+    },
+    Setups: { label: 'Setup', stateKey: 'setups', fields: [{ key: 'name', label: 'Setup Name', type: 'text' }] },
+    MarketSegments: { label: 'Tipe Bisnis', stateKey: 'segments', fields: [{ key: 'name', label: 'Nama Tipe Bisnis', type: 'text' }] },
+    MealTypes: {
+      label: 'Jenis Konsumsi', stateKey: 'mealTypes',
+      fields: [
+        { key: 'name', label: 'Nama Konsumsi', type: 'text' },
+        { key: 'defaultPrice', label: 'Harga Default / pax (Rp)', type: 'text' }
+      ]
+    },
+    SpecialDates: {
+      label: 'Special Date', stateKey: 'specialDates',
+      fields: [
+        { key: 'date', label: 'Date', type: 'date' },
+        { key: 'type', label: 'Type', type: 'select', options: ['Public Holiday', 'Weekend'] },
+        { key: 'label', label: 'Label', type: 'text' }
+      ]
+    },
+    Users: {
+      label: 'User Login', stateKey: 'users', isUsers: true,
+      tableFields: [
+        { key: 'username', label: 'Username' },
+        { key: 'displayName', label: 'Nama Tampilan' },
+        { key: 'role', label: 'Hak Akses' }
+      ],
+      fields: [
+        { key: 'username', label: 'Username', type: 'text', required: true },
+        { key: 'displayName', label: 'Nama Tampilan', type: 'text', required: true },
+        { key: 'password', label: 'Password', type: 'password', required: false },
+        { key: 'role', label: 'Hak Akses', type: 'select', options: ['admin', 'viewer'] }
+      ]
+    }
+  };
+  var currentEntity = 'Rooms';
+
+  // ---------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------
+  function $(id) { return document.getElementById(id); }
+  function safeStorage(fn) { try { return fn(); } catch (e) { return null; } }
+  function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+  // Sheet values arrive as numbers or as typed-in strings ("160.000"), so
+  // strip everything that is not a digit before doing arithmetic.
+  function toNumber(v) {
+    if (typeof v === 'number') return isFinite(v) ? v : 0;
+    var digits = String(v == null ? '' : v).replace(/[^\d]/g, '');
+    return digits ? Number(digits) : 0;
+  }
+  function fmtDate(y, m, d) { return y + '-' + pad2(m + 1) + '-' + pad2(d); }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function toast(msg, isError) {
+    var el = $('toast');
+    el.textContent = msg;
+    el.className = 'toast' + (isError ? ' error' : '');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { el.classList.add('hidden'); }, 3200);
+  }
+  function fillSelect(select, items, placeholder) {
+    select.innerHTML = '';
+    if (placeholder) {
+      var ph = document.createElement('option');
+      ph.value = ''; ph.textContent = placeholder; ph.disabled = true;
+      // The attribute (not just the property) makes this the option that
+      // form.reset() restores - otherwise resetting silently selects the
+      // first real option and the user never consciously picks one.
+      ph.setAttribute('selected', '');
+      select.appendChild(ph);
+    }
+    items.forEach(function (it) {
+      var opt = document.createElement('option');
+      opt.value = it.name; opt.textContent = it.name;
+      select.appendChild(opt);
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Booking times - mirrors toMinutes_/overlaps_ in Code.gs. The server is
+  // the authority (it also sees bookings made by other users since our last
+  // load); this copy only exists to fail fast before a round trip.
+  // ---------------------------------------------------------------------
+  function toMinutes(hhmm) {
+    var m = /^(\d{1,2}):(\d{2})$/.exec((hhmm == null ? '' : hhmm).toString().trim());
+    if (!m) return null;
+    var h = parseInt(m[1], 10), min = parseInt(m[2], 10);
+    if (h > 23 || min > 59) return null;
+    return h * 60 + min;
+  }
+  function timeRange(booking) {
+    if (!booking.startTime && !booking.endTime) return '(jam belum diisi)';
+    return booking.startTime + ' - ' + booking.endTime;
+  }
+  // Touching edges are fine: 09:00-12:00 and 12:00-15:00 do not overlap.
+  function findClash(payload) {
+    var start = toMinutes(payload.startTime);
+    var end = toMinutes(payload.endTime);
+    if (start === null || end === null || end <= start) return null;
+    return state.bookings.filter(function (b) {
+      // Guard on payload.id: a new booking has none, and `undefined ===
+      // undefined` would make it skip rows instead of checking them.
+      if (payload.id && b.id === payload.id) return false;
+      if (b.roomName !== payload.roomName || b.date !== payload.date) return false;
+      var bStart = toMinutes(b.startTime), bEnd = toMinutes(b.endTime);
+      if (bStart === null || bEnd === null) return false;
+      return start < bEnd && bStart < end;
+    })[0] || null;
+  }
+
+  // ---------------------------------------------------------------------
+  // Server calls
+  // ---------------------------------------------------------------------
+  // google.script.run hands the success handler a null payload when the
+  // server's return value contains something it cannot transfer - a Date is
+  // the usual culprit (see normalizeValue_ in Code.gs). The server-side call
+  // still reports success, so this is easy to mistake for a network fault.
+  // None of our calls ever legitimately return null, so retry once for a
+  // genuine transient blip, then fail with a message that points at the
+  // real cause instead of leaving the UI silently stuck.
+  function gsRun(methodName) {
+    var args = Array.prototype.slice.call(arguments, 1);
+    return new Promise(function (resolve, reject) {
+      function attempt(retriesLeft) {
+        var runner = google.script.run
+          .withSuccessHandler(function (res) {
+            if (res == null) {
+              if (retriesLeft > 0) {
+                setTimeout(function () { attempt(retriesLeft - 1); }, 400);
+                return;
+              }
+              reject(new Error(
+                'Server mengembalikan respons kosong pada "' + methodName + '". ' +
+                'Biasanya ini terjadi kalau data yang dikirim balik memuat tipe yang tidak ' +
+                'didukung Apps Script (paling sering objek Date dari kolom tanggal di Sheet). ' +
+                'Pastikan Code.gs versi terbaru sudah di-deploy sebagai New version.'
+              ));
+              return;
+            }
+            resolve(res);
+          })
+          .withFailureHandler(reject);
+        runner[methodName].apply(runner, args);
+      }
+      attempt(1);
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Auth
+  // ---------------------------------------------------------------------
+  $('loginForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var username = $('loginUsername').value.trim();
+    var password = $('loginPassword').value;
+    $('loginError').textContent = '';
+    $('loginBtn').disabled = true;
+    gsRun('login', username, password).then(function (res) {
+      if (!res.success) {
+        $('loginBtn').disabled = false;
+        $('loginError').textContent = res.message;
+        return;
+      }
+      state.token = res.token;
+      safeStorage(function () { sessionStorage.setItem('mrb_demo_token', res.token); });
+      boot(function () { $('loginBtn').disabled = false; });
+    }, function (err) {
+      $('loginBtn').disabled = false;
+      $('loginError').textContent = err.message || String(err);
+    });
+  });
+
+  // ---------------------------------------------------------------------
+  // Change own password - available to every role, including viewers.
+  // ---------------------------------------------------------------------
+  $('changePwBtn').addEventListener('click', function () {
+    $('pwForm').reset();
+    $('pwError').textContent = '';
+    $('pwWho').textContent = 'Akun: ' + (state.user ? state.user.username : '');
+    $('pwModal').classList.remove('hidden');
+  });
+  $('pwModalClose').addEventListener('click', closePwModal);
+  $('pwCancelBtn').addEventListener('click', closePwModal);
+  function closePwModal() { $('pwModal').classList.add('hidden'); }
+
+  $('pwForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var current = $('pwCurrent').value;
+    var next = $('pwNew').value;
+    if (next.length < 6) {
+      $('pwError').textContent = 'Password baru minimal 6 karakter.';
+      return;
+    }
+    if (next !== $('pwConfirm').value) {
+      $('pwError').textContent = 'Konfirmasi password tidak sama.';
+      return;
+    }
+    $('pwError').textContent = '';
+    $('pwSaveBtn').disabled = true;
+    gsRun('changeOwnPassword', state.token, current, next).then(function () {
+      $('pwSaveBtn').disabled = false;
+      closePwModal();
+      toast('Password berhasil diganti.');
+    }, function (err) {
+      $('pwSaveBtn').disabled = false;
+      $('pwError').textContent = err.message || String(err);
+    });
+  });
+
+  $('logoutBtn').addEventListener('click', function () {
+    google.script.run.logout(state.token);
+    safeStorage(function () { sessionStorage.removeItem('mrb_demo_token'); });
+    safeStorage(function () { sessionStorage.removeItem('mrb_name'); });
+    location.reload();
+  });
+
+  function applyBootstrap(data) {
+    state.user = data.user;
+    state.rooms = data.rooms;
+    state.statuses = data.statuses;
+    state.packages = data.packages;
+    state.pics = data.pics;
+    state.setups = data.setups;
+    state.specialDates = data.specialDates;
+    state.segments = data.segments || [];
+    state.mealTypes = data.mealTypes || [];
+    state.meals = data.meals || [];
+    state.bookings = data.bookings;
+    state.users = data.users;
+
+    $('userChip').textContent = state.user.displayName + (isViewer() ? ' · View only' : '');
+    $('loginScreen').classList.add('hidden');
+    $('app').classList.remove('hidden');
+
+    applyRoleUi();
+    renderCalendar();
+    renderMgmtTab();
+    initReportControls();
+    renderReport();
+  }
+
+  function isViewer() { return !!(state.user && state.user.role === 'viewer'); }
+
+  // Hides the controls a viewer must not use. This is presentation only -
+  // the server rejects writes from viewers regardless (requireEditor_).
+  function applyRoleUi() {
+    var viewer = isViewer();
+    $('addBookingBtn').classList.toggle('hidden', viewer);
+    $('mgmtAddBtn').classList.toggle('hidden', viewer);
+    var usersTab = document.querySelector('.mgmt-tab-btn[data-entity="Users"]');
+    if (usersTab) usersTab.classList.toggle('hidden', viewer);
+    if (viewer && currentEntity === 'Users') {
+      currentEntity = 'Rooms';
+      document.querySelectorAll('.mgmt-tab-btn').forEach(function (b) {
+        b.classList.toggle('active', b.dataset.entity === 'Rooms');
+      });
+    }
+  }
+
+  // Called right after a successful login, and to restore a session after a
+  // page refresh. `always` (optional) runs on both success and failure - use
+  // it for UI cleanup that has to happen either way (e.g. re-enabling a
+  // button), since .then()'s second argument only handles rejection.
+  function boot(always) {
+    gsRun('getBootstrapData', state.token).then(function (data) {
+      if (always) always();
+      applyBootstrap(data);
+    }, function (err) {
+      if (always) always();
+      safeStorage(function () { sessionStorage.removeItem('mrb_demo_token'); });
+      $('loginScreen').classList.remove('hidden');
+      $('app').classList.add('hidden');
+      $('loginError').textContent = err.message || '';
+      toast(err.message || 'Session expired', true);
+    });
+  }
+
+  (function tryAutoLogin() {
+    var token = safeStorage(function () { return sessionStorage.getItem('mrb_demo_token'); });
+    if (token) { state.token = token; boot(); }
+  })();
+
+  // ---------------------------------------------------------------------
+  // Top-level tabs
+  // ---------------------------------------------------------------------
+  document.querySelectorAll('.tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      $('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ---------------------------------------------------------------------
+  // Calendar
+  // ---------------------------------------------------------------------
+  $('prevMonth').addEventListener('click', function () { shiftPeriod(-1); });
+  $('nextMonth').addEventListener('click', function () { shiftPeriod(1); });
+  $('todayBtn').addEventListener('click', function () {
+    state.viewDate = new Date();
+    renderCalendar();
+  });
+  document.querySelectorAll('.view-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.view-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      state.view = btn.dataset.view;
+      renderCalendar();
+    });
+  });
+
+  // Steps by whatever the current view shows: a day, a week, a month or a year.
+  function shiftPeriod(delta) {
+    var d = state.viewDate;
+    if (state.view === 'day') state.viewDate = new Date(d.getFullYear(), d.getMonth(), d.getDate() + delta);
+    else if (state.view === 'week') state.viewDate = new Date(d.getFullYear(), d.getMonth(), d.getDate() + delta * 7);
+    else if (state.view === 'year') state.viewDate = new Date(d.getFullYear() + delta, d.getMonth(), 1);
+    else state.viewDate = new Date(d.getFullYear(), d.getMonth() + delta, 1);
+    renderCalendar();
+  }
+
+  function startOfWeek(d) {
+    // Week runs Monday..Sunday.
+    var copy = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var shift = (copy.getDay() + 6) % 7;
+    copy.setDate(copy.getDate() - shift);
+    return copy;
+  }
+
+  // The columns each view shows, plus the label above the grid.
+  function buildPeriod() {
+    var d = state.viewDate, y = d.getFullYear(), m = d.getMonth();
+    if (state.view === 'day') {
+      return { label: fmtLongDate(d), dates: [new Date(y, m, d.getDate())] };
+    }
+    if (state.view === 'week') {
+      var from = startOfWeek(d), dates = [];
+      for (var i = 0; i < 7; i++) dates.push(new Date(from.getFullYear(), from.getMonth(), from.getDate() + i));
+      return { label: fmtLongDate(dates[0]) + ' – ' + fmtLongDate(dates[6]), dates: dates };
+    }
+    if (state.view === 'year') {
+      var months = [];
+      for (var mo = 0; mo < 12; mo++) months.push(new Date(y, mo, 1));
+      return { label: String(y), months: months };
+    }
+    var days = new Date(y, m + 1, 0).getDate(), list = [];
+    for (var day = 1; day <= days; day++) list.push(new Date(y, m, day));
+    return { label: MONTH_NAMES[m] + ' ' + y, dates: list };
+  }
+
+  function fmtLongDate(d) {
+    return DOW_NAMES[d.getDay()] + ', ' + d.getDate() + ' ' + MONTH_NAMES[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function specialDateInfo(dateStr, jsDate) {
+    var entry = state.specialDates.filter(function (s) { return s.date === dateStr; })[0];
+    var isWeekend = jsDate.getDay() === 0 || jsDate.getDay() === 6;
+    if (entry && entry.type === 'Public Holiday') return { cls: 'holiday', label: entry.label };
+    if (entry && entry.type === 'Weekend') return { cls: 'weekend', label: entry.label };
+    if (isWeekend) return { cls: 'weekend', label: '' };
+    return { cls: '', label: '' };
+  }
+
+  function statusColor(statusName) {
+    var s = state.statuses.filter(function (x) { return x.name === statusName; })[0];
+    return s ? s.color : '#7f8c8d';
+  }
+
+  // ---------------------------------------------------------------------
+  // Meal services (coffee break / lunch / dinner)
+  // ---------------------------------------------------------------------
+  function mealsOf(bookingId) {
+    return state.meals.filter(function (m) { return m.bookingId === bookingId; })
+      .sort(function (a, b) { return toNumber(a.sortOrder) - toNumber(b.sortOrder); });
+  }
+
+  // "Coffee Break" twice in a day becomes "Coffee Break 1" and "Coffee
+  // Break 2"; a single one keeps its plain name.
+  function labelMeals(meals) {
+    var counts = {};
+    meals.forEach(function (m) { counts[m.type] = (counts[m.type] || 0) + 1; });
+    var seen = {};
+    return meals.map(function (m) {
+      seen[m.type] = (seen[m.type] || 0) + 1;
+      return {
+        meal: m,
+        label: counts[m.type] > 1 ? m.type + ' ' + seen[m.type] : m.type,
+        shortLabel: shortMealLabel(m.type) + (counts[m.type] > 1 ? seen[m.type] : '')
+      };
+    });
+  }
+
+  function shortMealLabel(type) {
+    var words = String(type || '').trim().split(/\s+/);
+    if (words.length > 1) return words.map(function (w) { return w.charAt(0).toUpperCase(); }).join('');
+    return words[0] ? words[0].slice(0, 3).toUpperCase() : '?';
+  }
+
+  function mealTotalPerPax(meals) {
+    return meals.reduce(function (sum, m) { return sum + toNumber(m.pricePerPax); }, 0);
+  }
+
+  function salesColor(salesName) {
+    var s = state.pics.filter(function (x) { return x.name === salesName; })[0];
+    return (s && s.color) ? s.color : '#455a64';
+  }
+
+  function mealChipsHtml(booking) {
+    var labelled = labelMeals(mealsOf(booking.id));
+    if (!labelled.length) return '';
+    return '<div class="block-meals">' + labelled.map(function (x) {
+      return '<span class="meal-chip">' + escapeHtml(x.shortLabel) +
+        (x.meal.time ? ' ' + escapeHtml(x.meal.time) : '') + '</span>';
+    }).join('') + '</div>';
+  }
+
+  function mealTooltip(booking) {
+    var labelled = labelMeals(mealsOf(booking.id));
+    if (!labelled.length) return '';
+    return '\nKonsumsi: ' + labelled.map(function (x) {
+      return x.label + (x.meal.time ? ' ' + x.meal.time : '') +
+        (x.meal.pax ? ' (' + x.meal.pax + ' pax)' : '');
+    }).join(', ');
+  }
+
+  // Both spellings are rendered; CSS decides which one is visible, so the
+  // switch follows the real viewport (including rotating a tablet) without
+  // any resize handling here.
+  function roomNameCell(room) {
+    var cell = document.createElement('div');
+    cell.className = 'cg-room-name cg-cell';
+    cell.title = room.name;
+    cell.innerHTML =
+      '<span class="room-full">' + escapeHtml(room.name) + '</span>' +
+      '<span class="room-short">' + escapeHtml(room.shortName || room.name) + '</span>';
+    return cell;
+  }
+
+  function renderSalesLegend() {
+    $('salesLegend').innerHTML = state.pics.map(function (s) {
+      return '<span class="sales-badge" style="background:' + escapeHtml(s.color || '#455a64') + '">' +
+        escapeHtml(s.name) + '</span>';
+    }).join('');
+  }
+
+  function renderCalendar() {
+    var period = buildPeriod();
+    $('monthLabel').textContent = period.label;
+    renderSalesLegend();
+
+    var grid = $('calendarGrid');
+    grid.innerHTML = '';
+
+    if (state.rooms.length === 0) {
+      grid.style.gridTemplateColumns = '1fr';
+      var emptyMsg = document.createElement('div');
+      emptyMsg.style.padding = '20px';
+      emptyMsg.style.color = 'var(--color-text-muted)';
+      emptyMsg.textContent = 'Belum ada data Room. Tambahkan melalui tab Management.';
+      grid.appendChild(emptyMsg);
+      return;
+    }
+
+    if (state.view === 'year') { renderYearGrid(grid, period); return; }
+
+    // Day view gets a wide single column; the others keep the compact grid.
+    // minmax(0, 1fr) keeps the columns evenly sized; a bare 1fr lets a long
+    // company name stretch its own column and squash the empty ones.
+    var colWidth = (state.view === 'day' || state.view === 'week') ? 'minmax(0, 1fr)' : '124px';
+    // --room-col shrinks on tablet/phone (see Stylesheet.html), which is what
+    // makes room for the date columns once the names become short codes.
+    grid.style.gridTemplateColumns = 'var(--room-col) repeat(' + period.dates.length + ', ' + colWidth + ')';
+    grid.style.minWidth = state.view === 'month' ? 'max-content' : '0';
+
+    var corner = document.createElement('div');
+    corner.className = 'cg-corner cg-cell';
+    grid.appendChild(corner);
+
+    var dayMeta = [];
+    period.dates.forEach(function (jsDate) {
+      var dateStr = fmtDate(jsDate.getFullYear(), jsDate.getMonth(), jsDate.getDate());
+      var info = specialDateInfo(dateStr, jsDate);
+      dayMeta.push({ d: jsDate.getDate(), dateStr: dateStr, info: info });
+      var head = document.createElement('div');
+      head.className = 'cg-date-header cg-cell' + (info.cls ? ' ' + info.cls : '');
+      head.title = info.label || '';
+      // Outside the month view the month name matters, since a week can
+      // straddle two months and the day view shows only one date.
+      var suffix = state.view === 'month' ? '' : ' ' + MONTH_NAMES[jsDate.getMonth()].slice(0, 3);
+      head.innerHTML = '<span class="dow">' + DOW_NAMES[jsDate.getDay()] + '</span>' + jsDate.getDate() + suffix;
+      grid.appendChild(head);
+    });
+
+    state.rooms.forEach(function (room) {
+      grid.appendChild(roomNameCell(room));
+
+      dayMeta.forEach(function (dm) {
+        var bookings = state.bookings.filter(function (b) {
+          return b.roomName === room.name && b.date === dm.dateStr;
+        }).sort(function (a, b) {
+          return (toMinutes(a.startTime) || 0) - (toMinutes(b.startTime) || 0);
+        });
+
+        var cell = document.createElement('div');
+        // Editors can always click the cell to add another booking, even one
+        // that already has some; viewers only interact with existing blocks.
+        var canAdd = !isViewer();
+        cell.className = 'cg-cell cg-slot' + (canAdd ? ' clickable' : '') + (dm.info.cls ? ' ' + dm.info.cls : '');
+
+        bookings.forEach(function (booking) {
+          var block = document.createElement('div');
+          block.className = 'block';
+          block.style.background = statusColor(booking.status);
+          block.innerHTML =
+            '<div class="block-time">' + escapeHtml(timeRange(booking)) + '</div>' +
+            '<div class="block-company">' + escapeHtml(booking.companyName) + '</div>' +
+            '<div class="block-meta">' + escapeHtml(booking.package) + ' · ' + escapeHtml(booking.pax) + ' pax</div>' +
+            mealChipsHtml(booking) +
+            (booking.pic ? '<div class="sales-badge" style="background:' + escapeHtml(salesColor(booking.pic)) +
+              '">' + escapeHtml(booking.pic) + '</div>' : '');
+          block.title = timeRange(booking) + ' | ' + booking.companyName + ' | ' + booking.package +
+            ' | ' + booking.pax + ' pax | ' + booking.status + ' | ' + booking.setup +
+            ' | Sales: ' + booking.pic +
+            (booking.guestName ? ' | Tamu: ' + booking.guestName : '') +
+            (booking.guestPhone ? ' (' + booking.guestPhone + ')' : '') +
+            mealTooltip(booking);
+          block.addEventListener('click', function (e) {
+            e.stopPropagation();
+            openBookingModal(booking);
+          });
+          cell.appendChild(block);
+        });
+
+        if (canAdd) {
+          cell.addEventListener('click', function () {
+            openBookingModal(null, room.name, dm.dateStr);
+          });
+        }
+        grid.appendChild(cell);
+      });
+    });
+  }
+
+  // A year of day columns would be unreadable, so this view aggregates each
+  // room/month into event count + revenue. Clicking a cell drills into it.
+  function renderYearGrid(grid, period) {
+    grid.style.gridTemplateColumns = 'var(--room-col) repeat(12, minmax(0, 1fr))';
+    grid.style.minWidth = '0';
+
+    var corner = document.createElement('div');
+    corner.className = 'cg-corner cg-cell';
+    grid.appendChild(corner);
+
+    period.months.forEach(function (monthDate) {
+      var head = document.createElement('div');
+      head.className = 'cg-date-header cg-cell';
+      head.textContent = MONTH_NAMES[monthDate.getMonth()].slice(0, 3);
+      grid.appendChild(head);
+    });
+
+    state.rooms.forEach(function (room) {
+      grid.appendChild(roomNameCell(room));
+
+      period.months.forEach(function (monthDate) {
+        var prefix = monthDate.getFullYear() + '-' + pad2(monthDate.getMonth() + 1);
+        var rows = state.bookings.filter(function (b) {
+          return b.roomName === room.name && String(b.date).indexOf(prefix) === 0;
+        });
+        var cell = document.createElement('div');
+        cell.className = 'cg-cell cg-slot clickable year-cell';
+        if (rows.length) {
+          var revenue = rows.reduce(function (sum, b) { return sum + toNumber(b.revenue); }, 0);
+          var pax = rows.reduce(function (sum, b) { return sum + toNumber(b.pax); }, 0);
+          cell.innerHTML = '<div class="year-count">' + rows.length + ' event</div>' +
+            '<div class="year-meta">' + pax + ' pax</div>' +
+            (revenue ? '<div class="year-meta">Rp ' + rupiah(revenue) + '</div>' : '');
+          cell.title = room.name + ' — ' + MONTH_NAMES[monthDate.getMonth()] + ': ' + rows.length +
+            ' event, ' + pax + ' pax' + (revenue ? ', Rp ' + rupiah(revenue) : '');
+        }
+        cell.addEventListener('click', function () {
+          state.viewDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
+          state.view = 'month';
+          document.querySelectorAll('.view-btn').forEach(function (b) {
+            b.classList.toggle('active', b.dataset.view === 'month');
+          });
+          renderCalendar();
+        });
+        grid.appendChild(cell);
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------------
+  // Booking modal
+  // ---------------------------------------------------------------------
+  $('addBookingBtn').addEventListener('click', function () { openBookingModal(null); });
+  $('bookingModalClose').addEventListener('click', closeBookingModal);
+  $('bkCancelBtn').addEventListener('click', closeBookingModal);
+
+  function openBookingModal(booking, prefillRoom, prefillDate) {
+    fillSelect($('bkRoom'), state.rooms, 'Pilih Room');
+    fillSelect($('bkPic'), state.pics, 'Pilih PIC');
+    fillSelect($('bkPackage'), state.packages, 'Pilih Package');
+    fillSelect($('bkSetup'), state.setups, 'Pilih Setup');
+    fillSelect($('bkStatus'), state.statuses, 'Pilih Status');
+    fillSelect($('bkSegment'), state.segments, 'Pilih Tipe Bisnis');
+
+    $('bookingError').textContent = '';
+    var viewer = isViewer();
+    ['bkRoom', 'bkDate', 'bkStart', 'bkEnd', 'bkCompany', 'bkPic', 'bkPackage', 'bkPax', 'bkStatus',
+      'bkSetup', 'bkSegment', 'bkPricePerPax', 'bkRevenue', 'bkGuestName', 'bkGuestPhone', 'bkGuestEmail']
+      .forEach(function (id) { $(id).disabled = viewer; });
+    $('bkSaveBtn').classList.toggle('hidden', viewer);
+
+    if (booking) {
+      $('bookingModalTitle').textContent = viewer ? 'Detail Booking' : 'Edit Booking';
+      $('bkId').value = booking.id;
+      $('bkRoom').value = booking.roomName;
+      $('bkDate').value = booking.date;
+      $('bkStart').value = booking.startTime || '';
+      $('bkEnd').value = booking.endTime || '';
+      $('bkCompany').value = booking.companyName;
+      $('bkPic').value = booking.pic;
+      $('bkPackage').value = booking.package;
+      $('bkPax').value = booking.pax;
+      $('bkStatus').value = booking.status;
+      $('bkSetup').value = booking.setup;
+      $('bkSegment').value = booking.marketSegment || '';
+      $('bkGuestName').value = booking.guestName || '';
+      $('bkGuestPhone').value = booking.guestPhone || '';
+      $('bkGuestEmail').value = booking.guestEmail || '';
+      $('bkPricePerPax').value = booking.pricePerPax ? rupiah(booking.pricePerPax) : '';
+      $('bkRevenue').value = booking.revenue ? rupiah(booking.revenue) : '';
+      $('bkDeleteBtn').classList.toggle('hidden', viewer);
+      // A BEO belongs to a saved booking, so it is only offered on edit.
+      // Viewers get it too - read-only, but they can still print.
+      $('bkBeoBtn').classList.remove('hidden');
+      $('bkBeoBtn').textContent = viewer ? 'Lihat BEO' : 'Buat BEO';
+      renderMealRows(mealsOf(booking.id));
+    } else {
+      $('bookingModalTitle').textContent = 'Add Booking';
+      $('bookingForm').reset();
+      $('bkId').value = '';
+      if (prefillRoom) $('bkRoom').value = prefillRoom;
+      if (prefillDate) $('bkDate').value = prefillDate;
+      $('bkDeleteBtn').classList.add('hidden');
+      $('bkBeoBtn').classList.add('hidden');
+      renderMealRows([]);
+    }
+    $('bookingModal').classList.remove('hidden');
+  }
+  function closeBookingModal() { $('bookingModal').classList.add('hidden'); }
+
+  // ---------------------------------------------------------------------
+  // Meal editor inside the booking modal
+  // ---------------------------------------------------------------------
+  function renderMealRows(meals) {
+    var container = $('mealRows');
+    var viewer = isViewer();
+    container.innerHTML = '';
+    var labelled = labelMeals(meals);
+
+    labelled.forEach(function (x, i) {
+      var m = x.meal;
+      var row = document.createElement('div');
+      row.className = 'meal-row';
+      row.dataset.index = i;
+      row.innerHTML =
+        '<div class="meal-row-head"><span class="meal-label">' + escapeHtml(x.label) + '</span>' +
+        (viewer ? '' : '<button type="button" class="btn btn-danger btn-small" data-meal-remove>Hapus</button>') +
+        '</div>' +
+        '<div class="meal-grid">' +
+          '<div><label>Jenis</label><select data-meal="type"></select></div>' +
+          '<div><label>Jam siap</label><input type="time" data-meal="time" value="' + escapeHtml(m.time || '') + '"></div>' +
+          '<div><label>Pax</label><input type="text" inputmode="numeric" data-meal="pax" value="' + escapeHtml(m.pax || '') + '"></div>' +
+          '<div><label>Harga / pax</label><input type="text" inputmode="numeric" data-meal="pricePerPax" value="' +
+            escapeHtml(m.pricePerPax ? rupiah(m.pricePerPax) : '') + '"></div>' +
+        '</div>' +
+        '<label>Lokasi</label>' +
+        '<input type="text" data-meal="location" value="' + escapeHtml(m.location || '') + '">' +
+        '<label>Menu</label>' +
+        '<textarea rows="2" data-meal="menu"></textarea>';
+
+      var typeSel = row.querySelector('[data-meal="type"]');
+      fillSelect(typeSel, state.mealTypes, 'Pilih jenis');
+      typeSel.value = m.type || '';
+      row.querySelector('[data-meal="menu"]').value = m.menu || '';
+
+      row.querySelectorAll('[data-meal]').forEach(function (el) { el.disabled = viewer; });
+
+      // Picking a type pulls in its default price, but never overwrites a
+      // price that is already filled in.
+      typeSel.addEventListener('change', function () {
+        var priceEl = row.querySelector('[data-meal="pricePerPax"]');
+        if (!toNumber(priceEl.value)) {
+          var t = state.mealTypes.filter(function (x2) { return x2.name === typeSel.value; })[0];
+          if (t && toNumber(t.defaultPrice)) priceEl.value = rupiah(toNumber(t.defaultPrice));
+        }
+        refreshMealUi();
+      });
+      row.querySelector('[data-meal="pricePerPax"]').addEventListener('input', updateMealSummary);
+      var removeBtn = row.querySelector('[data-meal-remove]');
+      if (removeBtn) {
+        removeBtn.addEventListener('click', function () {
+          var current = collectMeals();
+          current.splice(i, 1);
+          renderMealRows(current);
+        });
+      }
+      container.appendChild(row);
+    });
+
+    $('mealAddBtn').classList.toggle('hidden', viewer);
+    $('mealPresetBtn').classList.toggle('hidden', viewer);
+    updateMealSummary();
+  }
+
+  // Re-renders so the "Coffee Break 1 / 2" numbering follows the new types.
+  function refreshMealUi() { renderMealRows(collectMeals()); }
+
+  function collectMeals() {
+    return Array.prototype.map.call($('mealRows').querySelectorAll('.meal-row'), function (row) {
+      function val(name) {
+        var el = row.querySelector('[data-meal="' + name + '"]');
+        return el ? el.value : '';
+      }
+      return {
+        type: val('type'),
+        time: val('time'),
+        pax: toNumber(val('pax')) || '',
+        pricePerPax: toNumber(val('pricePerPax')) || '',
+        location: val('location').trim(),
+        menu: val('menu')
+      };
+    });
+  }
+
+  // Meal prices break down the package price rather than adding to it (see
+  // the BEO: CB I + Lunch + CB II = the Fullday rate), so this compares the
+  // two instead of summing them into revenue.
+  function updateMealSummary() {
+    var meals = collectMeals();
+    if (!meals.length) {
+      $('mealSummary').textContent = 'Belum ada konsumsi. Untuk paket Full-board biasanya: Coffee Break 1, Lunch, Coffee Break 2, Dinner.';
+      return;
+    }
+    var perPax = mealTotalPerPax(meals);
+    var packagePrice = toNumber($('bkPricePerPax').value);
+    var text = meals.length + ' item · total konsumsi Rp ' + rupiah(perPax) + ' /pax';
+    if (packagePrice) {
+      var diff = perPax - packagePrice;
+      text += diff === 0
+        ? ' — sama dengan harga paket.'
+        : ' — harga paket Rp ' + rupiah(packagePrice) + ' /pax (selisih Rp ' + rupiah(Math.abs(diff)) +
+          (diff > 0 ? ' lebih tinggi).' : ' lebih rendah).');
+    }
+    $('mealSummary').textContent = text;
+  }
+
+  $('mealAddBtn').addEventListener('click', function () {
+    var meals = collectMeals();
+    meals.push({ type: '', time: '', pax: toNumber($('bkPax').value) || '', pricePerPax: '', location: '', menu: '' });
+    renderMealRows(meals);
+  });
+
+  // One click for the usual Full-board day.
+  $('mealPresetBtn').addEventListener('click', function () {
+    var pax = toNumber($('bkPax').value) || '';
+    function priceOf(name) {
+      var t = state.mealTypes.filter(function (x) { return x.name === name; })[0];
+      return t ? toNumber(t.defaultPrice) || '' : '';
+    }
+    renderMealRows([
+      { type: 'Coffee Break', time: '09:00', pax: pax, pricePerPax: priceOf('Coffee Break'), location: '', menu: '' },
+      { type: 'Lunch', time: '12:00', pax: pax, pricePerPax: priceOf('Lunch'), location: '', menu: '' },
+      { type: 'Coffee Break', time: '15:00', pax: pax, pricePerPax: priceOf('Coffee Break'), location: '', menu: '' },
+      { type: 'Dinner', time: '19:00', pax: pax, pricePerPax: priceOf('Dinner'), location: '', menu: '' }
+    ]);
+  });
+
+  // Revenue is what the Report tab sums, so keep it filled automatically from
+  // price x pax while still letting the user override it (flat-rate packages
+  // do not follow the per-pax math).
+  function recalcRevenue() {
+    var price = toNumber($('bkPricePerPax').value);
+    var pax = toNumber($('bkPax').value);
+    if (!price || !pax) return;
+    $('bkRevenue').value = rupiah(price * pax);
+  }
+  $('bkPricePerPax').addEventListener('input', recalcRevenue);
+  $('bkPax').addEventListener('input', recalcRevenue);
+
+  $('bookingForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var payload = {
+      id: $('bkId').value || undefined,
+      roomName: $('bkRoom').value,
+      date: $('bkDate').value,
+      startTime: $('bkStart').value,
+      endTime: $('bkEnd').value,
+      companyName: $('bkCompany').value.trim(),
+      pic: $('bkPic').value,
+      package: $('bkPackage').value,
+      pax: $('bkPax').value.trim(),
+      status: $('bkStatus').value,
+      setup: $('bkSetup').value,
+      marketSegment: $('bkSegment').value,
+      pricePerPax: toNumber($('bkPricePerPax').value),
+      revenue: toNumber($('bkRevenue').value),
+      guestName: $('bkGuestName').value.trim(),
+      guestPhone: $('bkGuestPhone').value.trim(),
+      guestEmail: $('bkGuestEmail').value.trim(),
+      meals: collectMeals().filter(function (m) { return m.type; })
+    };
+
+    if (toMinutes(payload.endTime) <= toMinutes(payload.startTime)) {
+      $('bookingError').textContent = 'Jam selesai harus lebih besar dari jam mulai.';
+      return;
+    }
+    var clash = findClash(payload);
+    if (clash) {
+      $('bookingError').textContent = 'Jadwal bentrok dengan ' + clash.companyName +
+        ' (' + timeRange(clash) + ') di ruang yang sama.';
+      return;
+    }
+
+    $('bkSaveBtn').disabled = true;
+    gsRun('saveBooking', state.token, payload).then(function (saved) {
+      $('bkSaveBtn').disabled = false;
+      // The server returns the meal rows it actually wrote (with their ids),
+      // so swap in that list rather than trusting the local copy.
+      var savedMeals = saved.meals || [];
+      delete saved.meals;
+      state.meals = state.meals.filter(function (m) { return m.bookingId !== saved.id; }).concat(savedMeals);
+      var idx = state.bookings.findIndex(function (b) { return b.id === saved.id; });
+      if (idx >= 0) state.bookings[idx] = saved; else state.bookings.push(saved);
+      closeBookingModal();
+      renderCalendar();
+      renderReport();
+      toast('Booking saved.');
+    }, function (err) {
+      $('bkSaveBtn').disabled = false;
+      $('bookingError').textContent = err.message || String(err);
+    });
+  });
+
+  $('bkDeleteBtn').addEventListener('click', function () {
+    var id = $('bkId').value;
+    if (!id) return;
+    if (!confirm('Delete this booking?')) return;
+    gsRun('deleteBooking', state.token, id).then(function () {
+      state.bookings = state.bookings.filter(function (b) { return b.id !== id; });
+      state.meals = state.meals.filter(function (m) { return m.bookingId !== id; });
+      closeBookingModal();
+      renderCalendar();
+      renderReport();
+      toast('Booking deleted.');
+    }, function (err) { toast(err.message || String(err), true); });
+  });
+
+  // ---------------------------------------------------------------------
+  // Management tab
+  // ---------------------------------------------------------------------
+  document.querySelectorAll('.mgmt-tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.mgmt-tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentEntity = btn.dataset.entity;
+      renderMgmtTab();
+    });
+  });
+
+  function renderMgmtTab() {
+    var cfg = ENTITIES[currentEntity];
+    var columns = cfg.tableFields || cfg.fields;
+    var viewer = isViewer();
+    $('mgmtTitle').textContent = cfg.label;
+
+    var thead = $('mgmtThead');
+    thead.innerHTML = '<tr>' + columns.map(function (f) { return '<th>' + f.label + '</th>'; }).join('') +
+      (viewer ? '' : '<th>Actions</th>') + '</tr>';
+
+    var tbody = $('mgmtTbody');
+    var rows = state[cfg.stateKey];
+    if (!rows.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="' + (columns.length + (viewer ? 0 : 1)) + '">No data yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(function (row) {
+      var cells = columns.map(function (f) {
+        if (f.type === 'color') {
+          return '<td><span class="swatch" style="background:' + escapeHtml(row[f.key]) + '"></span>' + escapeHtml(row[f.key]) + '</td>';
+        }
+        return '<td>' + escapeHtml(row[f.key]) + '</td>';
+      }).join('');
+      return '<tr data-id="' + row.id + '">' + cells + (viewer ? '' :
+        '<td class="row-actions">' +
+        '<button class="btn btn-ghost btn-small" data-action="edit">Edit</button>' +
+        '<button class="btn btn-danger btn-small" data-action="delete">Delete</button>' +
+        '</td>') + '</tr>';
+    }).join('');
+
+    tbody.querySelectorAll('tr').forEach(function (tr) {
+      var id = tr.dataset.id;
+      var record = rows.filter(function (r) { return r.id === id; })[0];
+      var editBtn = tr.querySelector('[data-action="edit"]');
+      var delBtn = tr.querySelector('[data-action="delete"]');
+      if (editBtn) editBtn.addEventListener('click', function () { openMgmtModal(record); });
+      if (delBtn) delBtn.addEventListener('click', function () { deleteMgmtRecord(record); });
+    });
+  }
+
+  $('mgmtAddBtn').addEventListener('click', function () { openMgmtModal(null); });
+  $('mgmtModalClose').addEventListener('click', closeMgmtModal);
+  $('mgmtCancelBtn').addEventListener('click', closeMgmtModal);
+  function closeMgmtModal() { $('mgmtModal').classList.add('hidden'); }
+
+  function openMgmtModal(record) {
+    var cfg = ENTITIES[currentEntity];
+    $('mgmtModalTitle').textContent = (record ? 'Edit ' : 'Add ') + cfg.label;
+    $('mgmtId').value = record ? record.id : '';
+    $('mgmtError').textContent = '';
+
+    var container = $('mgmtFormFields');
+    container.innerHTML = '';
+    cfg.fields.forEach(function (f) {
+      var label = document.createElement('label');
+      label.textContent = f.label;
+      container.appendChild(label);
+
+      var input;
+      if (f.type === 'select') {
+        input = document.createElement('select');
+        f.options.forEach(function (opt) {
+          var o = document.createElement('option');
+          o.value = opt; o.textContent = opt;
+          input.appendChild(o);
+        });
+      } else {
+        input = document.createElement('input');
+        input.type = f.type === 'color' ? 'color' : (f.type === 'date' ? 'date' : (f.type === 'password' ? 'password' : 'text'));
+        if (f.type === 'password') input.autocomplete = 'new-password';
+      }
+      input.id = 'mf_' + f.key;
+      input.required = f.required !== false;
+      if (f.type === 'password') {
+        input.required = false;
+        input.placeholder = record ? 'Kosongkan jika tidak diubah' : 'Wajib diisi';
+      } else if (record) {
+        input.value = record[f.key] || (f.type === 'color' ? '#2563eb' : '');
+      } else if (f.type === 'color') {
+        input.value = '#2563eb';
+      }
+      container.appendChild(input);
+    });
+
+    $('mgmtModal').classList.remove('hidden');
+  }
+
+  $('mgmtForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var cfg = ENTITIES[currentEntity];
+    var id = $('mgmtId').value;
+    var data = {};
+    cfg.fields.forEach(function (f) {
+      var raw = $('mf_' + f.key).value;
+      data[f.key] = f.type === 'password' ? raw : raw.trim();
+    });
+    if (cfg.isUsers && !id && !data.password) {
+      $('mgmtError').textContent = 'Password wajib diisi untuk user baru.';
+      return;
+    }
+
+    var methodName = cfg.isUsers
+      ? (id ? 'updateUserAccount' : 'addUserAccount')
+      : (id ? 'updateMaster' : 'addMaster');
+    var callArgs = cfg.isUsers
+      ? (id ? [state.token, id, data] : [state.token, data])
+      : (id ? [state.token, currentEntity, id, data] : [state.token, currentEntity, data]);
+    gsRun.apply(null, [methodName].concat(callArgs)).then(onSaved, onError);
+
+    function onSaved(saved) {
+      var arr = state[cfg.stateKey];
+      if (id) {
+        var idx = arr.findIndex(function (r) { return r.id === id; });
+        if (idx >= 0) arr[idx] = Object.assign({}, arr[idx], saved);
+      } else {
+        arr.push(saved);
+      }
+      closeMgmtModal();
+      renderMgmtTab();
+      renderCalendar();
+      initReportControls(); // segment/status lists feed the report filters
+      renderReport();
+      toast('Saved.');
+    }
+    function onError(err) { $('mgmtError').textContent = err.message || String(err); }
+  });
+
+  // ---------------------------------------------------------------------
+  // Report
+  // ---------------------------------------------------------------------
+  var reportReady = false;
+
+  function initReportControls() {
+    var yearSel = $('rpYear');
+    var years = {};
+    state.bookings.forEach(function (b) {
+      var y = String(b.date || '').slice(0, 4);
+      if (/^\d{4}$/.test(y)) years[y] = true;
+    });
+    years[String(new Date().getFullYear())] = true;
+    yearSel.innerHTML = Object.keys(years).sort().reverse().map(function (y) {
+      return '<option value="' + y + '">' + y + '</option>';
+    }).join('');
+    yearSel.value = String(state.viewDate.getFullYear());
+
+    $('rpMonth').innerHTML = MONTH_NAMES.map(function (name, i) {
+      return '<option value="' + i + '">' + name + '</option>';
+    }).join('');
+    $('rpMonth').value = String(state.viewDate.getMonth());
+
+    $('rpSegment').innerHTML = '<option value="">Semua tipe bisnis</option>' +
+      state.segments.map(function (s) {
+        return '<option value="' + escapeHtml(s.name) + '">' + escapeHtml(s.name) + '</option>';
+      }).join('');
+
+    $('rpStatus').innerHTML = '<option value="">Semua status</option>' +
+      state.statuses.map(function (s) {
+        return '<option value="' + escapeHtml(s.name) + '">' + escapeHtml(s.name) + '</option>';
+      }).join('');
+
+    if (!reportReady) {
+      ['rpPeriod', 'rpMonth', 'rpYear', 'rpSegment', 'rpStatus', 'rpSort', 'rpTop'].forEach(function (id) {
+        $(id).addEventListener('change', renderReport);
+      });
+      reportReady = true;
+    }
+  }
+
+  function reportRows() {
+    var period = $('rpPeriod').value;
+    var year = $('rpYear').value;
+    var month = $('rpMonth').value;
+    var segment = $('rpSegment').value;
+    var status = $('rpStatus').value;
+    var prefix = period === 'month' ? year + '-' + pad2(Number(month) + 1)
+      : period === 'year' ? year : '';
+    return state.bookings.filter(function (b) {
+      if (prefix && String(b.date || '').indexOf(prefix) !== 0) return false;
+      if (segment && (b.marketSegment || '') !== segment) return false;
+      if (status && b.status !== status) return false;
+      return true;
+    });
+  }
+
+  // Groups rows by one field into {key, events, pax, revenue}, sorted by the
+  // metric the user picked.
+  function summarize(rows, keyFn, emptyLabel) {
+    var map = {};
+    rows.forEach(function (b) {
+      var key = (keyFn(b) || '').toString().trim() || emptyLabel;
+      if (!map[key]) map[key] = { key: key, events: 0, pax: 0, revenue: 0 };
+      map[key].events += 1;
+      map[key].pax += toNumber(b.pax);
+      map[key].revenue += toNumber(b.revenue);
+    });
+    var metric = $('rpSort').value;
+    return Object.keys(map).map(function (k) { return map[k]; })
+      .sort(function (a, b) { return b[metric] - a[metric]; });
+  }
+
+  function renderReport() {
+    if (!state.bookings) return;
+    var rows = reportRows();
+    var metric = $('rpSort').value;
+    var top = Number($('rpTop').value) || 0;
+
+    $('rpMonthWrap').classList.toggle('hidden', $('rpPeriod').value !== 'month');
+    $('rpYearWrap').classList.toggle('hidden', $('rpPeriod').value === 'all');
+
+    var totalRevenue = rows.reduce(function (s, b) { return s + toNumber(b.revenue); }, 0);
+    var totalPax = rows.reduce(function (s, b) { return s + toNumber(b.pax); }, 0);
+    var noRevenue = rows.filter(function (b) { return !toNumber(b.revenue); }).length;
+
+    $('rpStats').innerHTML =
+      statCard('Total Revenue', 'Rp ' + rupiah(totalRevenue)) +
+      statCard('Total Pax', rupiah(totalPax)) +
+      statCard('Jumlah Event', String(rows.length)) +
+      statCard('Rata-rata / Event', rows.length ? 'Rp ' + rupiah(Math.round(totalRevenue / rows.length)) : '-');
+
+    // Per business type - always the full list, it is only a handful of rows.
+    var bySegment = summarize(rows, function (b) { return b.marketSegment; }, '(Belum diisi)');
+    renderReportTable($('rpSegmentTable'), ['Tipe Bisnis'], bySegment, totalRevenue, totalPax, false);
+
+    // Company ranking honours the Top N selector.
+    var byCompany = summarize(rows, function (b) { return b.companyName; }, '(Tanpa nama)');
+    var shown = top ? byCompany.slice(0, top) : byCompany;
+    // Saying "Top 30 of 16" reads as a mistake, so only call it a Top N when
+    // the list is actually longer than N.
+    var scope = (top && top < byCompany.length)
+      ? ' (Top ' + top + ' dari ' + byCompany.length + ')'
+      : ' (semua ' + byCompany.length + ' company)';
+    $('rpRankTitle').textContent = 'Ranking Company — ' +
+      (metric === 'revenue' ? 'Revenue tertinggi' : metric === 'pax' ? 'Pax terbanyak' : 'Event terbanyak') + scope;
+    renderReportTable($('rpCompanyTable'), ['Company'], shown, totalRevenue, totalPax, true);
+
+    var bySales = summarize(rows, function (b) { return b.pic; }, '(Tanpa sales)');
+    renderReportTable($('rpSalesTable'), ['Sales'], bySales, totalRevenue, totalPax, false);
+
+    var byRoom = summarize(rows, function (b) { return b.roomName; }, '(Tanpa ruang)');
+    renderReportTable($('rpRoomTable'), ['Meeting Room'], byRoom, totalRevenue, totalPax, false);
+
+    if (noRevenue) {
+      $('rpStats').insertAdjacentHTML('beforeend',
+        '<div class="stat-card" style="flex-basis:100%"><div class="stat-label">Catatan</div>' +
+        '<div class="beo-hint" style="margin-top:4px">' + noRevenue + ' dari ' + rows.length +
+        ' event belum punya nilai revenue, jadi belum ikut terhitung. Lengkapi lewat Edit booking.</div></div>');
+    }
+  }
+
+  function statCard(label, value) {
+    return '<div class="stat-card"><div class="stat-label">' + escapeHtml(label) + '</div>' +
+      '<div class="stat-value">' + escapeHtml(value) + '</div></div>';
+  }
+
+  function renderReportTable(table, headCols, data, totalRevenue, totalPax, ranked) {
+    var thead = table.querySelector('thead');
+    var tbody = table.querySelector('tbody');
+    thead.innerHTML = '<tr>' + (ranked ? '<th class="rank">#</th>' : '') +
+      headCols.map(function (h) { return '<th>' + escapeHtml(h) + '</th>'; }).join('') +
+      '<th class="num">Event</th><th class="num">Pax</th><th class="num">Revenue</th><th>Share</th></tr>';
+
+    if (!data.length) {
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="' + (headCols.length + (ranked ? 4 : 3) + 1) +
+        '">Tidak ada data untuk filter ini.</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = data.map(function (r, i) {
+      var share = totalRevenue ? Math.round(r.revenue / totalRevenue * 100) : 0;
+      return '<tr>' + (ranked ? '<td class="rank">' + (i + 1) + '</td>' : '') +
+        '<td>' + escapeHtml(r.key) + '</td>' +
+        '<td class="num">' + r.events + '</td>' +
+        '<td class="num">' + rupiah(r.pax) + '</td>' +
+        '<td class="num">Rp ' + rupiah(r.revenue) + '</td>' +
+        '<td><div class="share-bar" title="' + share + '% dari total revenue">' +
+        '<span style="width:' + share + '%"></span></div></td></tr>';
+    }).join('') +
+      '<tr class="total-row">' + (ranked ? '<td></td>' : '') + '<td>Total</td>' +
+      '<td class="num">' + data.reduce(function (s, r) { return s + r.events; }, 0) + '</td>' +
+      '<td class="num">' + rupiah(data.reduce(function (s, r) { return s + r.pax; }, 0)) + '</td>' +
+      '<td class="num">Rp ' + rupiah(data.reduce(function (s, r) { return s + r.revenue; }, 0)) + '</td>' +
+      '<td></td></tr>';
+  }
+
+  // ---------------------------------------------------------------------
+  // Banquet Event Order (BEO)
+  // ---------------------------------------------------------------------
+  var BEO_FIELDS = ['beoNo', 'dateOfIssue', 'eventTitle', 'organizer', 'contactPerson', 'address',
+    'phone', 'email', 'marketSegment', 'sales', 'arrangement', 'floor', 'pricePerPax',
+    'kitchenPrepare', 'kitchenMenu', 'fbBanquet', 'cashier', 'frontOffice', 'housekeeping',
+    'engineering', 'accounting', 'security', 'it', 'distribution', 'preparedBy', 'dosm',
+    'fbProduct', 'fbService', 'accountingManager', 'generalManager'];
+
+  var beoBooking = null; // booking the open BEO belongs to
+
+  function beoFieldId(field) {
+    return field === 'beoNo' ? 'beoNo' : 'beo' + field.charAt(0).toUpperCase() + field.slice(1);
+  }
+  function rupiah(n) {
+    var digits = String(n == null ? '' : n).replace(/[^\d]/g, '');
+    return digits ? digits.replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '';
+  }
+  function isDefinite(booking) { return (booking.status || '').toLowerCase() === 'definite'; }
+
+  // Boilerplate that is the same on every BEO, plus whatever we can derive
+  // from the booking - so a new BEO opens mostly filled in.
+  function beoDefaults(booking, suggestedNo) {
+    var company = (booking.companyName || '').toString();
+    return {
+      beoNo: suggestedNo || '',
+      dateOfIssue: new Date().toISOString().slice(0, 10),
+      eventTitle: company,
+      organizer: company,
+      contactPerson: booking.guestName || '',
+      address: '',
+      phone: booking.guestPhone || '',
+      email: booking.guestEmail || '',
+      marketSegment: booking.marketSegment || '',
+      sales: booking.pic || '',
+      arrangement: booking.package || '',
+      floor: '',
+      pricePerPax: booking.pricePerPax ? rupiah(booking.pricePerPax) : '',
+      kitchenPrepare: buildKitchenPrepare(booking),
+      kitchenMenu: buildKitchenMenu(booking),
+      fbBanquet: booking.roomName + '\nPlease set up :\n• Setup ' + booking.setup + ' for ' + booking.pax +
+        'pax\n• Registration Table\n• Operator Table\n• Standart Sound System & 2 Mic Wireless\n' +
+        '• LCD & Screen\n• Stationary, Mineral Water, Candies',
+      cashier: '',
+      frontOffice: '• Aware for this event\n• Make sure no late charge\n' +
+        '• Assist the guest/participants if they need information\n' +
+        '• Make sure all bill sign by the client\n• Payment will be by Bank Transfer',
+      housekeeping: '• Make sure the cleanliness of venue',
+      engineering: '• Turn on AC 30 minutes before event\n• Test first all equipment',
+      accounting: '',
+      security: '• Be aware about this event\n• Anticipate the parking area',
+      it: '"' + company.toUpperCase() + '"\n' + booking.roomName + '\n' + booking.date,
+      distribution: 'SM, Chief Engineer, EHK, HRM, FOM, FBM, CHEF , A&G',
+      preparedBy: booking.pic || '',
+      dosm: 'Weni Fitriati',
+      fbProduct: '', fbService: '',
+      accountingManager: 'Diyan Setiawati',
+      generalManager: 'Intan Alice'
+    };
+  }
+
+  // Reproduces the hotel's BEO wording from the meal rows:
+  //   • CB I ROP Buffet for 36 pax at foyer ... ready 09.00 WIB
+  //   Breakdown: CB I : Rp 30.000 X 36 pax
+  function buildKitchenPrepare(booking) {
+    var labelled = labelMeals(mealsOf(booking.id));
+    if (!labelled.length) return 'Prepare :\n• \n\nBreakdown :\n';
+    var prepare = labelled.map(function (x) {
+      var m = x.meal;
+      return '• ' + x.label + ' Buffet for ' + (m.pax || booking.pax) + ' pax' +
+        (m.location ? ' at ' + m.location : '') +
+        (m.time ? ' ready ' + m.time.replace(':', '.') + ' WIB' : '');
+    }).join('\n');
+    var breakdown = labelled.map(function (x) {
+      return '    ' + x.label + ' : Rp ' + rupiah(x.meal.pricePerPax) + ' X ' + (x.meal.pax || booking.pax) + ' pax';
+    }).join('\n');
+    return 'Prepare :\n' + prepare + '\n\nBreakdown :\n' + breakdown;
+  }
+
+  function buildKitchenMenu(booking) {
+    var labelled = labelMeals(mealsOf(booking.id));
+    if (!labelled.length) return 'Menu :\n';
+    return 'Menu :\n' + labelled.map(function (x) {
+      return x.label + ' : ' + (x.meal.menu || '-');
+    }).join('\n');
+  }
+
+  function openBeoModal(booking) {
+    beoBooking = booking;
+    var viewer = isViewer();
+    $('beoError').textContent = '';
+    $('beoBookingId').value = booking.id;
+    $('beoModalTitle').textContent = 'Banquet Event Order — ' + booking.companyName;
+    $('beoSummary').innerHTML =
+      '<strong>' + escapeHtml(booking.roomName) + '</strong> · ' + escapeHtml(booking.date) +
+      ' · ' + escapeHtml(timeRange(booking)) + '<br>' +
+      escapeHtml(booking.package) + ' · ' + escapeHtml(booking.pax) + ' pax · ' +
+      escapeHtml(booking.setup) + ' · PIC ' + escapeHtml(booking.pic) +
+      ' · Status <strong>' + escapeHtml(booking.status) + '</strong>';
+    $('beoStatusHint').textContent = isDefinite(booking)
+      ? 'Status Definite: dokumen dicetak lengkap dengan harga, invoice, dan blok approval.'
+      : 'Status Tentative: dokumen dicetak dengan tanda TENTATIVE, tanpa bagian Cashier/Accounting dan tanpa blok approval.';
+    $('beoMoneyFields').classList.toggle('hidden', !isDefinite(booking));
+    $('beoSaveBtn').classList.toggle('hidden', viewer);
+    $('beoModal').classList.remove('hidden');
+
+    gsRun('getBeo', state.token, booking.id).then(function (res) {
+      var data = res.beo || beoDefaults(booking, res.suggestedNo);
+      $('beoId').value = res.beo ? res.beo.id : '';
+      BEO_FIELDS.forEach(function (f) {
+        var el = $(beoFieldId(f));
+        if (el) el.value = data[f] == null ? '' : data[f];
+        if (el) el.disabled = viewer;
+      });
+    }, function (err) {
+      $('beoError').textContent = err.message || String(err);
+    });
+  }
+  function closeBeoModal() { $('beoModal').classList.add('hidden'); }
+
+  $('beoModalClose').addEventListener('click', closeBeoModal);
+  $('beoCancelBtn').addEventListener('click', closeBeoModal);
+  $('bkBeoBtn').addEventListener('click', function () {
+    var id = $('bkId').value;
+    var booking = state.bookings.filter(function (b) { return b.id === id; })[0];
+    if (!booking) return;
+    closeBookingModal();
+    openBeoModal(booking);
+  });
+
+  // Filling in the price is enough to produce the standard money wording, but
+  // never overwrite text the user has already written.
+  $('beoPricePerPax').addEventListener('input', function () {
+    if (!beoBooking) return;
+    var price = String($('beoPricePerPax').value).replace(/[^\d]/g, '');
+    if (!price) return;
+    var pax = String(beoBooking.pax).replace(/[^\d]/g, '') || '0';
+    var total = rupiah(Number(price) * Number(pax));
+    var pkg = beoBooking.package;
+    if (!$('beoAccounting').value.trim()) {
+      $('beoAccounting').value = '• Prepare invoice :\n' + pkg + ' @Rp ' + rupiah(price) +
+        ',-nett x ' + pax + 'pax = Rp. ' + total + ',-nett\n\n• Payment will be by Bank Transfer';
+    }
+    if (!$('beoCashier').value.trim()) {
+      $('beoCashier').value = 'Internal breakdown : Price\n' + pkg + ' Rp ' + rupiah(price) +
+        ',-nett/pax\n' + pkg + ' @Rp ' + rupiah(price) + ',-nett x ' + pax + ' pax = Rp. ' +
+        total + ',-nett\n\nPayment by Bank Transfer';
+    }
+  });
+
+  $('beoForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var payload = { id: $('beoId').value || undefined, bookingId: $('beoBookingId').value };
+    BEO_FIELDS.forEach(function (f) {
+      var el = $(beoFieldId(f));
+      payload[f] = el ? el.value : '';
+    });
+    $('beoSaveBtn').disabled = true;
+    gsRun('saveBeo', state.token, payload).then(function (saved) {
+      $('beoSaveBtn').disabled = false;
+      $('beoId').value = saved.id;
+      toast('BEO tersimpan.');
+    }, function (err) {
+      $('beoSaveBtn').disabled = false;
+      $('beoError').textContent = err.message || String(err);
+    });
+  });
+
+  $('beoPrintBtn').addEventListener('click', function () {
+    if (!beoBooking) return;
+    var data = {};
+    BEO_FIELDS.forEach(function (f) {
+      var el = $(beoFieldId(f));
+      data[f] = el ? el.value : '';
+    });
+    $('beoPrintArea').innerHTML = buildBeoHtml(data, beoBooking);
+    $('beoPrintOverlay').classList.remove('hidden');
+    document.body.classList.add('beo-printing');
+  });
+  $('beoDoPrint').addEventListener('click', function () { window.print(); });
+  $('beoClosePrint').addEventListener('click', function () {
+    $('beoPrintOverlay').classList.add('hidden');
+    document.body.classList.remove('beo-printing');
+  });
+
+  // Renders the printable BEO. Tentative bookings deliberately omit the
+  // money sections and the approval signatures - those only exist once the
+  // event is confirmed.
+  function buildBeoHtml(d, booking) {
+    var definite = isDefinite(booking);
+    function esc(s) { return escapeHtml(s == null ? '' : s); }
+    function block(text) { return esc(text).replace(/\n/g, '<br>'); }
+    function section(title, body) {
+      return '<div class="sec"><div class="sec-h">' + esc(title) + '</div>' +
+        '<div class="sec-b">' + block(body) + '</div></div>';
+    }
+    function info(label, value) {
+      return '<tr><td class="lbl">' + esc(label) + '</td><td class="col">:</td><td>' + esc(value) + '</td></tr>';
+    }
+
+    var left = section('KITCHEN - EXECUTIVE CHEF', d.kitchenPrepare + '\n' + d.kitchenMenu) +
+      section('F & B BANQUET', d.fbBanquet) +
+      (definite ? section('CASHIER', d.cashier) : '');
+    var right = section('FRONT OFFICE', d.frontOffice) +
+      section('HOUSEKEEPING', d.housekeeping) +
+      section('ENGINEERING', d.engineering) +
+      (definite ? section('ACCOUNTING', d.accounting) : '') +
+      section('SECURITY', d.security) +
+      section('IT', d.it);
+
+    var signatures = definite
+      ? '<table class="sign"><tr>' +
+          '<td class="sign-head" colspan="1">Prepared &amp; Issue by,</td>' +
+          '<td class="sign-head" colspan="5">Approve By,</td></tr><tr>' +
+          '<td class="sign-box"></td><td class="sign-box"></td><td class="sign-box"></td>' +
+          '<td class="sign-box"></td><td class="sign-box"></td><td class="sign-box"></td></tr><tr>' +
+          '<td class="sign-name">' + esc(d.preparedBy) + '<br><span>Banquet Sales</span></td>' +
+          '<td class="sign-name">' + esc(d.dosm) + '<br><span>DOSM</span></td>' +
+          '<td class="sign-name">' + esc(d.fbProduct) + '<br><span>F &amp; B Product</span></td>' +
+          '<td class="sign-name">' + esc(d.fbService) + '<br><span>F &amp; B Service</span></td>' +
+          '<td class="sign-name">' + esc(d.accountingManager) + '<br><span>Accounting Manager</span></td>' +
+          '<td class="sign-name">' + esc(d.generalManager) + '<br><span>General Manager</span></td>' +
+        '</tr></table>'
+      : '<table class="sign"><tr><td class="sign-head">Prepared &amp; Issue by,</td></tr>' +
+        '<tr><td class="sign-box"></td></tr>' +
+        '<tr><td class="sign-name">' + esc(d.preparedBy) + '<br><span>Banquet Sales</span></td></tr></table>' +
+        '<p class="tent-note">Dokumen sementara (TENTATIVE). Harga, invoice, dan persetujuan diterbitkan setelah status menjadi Definite.</p>';
+
+    // Returns a fragment; its styling lives in Stylesheet.html under
+    // #beoPrintArea so the same rules drive both preview and print.
+    return '<div class="top"><div class="brand">MERCURE<small>HOTEL SOLO</small></div>' +
+      '<h1>Banquet Event Order</h1><div class="page-of">Page 1 of 1</div></div>' +
+      (definite ? '' : '<div class="tent">TENTATIVE</div>') +
+      '<div class="head"><table>' +
+        info('No BEO', d.beoNo) + info('Date Of Issue', d.dateOfIssue) +
+        info('Event Title', d.eventTitle) + info('Company/Organizer', d.organizer) +
+        info('Contact Person', d.contactPerson) + info('Address', d.address) +
+        info('Tel. No', d.phone) + info('Email', d.email) +
+      '</table><table>' +
+        info('Venue', booking.roomName) + info('Sales', d.sales) +
+        info('Package', booking.package) + info('Market Segment', d.marketSegment) +
+        info('Date Event', booking.date) + info('Time', timeRange(booking)) +
+      '</table></div>' +
+      '<table class="grid"><tr><td class="daterow" colspan="6">' + esc(booking.date) + '</td></tr>' +
+      '<tr><th>Time</th><th>Venue</th><th>Setup</th><th>Arrangement</th><th>Pax</th><th>Person in Charge</th></tr>' +
+      '<tr><td>' + esc(timeRange(booking)) + '</td><td>' + esc(booking.roomName) + '</td><td>' +
+      esc(booking.setup) + '</td><td>' + esc(d.arrangement) + '</td><td>' + esc(booking.pax) +
+      '</td><td>' + esc(booking.pic) + '</td></tr></table>' +
+      '<table class="depts"><tr><td>' + left + '</td><td>' + right + '</td></tr></table>' +
+      signatures +
+      '<p class="dist">Distribution : ' + esc(d.distribution) + '</p>';
+  }
+
+  function deleteMgmtRecord(record) {
+    if (!confirm('Delete "' + (record.name || record.label || record.username || record.date) + '"?')) return;
+    var cfg = ENTITIES[currentEntity];
+    var promise = cfg.isUsers
+      ? gsRun('deleteUserAccount', state.token, record.id)
+      : gsRun('deleteMaster', state.token, currentEntity, record.id);
+    promise.then(function () {
+      state[cfg.stateKey] = state[cfg.stateKey].filter(function (r) { return r.id !== record.id; });
+      renderMgmtTab();
+      renderCalendar();
+      toast('Deleted.');
+    }, function (err) { toast(err.message || String(err), true); });
+  }
+
+})();
+</script>
+</body>
+</html>

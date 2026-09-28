@@ -445,14 +445,14 @@
 <div id="loginScreen" class="login-screen">
   <form id="loginForm" class="login-card">
     <h1>Meeting Room Blocking</h1>
-    <p class="subtitle">Silakan login untuk melanjutkan</p>
+    <p class="subtitle">Please sign in to continue</p>
     <label>Username</label>
     <input type="text" id="loginUsername" autocomplete="username" required>
     <label>Password</label>
     <input type="password" id="loginPassword" autocomplete="current-password" required>
     <div id="loginError" class="error-text"></div>
     <button type="submit" class="btn btn-primary btn-block" id="loginBtn">Login</button>
-    <p class="hint">admin / admin123 &nbsp;·&nbsp; viewer / viewer123 (lihat saja)</p>
+    <p class="hint">admin / admin123 &nbsp;·&nbsp; viewer / viewer123 (view only)</p>
   </form>
 </div>
 
@@ -468,7 +468,7 @@
     </div>
     <div class="topbar-right">
       <span class="user-chip" id="userChip"></span>
-      <button class="btn btn-ghost" id="changePwBtn">Ganti Password</button>
+      <button class="btn btn-ghost" id="changePwBtn">Change Password</button>
         <button class="btn btn-ghost" id="logoutBtn">Logout</button>
     </div>
   </header>
@@ -476,10 +476,10 @@
   <section id="tab-calendar" class="tab-panel active">
     <div class="calendar-toolbar">
       <div class="month-nav">
-        <button id="prevMonth" class="btn btn-icon" aria-label="Periode sebelumnya">&#8592;</button>
+        <button id="prevMonth" class="btn btn-icon" aria-label="Previous period">&#8592;</button>
         <span id="monthLabel" class="month-label"></span>
-        <button id="nextMonth" class="btn btn-icon" aria-label="Periode berikutnya">&#8594;</button>
-        <button id="todayBtn" class="btn btn-ghost btn-small">Hari ini</button>
+        <button id="nextMonth" class="btn btn-icon" aria-label="Next period">&#8594;</button>
+        <button id="todayBtn" class="btn btn-ghost btn-small">Today</button>
       </div>
       <div class="view-switch" id="viewSwitch">
         <button class="view-btn" data-view="day">Day</button>
@@ -504,45 +504,45 @@
     <section id="tab-report" class="tab-panel">
     <div class="report-controls">
       <div>
-        <label>Periode</label>
+        <label>Period</label>
         <select id="rpPeriod">
-          <option value="month">Bulan tertentu</option>
-          <option value="year">Satu tahun penuh</option>
-          <option value="all">Semua data</option>
+          <option value="month">Specific month</option>
+          <option value="year">Full year</option>
+          <option value="all">All data</option>
         </select>
       </div>
       <div id="rpMonthWrap">
-        <label>Bulan</label>
+        <label>Month</label>
         <select id="rpMonth"></select>
       </div>
       <div id="rpYearWrap">
-        <label>Tahun</label>
+        <label>Year</label>
         <select id="rpYear"></select>
       </div>
       <div>
-        <label>Tipe Bisnis</label>
+        <label>Business Type</label>
         <select id="rpSegment"></select>
       </div>
       <div>
         <label>Status</label>
         <select id="rpStatus">
-          <option value="">Semua status</option>
+          <option value="">All statuses</option>
         </select>
       </div>
       <div>
-        <label>Urutkan</label>
+        <label>Sort by</label>
         <select id="rpSort">
-          <option value="revenue">Revenue tertinggi</option>
-          <option value="pax">Pax terbanyak</option>
-          <option value="events">Jumlah event terbanyak</option>
+          <option value="revenue">Highest revenue</option>
+          <option value="pax">Most pax</option>
+          <option value="events">Most events</option>
         </select>
       </div>
       <div>
-        <label>Tampilkan</label>
+        <label>Show</label>
         <select id="rpTop">
           <option value="10">Top 10</option>
           <option value="30">Top 30</option>
-          <option value="0">Semua</option>
+          <option value="0">All</option>
         </select>
       </div>
     </div>
@@ -550,7 +550,7 @@
     <div class="stat-row" id="rpStats"></div>
 
     <div class="report-block">
-      <h2>Ringkasan per Tipe Bisnis</h2>
+      <h2>Summary by Business Type</h2>
       <div class="table-wrapper">
         <table class="data-table" id="rpSegmentTable">
           <thead></thead>
@@ -560,7 +560,7 @@
     </div>
 
     <div class="report-block">
-      <h2 id="rpRankTitle">Ranking Company</h2>
+      <h2 id="rpRankTitle">Company Ranking</h2>
       <div class="table-wrapper">
         <table class="data-table" id="rpCompanyTable">
           <thead></thead>
@@ -570,7 +570,7 @@
     </div>
 
     <div class="report-block">
-      <h2>Ringkasan per Sales</h2>
+      <h2>Summary by Sales</h2>
       <div class="table-wrapper">
         <table class="data-table" id="rpSalesTable">
           <thead></thead>
@@ -580,7 +580,7 @@
     </div>
 
     <div class="report-block">
-      <h2>Ringkasan per Meeting Room</h2>
+      <h2>Summary by Meeting Room</h2>
       <div class="table-wrapper">
         <table class="data-table" id="rpRoomTable">
           <thead></thead>
@@ -598,8 +598,8 @@
       <button class="mgmt-tab-btn" data-entity="PICs">Sales</button>
       <button class="mgmt-tab-btn" data-entity="Setups">Setup</button>
       <button class="mgmt-tab-btn" data-entity="SpecialDates">Special Date</button>
-      <button class="mgmt-tab-btn" data-entity="MarketSegments">Tipe Bisnis</button>
-      <button class="mgmt-tab-btn" data-entity="MealTypes">Jenis Konsumsi</button>
+      <button class="mgmt-tab-btn" data-entity="MarketSegments">Business Type</button>
+      <button class="mgmt-tab-btn" data-entity="MealTypes">Catering Type</button>
       <button class="mgmt-tab-btn" data-entity="Users">User Login</button>
     </nav>
     <div class="mgmt-body">
@@ -631,11 +631,11 @@
       <input type="date" id="bkDate" required>
       <div class="field-row">
         <div>
-          <label>Jam Mulai</label>
+          <label>Start Time</label>
           <input type="time" id="bkStart" required>
         </div>
         <div>
-          <label>Jam Selesai</label>
+          <label>End Time</label>
           <input type="time" id="bkEnd" required>
         </div>
       </div>
@@ -643,14 +643,14 @@
       <input type="text" id="bkCompany" required>
       <label>Sales</label>
       <select id="bkPic" required></select>
-      <div class="beo-group">Data Tamu (untuk marketing)</div>
+      <div class="beo-group">Guest Details (for marketing)</div>
       <label>Contact Person</label>
       <input type="text" id="bkGuestName">
       <div class="field-row">
-        <div><label>No. Telepon / WA</label><input type="text" id="bkGuestPhone" inputmode="tel"></div>
+        <div><label>Phone / WhatsApp</label><input type="text" id="bkGuestPhone" inputmode="tel"></div>
         <div><label>Email</label><input type="text" id="bkGuestEmail" inputmode="email"></div>
       </div>
-      <div class="beo-group">Detail Acara</div>
+      <div class="beo-group">Event Details</div>
       <label>Package</label>
       <select id="bkPackage" required></select>
       <label>Pax</label>
@@ -659,26 +659,26 @@
       <select id="bkStatus" required></select>
       <label>Setup</label>
       <select id="bkSetup" required></select>
-      <label>Tipe Bisnis</label>
+      <label>Business Type</label>
       <select id="bkSegment"></select>
       <div class="field-row">
-        <div><label>Harga / pax (Rp)</label><input type="text" id="bkPricePerPax" inputmode="numeric"></div>
-        <div><label>Revenue total (Rp)</label><input type="text" id="bkRevenue" inputmode="numeric"></div>
+        <div><label>Price / pax</label><input type="text" id="bkPricePerPax" inputmode="numeric"></div>
+        <div><label>Total revenue</label><input type="text" id="bkRevenue" inputmode="numeric"></div>
       </div>
-      <p class="beo-hint">Revenue terisi otomatis dari harga &times; pax, dan tetap bisa diubah manual.</p>
+      <p class="beo-hint">Revenue is filled in automatically from price &times; pax, and stays editable.</p>
 
-      <div class="beo-group">Konsumsi</div>
+      <div class="beo-group">Catering</div>
       <div id="mealRows"></div>
       <div class="meal-actions">
-        <button type="button" class="btn btn-ghost btn-small" id="mealAddBtn">+ Tambah konsumsi</button>
-        <button type="button" class="btn btn-ghost btn-small" id="mealPresetBtn">Isi paket Full-board</button>
+        <button type="button" class="btn btn-ghost btn-small" id="mealAddBtn">+ Add catering item</button>
+        <button type="button" class="btn btn-ghost btn-small" id="mealPresetBtn">Fill Full-board preset</button>
       </div>
       <p class="beo-hint" id="mealSummary"></p>
       <div id="bookingError" class="error-text"></div>
       <div class="modal-actions">
         <button type="button" class="btn btn-danger hidden" id="bkDeleteBtn">Delete</button>
         <div class="modal-actions-right">
-          <button type="button" class="btn btn-ghost hidden" id="bkBeoBtn">Buat BEO</button>
+          <button type="button" class="btn btn-ghost hidden" id="bkBeoBtn">Create BEO</button>
           <button type="button" class="btn btn-ghost" id="bkCancelBtn">Cancel</button>
           <button type="submit" class="btn btn-primary" id="bkSaveBtn">Save</button>
         </div>
@@ -746,10 +746,10 @@
       </div>
       <div class="field-row">
         <div><label>Floor</label><input type="text" id="beoFloor"></div>
-        <div><label>Harga / pax (Rp)</label><input type="text" id="beoPricePerPax" inputmode="numeric"></div>
+        <div><label>Price / pax</label><input type="text" id="beoPricePerPax" inputmode="numeric"></div>
       </div>
 
-      <h4 class="beo-group">Instruksi Departemen</h4>
+      <h4 class="beo-group">Department Instructions</h4>
       <label>Kitchen — Prepare &amp; Breakdown</label>
       <textarea id="beoKitchenPrepare" rows="4"></textarea>
       <label>Kitchen — Menu</label>
@@ -764,19 +764,19 @@
       <textarea id="beoEngineering" rows="2"></textarea>
       <label>Security</label>
       <textarea id="beoSecurity" rows="2"></textarea>
-      <label>IT (teks yang tampil di signage)</label>
+      <label>IT (text shown on signage)</label>
       <textarea id="beoIt" rows="3"></textarea>
 
       <div id="beoMoneyFields">
         <h4 class="beo-group">Cashier &amp; Accounting</h4>
-        <p class="beo-hint">Bagian ini hanya dicetak untuk booking berstatus <strong>Definite</strong>.</p>
+        <p class="beo-hint">Printed only for bookings with status <strong>Definite</strong>.</p>
         <label>Cashier — Internal breakdown</label>
         <textarea id="beoCashier" rows="3"></textarea>
         <label>Accounting — Invoice</label>
         <textarea id="beoAccounting" rows="3"></textarea>
       </div>
 
-      <h4 class="beo-group">Tanda Tangan</h4>
+      <h4 class="beo-group">Signatures</h4>
       <div class="field-row">
         <div><label>Prepared &amp; Issue by</label><input type="text" id="beoPreparedBy"></div>
         <div><label>DOSM</label><input type="text" id="beoDosm"></div>
@@ -794,10 +794,10 @@
 
       <div id="beoError" class="error-text"></div>
       <div class="modal-actions">
-        <button type="button" class="btn btn-ghost" id="beoPrintBtn">Cetak / Print</button>
+        <button type="button" class="btn btn-ghost" id="beoPrintBtn">Print</button>
         <div class="modal-actions-right">
-          <button type="button" class="btn btn-ghost" id="beoCancelBtn">Tutup</button>
-          <button type="submit" class="btn btn-primary" id="beoSaveBtn">Simpan BEO</button>
+          <button type="button" class="btn btn-ghost" id="beoCancelBtn">Close</button>
+          <button type="submit" class="btn btn-primary" id="beoSaveBtn">Save BEO</button>
         </div>
       </div>
     </form>
@@ -807,24 +807,24 @@
 <div id="pwModal" class="modal-overlay hidden">
   <div class="modal modal-small">
     <div class="modal-header">
-      <h3>Ganti Password</h3>
+      <h3>Change Password</h3>
       <button class="modal-close" id="pwModalClose">&times;</button>
     </div>
     <form id="pwForm" class="modal-body">
       <p class="beo-hint" id="pwWho"></p>
-      <label>Password Lama</label>
+      <label>Current Password</label>
       <input type="password" id="pwCurrent" autocomplete="current-password" required>
-      <label>Password Baru</label>
+      <label>New Password</label>
       <input type="password" id="pwNew" autocomplete="new-password" required>
-      <label>Ulangi Password Baru</label>
+      <label>Repeat New Password</label>
       <input type="password" id="pwConfirm" autocomplete="new-password" required>
-      <p class="beo-hint">Minimal 6 karakter.</p>
+      <p class="beo-hint">Minimum 6 characters.</p>
       <div id="pwError" class="error-text"></div>
       <div class="modal-actions">
         <div></div>
         <div class="modal-actions-right">
-          <button type="button" class="btn btn-ghost" id="pwCancelBtn">Batal</button>
-          <button type="submit" class="btn btn-primary" id="pwSaveBtn">Simpan</button>
+          <button type="button" class="btn btn-ghost" id="pwCancelBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="pwSaveBtn">Save</button>
         </div>
       </div>
     </form>
@@ -833,8 +833,8 @@
 
 <div id="beoPrintOverlay" class="hidden">
   <div class="beo-toolbar">
-    <button type="button" class="btn btn-primary" id="beoDoPrint">Cetak / Simpan PDF</button>
-    <button type="button" class="btn btn-ghost" id="beoClosePrint">Tutup preview</button>
+    <button type="button" class="btn btn-primary" id="beoDoPrint">Print / Save as PDF</button>
+    <button type="button" class="btn btn-ghost" id="beoClosePrint">Close preview</button>
   </div>
   <div id="beoPrintArea"></div>
 </div>
@@ -862,46 +862,46 @@
   }
 
   var SAMPLE_GUESTS = [
-    ['Mrs. Afifah Raisya', '0877-4815-0403', 'afifah@astra.co.id'],
-    ['Bp. Hendra Kusuma', '0812-2650-1188', 'hendra@sinarmas.co.id'],
-    ['Ibu Retno Wulandari', '0813-9004-7721', 'retno@pariwisata.go.id'],
-    ['Bp. Aditya Nugroho', '0811-2938-4455', 'aditya@telkom.co.id'],
-    ['Ibu Maya Sari', '0856-7712-3390', 'maya@indosat.com'],
-    ['Bp. Rizal Effendi', '0815-4420-9987', 'rizal@bankmandiri.co.id'],
-    ['Ibu Nurul Hidayah', '0857-3321-6654', 'nurul@ui.ac.id'],
-    ['Bp. Gunawan Saputra', '0812-8876-4432', 'gunawan@pertamina.com'],
-    ['Bp. Santoso', '0878-1123-9900', 'santoso.keluarga@gmail.com'],
-    ['Ibu Dewi Anggraini', '0813-5567-2210', 'dewi@unilever.co.id'],
-    ['Bp. Arif Rahman', '0811-7765-3321', 'arif@bca.co.id'],
-    ['Ibu Sinta Melati', '0852-9987-1123', 'sinta@bni.co.id'],
-    ['Bp. Bambang Priyono', '0813-2234-8876', 'bambang@dephub.go.id'],
-    ['Ibu Lestari Wijaya', '0819-4432-7765', 'lestari@dwidayatour.co.id'],
-    ['Bp. Yusuf Hamdani', '0877-3390-5541', 'yusuf@panoramatours.com'],
-    ['Ibu Wijaya', '0812-6654-3398', 'wijaya.keluarga@gmail.com'],
-    ['Bp. Teguh Prasetyo', '0856-2219-8843', 'teguh@bankmega.co.id'],
-    ['Ibu Ratna Dewi', '0815-8890-2234', 'ratna@goldenrama.com']
+    ['Mr. John Carter', '+1-555-0101', 'contact1@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0102', 'contact2@example.com'],
+    ['Mr. John Carter', '+1-555-0103', 'contact3@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0104', 'contact4@example.com'],
+    ['Mr. John Carter', '+1-555-0105', 'contact5@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0106', 'contact6@example.com'],
+    ['Mr. John Carter', '+1-555-0107', 'contact7@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0108', 'contact8@example.com'],
+    ['Mr. John Carter', '+1-555-0109', 'contact9@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0110', 'contact10@example.com'],
+    ['Mr. John Carter', '+1-555-0111', 'contact11@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0112', 'contact12@example.com'],
+    ['Mr. John Carter', '+1-555-0113', 'contact13@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0114', 'contact14@example.com'],
+    ['Mr. John Carter', '+1-555-0115', 'contact15@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0116', 'contact16@example.com'],
+    ['Mr. John Carter', '+1-555-0117', 'contact17@example.com'],
+    ['Ms. Laura Bennett', '+1-555-0118', 'contact18@example.com']
   ];
 
   var DB = {
     users: [
       { id: uuid(), username: 'admin', password: 'admin123', displayName: 'Administrator', role: 'admin' },
-      { id: uuid(), username: 'viewer', password: 'viewer123', displayName: 'Viewer (Lihat Saja)', role: 'viewer' }
+      { id: uuid(), username: 'viewer', password: 'viewer123', displayName: 'Viewer (Read Only)', role: 'viewer' }
     ],
-    rooms: [['Keraton Ballroom', 'KB'], ['Keraton 1', 'K1'], ['Keraton 2', 'K2'], ['Keraton 3', 'K3'],
-      ['Keraton 2-3', 'K23'], ['Saripetojo 1', 'S1'], ['Saripetojo 2', 'S2'], ['Saripetojo 3', 'S3'],
-      ['Saripetojo 4', 'S4'], ['Saripetojo 1-2', 'S12'], ['Restaurant', 'RE'], ['Joglo', 'JG'],
-      ['Pool', 'PO'], ['Boardroom', 'BR'], ['Basement 1', 'B1']]
+    rooms: [['Grand Ballroom', 'GB'], ['Ballroom 1', 'B1'], ['Ballroom 2', 'B2'], ['Ballroom 3', 'B3'],
+      ['Ballroom 2-3', 'B23'], ['Meeting Room 1', 'M1'], ['Meeting Room 2', 'M2'], ['Meeting Room 3', 'M3'],
+      ['Meeting Room 4', 'M4'], ['Meeting Room 1-2', 'M12'], ['Restaurant', 'RE'], ['Garden', 'GD'],
+      ['Poolside', 'PO'], ['Boardroom', 'BR'], ['Basement', 'BS']]
       .map(function (r) { return { id: uuid(), name: r[0], shortName: r[1] }; }),
     statuses: [{ id: uuid(), name: 'Tentative', color: '#e74c3c' }, { id: uuid(), name: 'Definite', color: '#27ae60' }],
     packages: ['Half-day', 'Full-day', 'Full-board', 'Coffee break', 'Wedding', 'Room Rental', 'Birthday']
       .map(function (n) { return { id: uuid(), name: n }; }),
-    pics: [['Siti Jubaidah', '#8e44ad'], ['Icha', '#16a085'], ['James', '#2980b9'], ['Deri', '#d35400'],
-      ['Anzha', '#7f8c8d'], ['Diah', '#2c3e50'], ['Bela', '#c2185b'], ['Bayhaqi', '#00838f']]
+    pics: [['Sarah Miller', '#8e44ad'], ['David Chen', '#16a085'], ['Maria Lopez', '#2980b9'], ['James Wilson', '#d35400'],
+      ['Aisha Khan', '#7f8c8d'], ['Tom Baker', '#2c3e50'], ['Nina Patel', '#c2185b'], ['Leo Rossi', '#00838f']]
       .map(function (p) { return { id: uuid(), name: p[0], color: p[1] }; }),
     setups: ['Round Table', 'U-shape', 'Classroom', 'Teater', 'Block-style', 'Board room', 'Standing', 'Bean bag']
       .map(function (n) { return { id: uuid(), name: n }; }),
     specialDates: [
-      { id: uuid(), date: sampleDate(17), type: 'Public Holiday', label: 'Contoh hari libur' }
+      { id: uuid(), date: sampleDate(17), type: 'Public Holiday', label: 'Sample public holiday' }
     ],
     segments: ['Corporate', 'Government', 'Travel Agent', 'Individual']
       .map(function (n) { return { id: uuid(), name: n }; }),
@@ -910,24 +910,24 @@
     meals: [],
     bookings: [
       // Several same-day bookings per room, to show the stacked layout.
-      ['Keraton Ballroom', 5, '08:00', '12:00', 'PT Astra International', 'Siti Jubaidah', 'Half-day', '250', 'Definite', 'Classroom', 'Corporate', 160000],
-      ['Keraton Ballroom', 5, '13:00', '17:00', 'PT Sinar Mas', 'Deri', 'Half-day', '180', 'Tentative', 'Teater', 'Corporate', 150000],
-      ['Keraton Ballroom', 22, '09:00', '22:00', 'Dinas Pariwisata Prov.', 'Icha', 'Wedding', '400', 'Tentative', 'Round Table', 'Government', 225000],
-      ['Saripetojo 4', 10, '08:00', '12:00', 'PT Telkom Indonesia', 'James', 'Half-day', '60', 'Definite', 'U-shape', 'Corporate', 165000],
-      ['Saripetojo 4', 10, '13:00', '16:00', 'PT Indosat', 'Anzha', 'Coffee break', '35', 'Definite', 'Round Table', 'Corporate', 75000],
-      ['Saripetojo 4', 24, '08:00', '17:00', 'Bank Mandiri', 'Deri', 'Full-board', '80', 'Tentative', 'Classroom', 'Corporate', 285000],
-      ['Saripetojo 1-2', 12, '10:00', '12:00', 'Universitas Indonesia', 'Anzha', 'Coffee break', '40', 'Definite', 'Teater', 'Government', 70000],
-      ['Saripetojo 1-2', 27, '08:00', '17:00', 'PT Pertamina', 'Diah', 'Full-day', '120', 'Definite', 'Board room', 'Corporate', 195000],
-      ['Joglo', 14, '18:00', '22:00', 'Keluarga Santoso', 'Bela', 'Birthday', '30', 'Tentative', 'Bean bag', 'Individual', 175000],
-      ['Joglo', 19, '09:00', '15:00', 'PT Unilever Indonesia', 'Bayhaqi', 'Room Rental', '25', 'Definite', 'Block-style', 'Corporate', 120000],
-      ['Boardroom', 6, '09:00', '11:00', 'PT Bank BCA', 'Siti Jubaidah', 'Half-day', '15', 'Definite', 'Board room', 'Corporate', 180000],
-      ['Boardroom', 6, '14:00', '16:30', 'PT Bank BNI', 'Bela', 'Half-day', '18', 'Tentative', 'U-shape', 'Corporate', 180000],
-      ['Boardroom', 21, '08:00', '17:00', 'Kementerian Perhubungan', 'Icha', 'Full-day', '20', 'Tentative', 'U-shape', 'Government', 210000],
-      ['Keraton 1', 8, '09:00', '16:00', 'Dwidaya Tour', 'James', 'Full-day', '55', 'Definite', 'Classroom', 'Travel Agent', 140000],
-      ['Keraton 2-3', 25, '08:00', '12:00', 'Panorama Tours', 'Diah', 'Half-day', '45', 'Definite', 'U-shape', 'Travel Agent', 130000],
-      ['Restaurant', 18, '10:00', '14:00', 'Keluarga Wijaya', 'Bela', 'Birthday', '40', 'Definite', 'Round Table', 'Individual', 165000],
-      ['Pool', 20, '18:00', '22:00', 'PT Bank Mega', 'Anzha', 'Coffee break', '70', 'Definite', 'Standing', 'Corporate', 95000],
-      ['Basement 1', 11, '08:00', '17:00', 'Golden Rama Tours', 'Bayhaqi', 'Full-day', '90', 'Tentative', 'Classroom', 'Travel Agent', 125000]
+      ['Grand Ballroom', 5, '08:00', '12:00', 'Acme Corporation', 'Sarah Miller', 'Half-day', '250', 'Definite', 'Classroom', 'Corporate', 160000],
+      ['Grand Ballroom', 5, '13:00', '17:00', 'Vertex Industries', 'James Wilson', 'Half-day', '180', 'Tentative', 'Teater', 'Corporate', 150000],
+      ['Grand Ballroom', 22, '09:00', '22:00', 'City Tourism Board', 'David Chen', 'Wedding', '400', 'Tentative', 'Round Table', 'Government', 225000],
+      ['Meeting Room 4', 10, '08:00', '12:00', 'Nordwind Telecom', 'Maria Lopez', 'Half-day', '60', 'Definite', 'U-shape', 'Corporate', 165000],
+      ['Meeting Room 4', 10, '13:00', '16:00', 'Blue Ocean Media', 'Aisha Khan', 'Coffee break', '35', 'Definite', 'Round Table', 'Corporate', 75000],
+      ['Meeting Room 4', 24, '08:00', '17:00', 'First National Bank', 'James Wilson', 'Full-board', '80', 'Tentative', 'Classroom', 'Corporate', 285000],
+      ['Meeting Room 1-2', 12, '10:00', '12:00', 'State University', 'Aisha Khan', 'Coffee break', '40', 'Definite', 'Teater', 'Government', 70000],
+      ['Meeting Room 1-2', 27, '08:00', '17:00', 'Summit Energy', 'Tom Baker', 'Full-day', '120', 'Definite', 'Board room', 'Corporate', 195000],
+      ['Garden', 14, '18:00', '22:00', 'The Harper Family', 'Nina Patel', 'Birthday', '30', 'Tentative', 'Bean bag', 'Individual', 175000],
+      ['Garden', 19, '09:00', '15:00', 'Everly Consumer Goods', 'Leo Rossi', 'Room Rental', '25', 'Definite', 'Block-style', 'Corporate', 120000],
+      ['Boardroom', 6, '09:00', '11:00', 'Pinnacle Bank', 'Sarah Miller', 'Half-day', '15', 'Definite', 'Board room', 'Corporate', 180000],
+      ['Boardroom', 6, '14:00', '16:30', 'Meridian Bank', 'Nina Patel', 'Half-day', '18', 'Tentative', 'U-shape', 'Corporate', 180000],
+      ['Boardroom', 21, '08:00', '17:00', 'Department of Transport', 'David Chen', 'Full-day', '20', 'Tentative', 'U-shape', 'Government', 210000],
+      ['Ballroom 1', 8, '09:00', '16:00', 'Skyline Travel', 'Maria Lopez', 'Full-day', '55', 'Definite', 'Classroom', 'Travel Agent', 140000],
+      ['Ballroom 2-3', 25, '08:00', '12:00', 'Horizon Tours', 'Tom Baker', 'Half-day', '45', 'Definite', 'U-shape', 'Travel Agent', 130000],
+      ['Restaurant', 18, '10:00', '14:00', 'The Bennett Family', 'Nina Patel', 'Birthday', '40', 'Definite', 'Round Table', 'Individual', 165000],
+      ['Poolside', 20, '18:00', '22:00', 'Crescent Bank', 'Aisha Khan', 'Coffee break', '70', 'Definite', 'Standing', 'Corporate', 95000],
+      ['Basement', 11, '08:00', '17:00', 'Golden Route Tours', 'Leo Rossi', 'Full-day', '90', 'Tentative', 'Classroom', 'Travel Agent', 125000]
     ].map(function (b, i) {
       return {
         id: uuid(), roomName: b[0], date: sampleDate(b[1]), startTime: b[2], endTime: b[3],
@@ -940,19 +940,19 @@
     }),
     beos: []
   };
-  // Sample meal services. Bank Mandiri (index 5) is the Full-board example
+  // Sample meal services. First National Bank (index 5) is the Full-board example
   // with two coffee breaks, lunch and dinner on the same day.
   Object.keys({0:1, 5:1, 7:1}).forEach(function (key) {
     var defs = {
-      0: [['Coffee Break', '09:00', 250, 30000, 'Foyer Keraton Ballroom', 'Sosis Basah, Brownis Oven, Mineral, Tea & Coffee'],
-          ['Lunch', '12:00', 250, 100000, 'Foyer Keraton Ballroom', 'Chicken Cream Soup, Nasi Putih, Mie Goreng, Roasted Chicken Mushroom']],
-      5: [['Coffee Break', '09:00', 80, 30000, 'Foyer Saripetojo 4', 'Risol Mayo, Banana Cake, Mineral, Tea & Coffee'],
-          ['Lunch', '12:00', 80, 100000, 'Foyer Saripetojo 4', 'Soto Ayam, Nasi Putih, Ikan Goreng Saus Bangkok, Orak-arik Sayur, Buah'],
-          ['Coffee Break', '15:00', 80, 30000, 'Foyer Saripetojo 4', 'Pastel, Klepon, Mineral, Tea & Coffee'],
-          ['Dinner', '19:00', 80, 110000, 'Foyer Saripetojo 4', 'Sup Jagung, Nasi Goreng, Ayam Bakar, Cah Kangkung, Es Buah']],
-      7: [['Coffee Break', '09:30', 120, 30000, 'Foyer Saripetojo 1-2', 'Lumpia, Bolu Kukus, Mineral, Tea & Coffee'],
-          ['Lunch', '12:30', 120, 100000, 'Foyer Saripetojo 1-2', 'Sop Buntut, Nasi Putih, Gurame Asam Manis, Tumis Buncis'],
-          ['Coffee Break', '15:30', 120, 30000, 'Foyer Saripetojo 1-2', 'Tahu Isi, Dadar Gulung, Mineral, Tea & Coffee']]
+      0: [['Coffee Break', '09:00', 250, 30000, 'Foyer Grand Ballroom', 'Mini Sausages, Brownies, Water, Tea & Coffee'],
+          ['Lunch', '12:00', 250, 100000, 'Foyer Grand Ballroom', 'Chicken Cream Soup, Steamed Rice, Fried Noodles, Roasted Chicken Mushroom']],
+      5: [['Coffee Break', '09:00', 80, 30000, 'Foyer Meeting Room 4', 'Chicken Rolls, Banana Cake, Water, Tea & Coffee'],
+          ['Lunch', '12:00', 80, 100000, 'Foyer Meeting Room 4', 'Chicken Soup, Steamed Rice, Fried Fish Bangkok Sauce, Sautéed Vegetables, Fresh Fruit'],
+          ['Coffee Break', '15:00', 80, 30000, 'Foyer Meeting Room 4', 'Savoury Pastry, Coconut Cake, Water, Tea & Coffee'],
+          ['Dinner', '19:00', 80, 110000, 'Foyer Meeting Room 4', 'Corn Soup, Fried Rice, Grilled Chicken, Stir-fried Greens, Fruit Punch']],
+      7: [['Coffee Break', '09:30', 120, 30000, 'Foyer Meeting Room 1-2', 'Spring Rolls, Steamed Sponge Cake, Water, Tea & Coffee'],
+          ['Lunch', '12:30', 120, 100000, 'Foyer Meeting Room 1-2', 'Oxtail Soup, Steamed Rice, Sweet & Sour Fish, Sautéed Green Beans'],
+          ['Coffee Break', '15:30', 120, 30000, 'Foyer Meeting Room 1-2', 'Stuffed Tofu, Rolled Pancake, Water, Tea & Coffee']]
     };
     var booking = DB.bookings[Number(key)];
     if (!booking) return;
@@ -968,7 +968,7 @@
   var ENTITY_TO_KEY = { Rooms: 'rooms', Statuses: 'statuses', Packages: 'packages', PICs: 'pics', Setups: 'setups', SpecialDates: 'specialDates', MarketSegments: 'segments', MealTypes: 'mealTypes' };
 
   function requireAuth(token) {
-    if (!sessions[token]) throw new Error('Sesi berakhir. Silakan login kembali.');
+    if (!sessions[token]) throw new Error('Session expired. Please sign in again.');
     return sessions[token];
   }
   function roleOf(u) { return (u.role || '').toLowerCase() === 'viewer' ? 'viewer' : 'admin'; }
@@ -977,7 +977,7 @@
   function requireEditor(token) {
     var session = requireAuth(token);
     if (session.role === 'viewer') {
-      throw new Error('Akun Anda hanya bisa melihat data (view only), tidak bisa mengubah.');
+      throw new Error('Your account is view only and cannot make changes.');
     }
     return session;
   }
@@ -995,9 +995,9 @@
     var start = srvToMinutes(booking.startTime);
     var end = srvToMinutes(booking.endTime);
     if (start === null || end === null) {
-      throw new Error('Jam mulai dan jam selesai wajib diisi dengan format HH:mm.');
+      throw new Error('Start and end time are required, in HH:mm format.');
     }
-    if (end <= start) throw new Error('Jam selesai harus lebih besar dari jam mulai.');
+    if (end <= start) throw new Error('End time must be later than start time.');
     var clash = DB.bookings.filter(function (b) {
       // Guard on booking.id: a new booking has none, and `undefined ===
       // undefined` would make it skip rows instead of checking them.
@@ -1008,8 +1008,8 @@
       return start < bEnd && bStart < end;
     })[0];
     if (clash) {
-      throw new Error('Jadwal bentrok: ' + clash.roomName + ' pada ' + clash.date +
-        ' sudah dipakai ' + clash.companyName + ' (' + clash.startTime + '-' + clash.endTime + ').');
+      throw new Error('Schedule clash: ' + clash.roomName + ' on ' + clash.date +
+        ' is already taken by ' + clash.companyName + ' (' + clash.startTime + '-' + clash.endTime + ').');
     }
   }
   function buildBootstrap(user) {
@@ -1025,8 +1025,8 @@
   var mockServer = {
     login: function (username, password) {
       var match = DB.users.filter(function (u) { return u.username.toLowerCase() === (username || '').toLowerCase(); })[0];
-      if (!match) return { success: false, message: 'Username tidak ditemukan.' };
-      if (match.password !== password) return { success: false, message: 'Password salah.' };
+      if (!match) return { success: false, message: 'Username not found.' };
+      if (match.password !== password) return { success: false, message: 'Wrong password.' };
       var token = uuid();
       var session = { username: match.username, displayName: match.displayName, role: roleOf(match) };
       sessions[token] = session;
@@ -1060,10 +1060,10 @@
     addUserAccount: function (token, data) {
       requireEditor(token);
       var username = (data.username || '').trim();
-      if (!username) throw new Error('Username wajib diisi.');
-      if (!data.password) throw new Error('Password wajib diisi untuk user baru.');
+      if (!username) throw new Error('Username is required.');
+      if (!data.password) throw new Error('A password is required for a new user.');
       if (DB.users.some(function (u) { return u.username.toLowerCase() === username.toLowerCase(); })) {
-        throw new Error('Username sudah dipakai.');
+        throw new Error('That username is already taken.');
       }
       var rec = {
         id: uuid(), username: username, password: data.password,
@@ -1081,7 +1081,7 @@
       if (data.password) rec.password = data.password;
       if (data.role !== undefined) {
         if (rec.username === current.username && roleOf(data) === 'viewer') {
-          throw new Error('Tidak bisa mengubah akun Anda sendiri menjadi view only.');
+          throw new Error('You cannot set your own account to view only.');
         }
         rec.role = roleOf(data);
       }
@@ -1091,7 +1091,7 @@
       var current = requireEditor(token);
       var target = DB.users.filter(function (u) { return u.id === id; })[0];
       if (target && target.username === current.username) {
-        throw new Error('Tidak bisa menghapus akun yang sedang Anda gunakan untuk login.');
+        throw new Error('You cannot delete the account you are signed in with.');
       }
       DB.users = DB.users.filter(function (u) { return u.id !== id; });
       return true;
@@ -1140,10 +1140,10 @@
 
     changeOwnPassword: function (token, currentPassword, newPassword) {
       var session = requireAuth(token);
-      if (!newPassword || newPassword.length < 6) throw new Error('Password baru minimal 6 karakter.');
+      if (!newPassword || newPassword.length < 6) throw new Error('New password must be at least 6 characters.');
       var me = DB.users.filter(function (u) { return u.username === session.username; })[0];
-      if (!me) throw new Error('Akun tidak ditemukan.');
-      if (me.password !== currentPassword) throw new Error('Password lama salah.');
+      if (!me) throw new Error('Account not found.');
+      if (me.password !== currentPassword) throw new Error('Current password is wrong.');
       me.password = newPassword;
       return { success: true };
     },
@@ -1161,7 +1161,7 @@
     },
     saveBeo: function (token, data) {
       requireEditor(token);
-      if (!data.bookingId) throw new Error('BEO harus terkait dengan satu booking.');
+      if (!data.bookingId) throw new Error('A BEO must belong to a booking.');
       var existing = DB.beos.filter(function (r) { return r.bookingId === data.bookingId; })[0];
       if (existing) { Object.assign(existing, data); return existing; }
       var created = Object.assign({}, data, { id: uuid() });
@@ -1216,6 +1216,13 @@
     view: 'month'         // day | week | month | year
   };
 
+  // ------------------------------------------------------------------
+  // HOTEL IDENTITY - printed on the BEO document.
+  // Change these two lines to your own hotel.
+  // ------------------------------------------------------------------
+  var HOTEL_NAME = 'YOUR HOTEL NAME';
+  var HOTEL_LOCATION = 'CITY';
+
   var DOW_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
     'August', 'September', 'October', 'November', 'December'];
@@ -1225,7 +1232,7 @@
       label: 'Room Data', stateKey: 'rooms',
       fields: [
         { key: 'name', label: 'Room Name', type: 'text' },
-        { key: 'shortName', label: 'Singkatan (tablet/mobile)', type: 'text', required: false }
+        { key: 'shortName', label: 'Short code (tablet/mobile)', type: 'text', required: false }
       ]
     },
     Statuses: { label: 'Status Data', stateKey: 'statuses', fields: [{ key: 'name', label: 'Status Name', type: 'text' }, { key: 'color', label: 'Color', type: 'color' }] },
@@ -1233,17 +1240,17 @@
     PICs: {
       label: 'Sales', stateKey: 'pics',
       fields: [
-        { key: 'name', label: 'Nama Sales', type: 'text' },
-        { key: 'color', label: 'Warna Badge', type: 'color' }
+        { key: 'name', label: 'Sales name', type: 'text' },
+        { key: 'color', label: 'Badge colour', type: 'color' }
       ]
     },
     Setups: { label: 'Setup', stateKey: 'setups', fields: [{ key: 'name', label: 'Setup Name', type: 'text' }] },
-    MarketSegments: { label: 'Tipe Bisnis', stateKey: 'segments', fields: [{ key: 'name', label: 'Nama Tipe Bisnis', type: 'text' }] },
+    MarketSegments: { label: 'Business Type', stateKey: 'segments', fields: [{ key: 'name', label: 'Business type name', type: 'text' }] },
     MealTypes: {
-      label: 'Jenis Konsumsi', stateKey: 'mealTypes',
+      label: 'Catering Type', stateKey: 'mealTypes',
       fields: [
-        { key: 'name', label: 'Nama Konsumsi', type: 'text' },
-        { key: 'defaultPrice', label: 'Harga Default / pax (Rp)', type: 'text' }
+        { key: 'name', label: 'Catering item name', type: 'text' },
+        { key: 'defaultPrice', label: 'Default price / pax', type: 'text' }
       ]
     },
     SpecialDates: {
@@ -1258,14 +1265,14 @@
       label: 'User Login', stateKey: 'users', isUsers: true,
       tableFields: [
         { key: 'username', label: 'Username' },
-        { key: 'displayName', label: 'Nama Tampilan' },
-        { key: 'role', label: 'Hak Akses' }
+        { key: 'displayName', label: 'Display name' },
+        { key: 'role', label: 'Access level' }
       ],
       fields: [
         { key: 'username', label: 'Username', type: 'text', required: true },
-        { key: 'displayName', label: 'Nama Tampilan', type: 'text', required: true },
+        { key: 'displayName', label: 'Display name', type: 'text', required: true },
         { key: 'password', label: 'Password', type: 'password', required: false },
-        { key: 'role', label: 'Hak Akses', type: 'select', options: ['admin', 'viewer'] }
+        { key: 'role', label: 'Access level', type: 'select', options: ['admin', 'viewer'] }
       ]
     }
   };
@@ -1369,10 +1376,10 @@
                 return;
               }
               reject(new Error(
-                'Server mengembalikan respons kosong pada "' + methodName + '". ' +
-                'Biasanya ini terjadi kalau data yang dikirim balik memuat tipe yang tidak ' +
-                'didukung Apps Script (paling sering objek Date dari kolom tanggal di Sheet). ' +
-                'Pastikan Code.gs versi terbaru sudah di-deploy sebagai New version.'
+                'The server returned an empty response for "' + methodName + '". ' +
+                'This usually means the returned data contains a type Apps Script cannot ' +
+                'transfer (most often a Date object from a date column in the Sheet). ' +
+                'Make sure the latest Code.gs is deployed as a New version.'
               ));
               return;
             }
@@ -1415,7 +1422,7 @@
   $('changePwBtn').addEventListener('click', function () {
     $('pwForm').reset();
     $('pwError').textContent = '';
-    $('pwWho').textContent = 'Akun: ' + (state.user ? state.user.username : '');
+    $('pwWho').textContent = 'Account: ' + (state.user ? state.user.username : '');
     $('pwModal').classList.remove('hidden');
   });
   $('pwModalClose').addEventListener('click', closePwModal);
@@ -1427,11 +1434,11 @@
     var current = $('pwCurrent').value;
     var next = $('pwNew').value;
     if (next.length < 6) {
-      $('pwError').textContent = 'Password baru minimal 6 karakter.';
+      $('pwError').textContent = 'New password must be at least 6 characters.';
       return;
     }
     if (next !== $('pwConfirm').value) {
-      $('pwError').textContent = 'Konfirmasi password tidak sama.';
+      $('pwError').textContent = 'Password confirmation does not match.';
       return;
     }
     $('pwError').textContent = '';
@@ -1439,7 +1446,7 @@
     gsRun('changeOwnPassword', state.token, current, next).then(function () {
       $('pwSaveBtn').disabled = false;
       closePwModal();
-      toast('Password berhasil diganti.');
+      toast('Password changed.');
     }, function (err) {
       $('pwSaveBtn').disabled = false;
       $('pwError').textContent = err.message || String(err);
@@ -1657,7 +1664,7 @@
   function mealTooltip(booking) {
     var labelled = labelMeals(mealsOf(booking.id));
     if (!labelled.length) return '';
-    return '\nKonsumsi: ' + labelled.map(function (x) {
+    return '\nCatering: ' + labelled.map(function (x) {
       return x.label + (x.meal.time ? ' ' + x.meal.time : '') +
         (x.meal.pax ? ' (' + x.meal.pax + ' pax)' : '');
     }).join(', ');
@@ -1696,7 +1703,7 @@
       var emptyMsg = document.createElement('div');
       emptyMsg.style.padding = '20px';
       emptyMsg.style.color = 'var(--color-text-muted)';
-      emptyMsg.textContent = 'Belum ada data Room. Tambahkan melalui tab Management.';
+      emptyMsg.textContent = 'No rooms yet. Add them under the Management tab.';
       grid.appendChild(emptyMsg);
       return;
     }
@@ -1761,7 +1768,7 @@
           block.title = timeRange(booking) + ' | ' + booking.companyName + ' | ' + booking.package +
             ' | ' + booking.pax + ' pax | ' + booking.status + ' | ' + booking.setup +
             ' | Sales: ' + booking.pic +
-            (booking.guestName ? ' | Tamu: ' + booking.guestName : '') +
+            (booking.guestName ? ' | Guest: ' + booking.guestName : '') +
             (booking.guestPhone ? ' (' + booking.guestPhone + ')' : '') +
             mealTooltip(booking);
           block.addEventListener('click', function (e) {
@@ -1811,11 +1818,11 @@
         if (rows.length) {
           var revenue = rows.reduce(function (sum, b) { return sum + toNumber(b.revenue); }, 0);
           var pax = rows.reduce(function (sum, b) { return sum + toNumber(b.pax); }, 0);
-          cell.innerHTML = '<div class="year-count">' + rows.length + ' event</div>' +
+          cell.innerHTML = '<div class="year-count">' + rows.length + ' events</div>' +
             '<div class="year-meta">' + pax + ' pax</div>' +
             (revenue ? '<div class="year-meta">Rp ' + rupiah(revenue) + '</div>' : '');
           cell.title = room.name + ' — ' + MONTH_NAMES[monthDate.getMonth()] + ': ' + rows.length +
-            ' event, ' + pax + ' pax' + (revenue ? ', Rp ' + rupiah(revenue) : '');
+            ' events, ' + pax + ' pax' + (revenue ? ', Rp ' + rupiah(revenue) : '');
         }
         cell.addEventListener('click', function () {
           state.viewDate = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
@@ -1838,12 +1845,12 @@
   $('bkCancelBtn').addEventListener('click', closeBookingModal);
 
   function openBookingModal(booking, prefillRoom, prefillDate) {
-    fillSelect($('bkRoom'), state.rooms, 'Pilih Room');
-    fillSelect($('bkPic'), state.pics, 'Pilih PIC');
-    fillSelect($('bkPackage'), state.packages, 'Pilih Package');
-    fillSelect($('bkSetup'), state.setups, 'Pilih Setup');
-    fillSelect($('bkStatus'), state.statuses, 'Pilih Status');
-    fillSelect($('bkSegment'), state.segments, 'Pilih Tipe Bisnis');
+    fillSelect($('bkRoom'), state.rooms, 'Select room');
+    fillSelect($('bkPic'), state.pics, 'Select sales');
+    fillSelect($('bkPackage'), state.packages, 'Select package');
+    fillSelect($('bkSetup'), state.setups, 'Select setup');
+    fillSelect($('bkStatus'), state.statuses, 'Select status');
+    fillSelect($('bkSegment'), state.segments, 'Select business type');
 
     $('bookingError').textContent = '';
     var viewer = isViewer();
@@ -1853,7 +1860,7 @@
     $('bkSaveBtn').classList.toggle('hidden', viewer);
 
     if (booking) {
-      $('bookingModalTitle').textContent = viewer ? 'Detail Booking' : 'Edit Booking';
+      $('bookingModalTitle').textContent = viewer ? 'Booking Details' : 'Edit Booking';
       $('bkId').value = booking.id;
       $('bkRoom').value = booking.roomName;
       $('bkDate').value = booking.date;
@@ -1875,7 +1882,7 @@
       // A BEO belongs to a saved booking, so it is only offered on edit.
       // Viewers get it too - read-only, but they can still print.
       $('bkBeoBtn').classList.remove('hidden');
-      $('bkBeoBtn').textContent = viewer ? 'Lihat BEO' : 'Buat BEO';
+      $('bkBeoBtn').textContent = viewer ? 'View BEO' : 'Create BEO';
       renderMealRows(mealsOf(booking.id));
     } else {
       $('bookingModalTitle').textContent = 'Add Booking';
@@ -1907,22 +1914,22 @@
       row.dataset.index = i;
       row.innerHTML =
         '<div class="meal-row-head"><span class="meal-label">' + escapeHtml(x.label) + '</span>' +
-        (viewer ? '' : '<button type="button" class="btn btn-danger btn-small" data-meal-remove>Hapus</button>') +
+        (viewer ? '' : '<button type="button" class="btn btn-danger btn-small" data-meal-remove>Remove</button>') +
         '</div>' +
         '<div class="meal-grid">' +
           '<div><label>Jenis</label><select data-meal="type"></select></div>' +
-          '<div><label>Jam siap</label><input type="time" data-meal="time" value="' + escapeHtml(m.time || '') + '"></div>' +
+          '<div><label>Ready at</label><input type="time" data-meal="time" value="' + escapeHtml(m.time || '') + '"></div>' +
           '<div><label>Pax</label><input type="text" inputmode="numeric" data-meal="pax" value="' + escapeHtml(m.pax || '') + '"></div>' +
-          '<div><label>Harga / pax</label><input type="text" inputmode="numeric" data-meal="pricePerPax" value="' +
+          '<div><label>Price / pax</label><input type="text" inputmode="numeric" data-meal="pricePerPax" value="' +
             escapeHtml(m.pricePerPax ? rupiah(m.pricePerPax) : '') + '"></div>' +
         '</div>' +
-        '<label>Lokasi</label>' +
+        '<label>Location</label>' +
         '<input type="text" data-meal="location" value="' + escapeHtml(m.location || '') + '">' +
         '<label>Menu</label>' +
         '<textarea rows="2" data-meal="menu"></textarea>';
 
       var typeSel = row.querySelector('[data-meal="type"]');
-      fillSelect(typeSel, state.mealTypes, 'Pilih jenis');
+      fillSelect(typeSel, state.mealTypes, 'Select type');
       typeSel.value = m.type || '';
       row.querySelector('[data-meal="menu"]').value = m.menu || '';
 
@@ -1981,18 +1988,18 @@
   function updateMealSummary() {
     var meals = collectMeals();
     if (!meals.length) {
-      $('mealSummary').textContent = 'Belum ada konsumsi. Untuk paket Full-board biasanya: Coffee Break 1, Lunch, Coffee Break 2, Dinner.';
+      $('mealSummary').textContent = 'No catering yet. A Full-board day usually has: Coffee Break 1, Lunch, Coffee Break 2, Dinner.';
       return;
     }
     var perPax = mealTotalPerPax(meals);
     var packagePrice = toNumber($('bkPricePerPax').value);
-    var text = meals.length + ' item · total konsumsi Rp ' + rupiah(perPax) + ' /pax';
+    var text = meals.length + ' items · catering total ' + rupiah(perPax) + ' /pax';
     if (packagePrice) {
       var diff = perPax - packagePrice;
       text += diff === 0
-        ? ' — sama dengan harga paket.'
-        : ' — harga paket Rp ' + rupiah(packagePrice) + ' /pax (selisih Rp ' + rupiah(Math.abs(diff)) +
-          (diff > 0 ? ' lebih tinggi).' : ' lebih rendah).');
+        ? ' — matches the package price.'
+        : ' — package price ' + rupiah(packagePrice) + ' /pax (difference ' + rupiah(Math.abs(diff)) +
+          (diff > 0 ? ' higher).' : ' lower).');
     }
     $('mealSummary').textContent = text;
   }
@@ -2054,13 +2061,13 @@
     };
 
     if (toMinutes(payload.endTime) <= toMinutes(payload.startTime)) {
-      $('bookingError').textContent = 'Jam selesai harus lebih besar dari jam mulai.';
+      $('bookingError').textContent = 'End time must be later than start time.';
       return;
     }
     var clash = findClash(payload);
     if (clash) {
-      $('bookingError').textContent = 'Jadwal bentrok dengan ' + clash.companyName +
-        ' (' + timeRange(clash) + ') di ruang yang sama.';
+      $('bookingError').textContent = 'Schedule clashes with ' + clash.companyName +
+        ' (' + timeRange(clash) + ') in the same room.';
       return;
     }
 
@@ -2185,7 +2192,7 @@
       input.required = f.required !== false;
       if (f.type === 'password') {
         input.required = false;
-        input.placeholder = record ? 'Kosongkan jika tidak diubah' : 'Wajib diisi';
+        input.placeholder = record ? 'Leave blank to keep current' : 'Required';
       } else if (record) {
         input.value = record[f.key] || (f.type === 'color' ? '#2563eb' : '');
       } else if (f.type === 'color') {
@@ -2207,7 +2214,7 @@
       data[f.key] = f.type === 'password' ? raw : raw.trim();
     });
     if (cfg.isUsers && !id && !data.password) {
-      $('mgmtError').textContent = 'Password wajib diisi untuk user baru.';
+      $('mgmtError').textContent = 'A password is required for a new user.';
       return;
     }
 
@@ -2260,12 +2267,12 @@
     }).join('');
     $('rpMonth').value = String(state.viewDate.getMonth());
 
-    $('rpSegment').innerHTML = '<option value="">Semua tipe bisnis</option>' +
+    $('rpSegment').innerHTML = '<option value="">All business types</option>' +
       state.segments.map(function (s) {
         return '<option value="' + escapeHtml(s.name) + '">' + escapeHtml(s.name) + '</option>';
       }).join('');
 
-    $('rpStatus').innerHTML = '<option value="">Semua status</option>' +
+    $('rpStatus').innerHTML = '<option value="">All statuses</option>' +
       state.statuses.map(function (s) {
         return '<option value="' + escapeHtml(s.name) + '">' + escapeHtml(s.name) + '</option>';
       }).join('');
@@ -2326,36 +2333,36 @@
     $('rpStats').innerHTML =
       statCard('Total Revenue', 'Rp ' + rupiah(totalRevenue)) +
       statCard('Total Pax', rupiah(totalPax)) +
-      statCard('Jumlah Event', String(rows.length)) +
-      statCard('Rata-rata / Event', rows.length ? 'Rp ' + rupiah(Math.round(totalRevenue / rows.length)) : '-');
+      statCard('Events', String(rows.length)) +
+      statCard('Average / Event', rows.length ? 'Rp ' + rupiah(Math.round(totalRevenue / rows.length)) : '-');
 
     // Per business type - always the full list, it is only a handful of rows.
-    var bySegment = summarize(rows, function (b) { return b.marketSegment; }, '(Belum diisi)');
-    renderReportTable($('rpSegmentTable'), ['Tipe Bisnis'], bySegment, totalRevenue, totalPax, false);
+    var bySegment = summarize(rows, function (b) { return b.marketSegment; }, '(Not set)');
+    renderReportTable($('rpSegmentTable'), ['Business Type'], bySegment, totalRevenue, totalPax, false);
 
     // Company ranking honours the Top N selector.
-    var byCompany = summarize(rows, function (b) { return b.companyName; }, '(Tanpa nama)');
+    var byCompany = summarize(rows, function (b) { return b.companyName; }, '(Unnamed)');
     var shown = top ? byCompany.slice(0, top) : byCompany;
     // Saying "Top 30 of 16" reads as a mistake, so only call it a Top N when
     // the list is actually longer than N.
     var scope = (top && top < byCompany.length)
-      ? ' (Top ' + top + ' dari ' + byCompany.length + ')'
-      : ' (semua ' + byCompany.length + ' company)';
-    $('rpRankTitle').textContent = 'Ranking Company — ' +
-      (metric === 'revenue' ? 'Revenue tertinggi' : metric === 'pax' ? 'Pax terbanyak' : 'Event terbanyak') + scope;
+      ? ' (Top ' + top + ' of ' + byCompany.length + ')'
+      : ' (all ' + byCompany.length + ' companies)';
+    $('rpRankTitle').textContent = 'Company Ranking — ' +
+      (metric === 'revenue' ? 'Highest revenue' : metric === 'pax' ? 'Most pax' : 'Most events') + scope;
     renderReportTable($('rpCompanyTable'), ['Company'], shown, totalRevenue, totalPax, true);
 
-    var bySales = summarize(rows, function (b) { return b.pic; }, '(Tanpa sales)');
+    var bySales = summarize(rows, function (b) { return b.pic; }, '(No sales)');
     renderReportTable($('rpSalesTable'), ['Sales'], bySales, totalRevenue, totalPax, false);
 
-    var byRoom = summarize(rows, function (b) { return b.roomName; }, '(Tanpa ruang)');
+    var byRoom = summarize(rows, function (b) { return b.roomName; }, '(No room)');
     renderReportTable($('rpRoomTable'), ['Meeting Room'], byRoom, totalRevenue, totalPax, false);
 
     if (noRevenue) {
       $('rpStats').insertAdjacentHTML('beforeend',
-        '<div class="stat-card" style="flex-basis:100%"><div class="stat-label">Catatan</div>' +
-        '<div class="beo-hint" style="margin-top:4px">' + noRevenue + ' dari ' + rows.length +
-        ' event belum punya nilai revenue, jadi belum ikut terhitung. Lengkapi lewat Edit booking.</div></div>');
+        '<div class="stat-card" style="flex-basis:100%"><div class="stat-label">Note</div>' +
+        '<div class="beo-hint" style="margin-top:4px">' + noRevenue + ' of ' + rows.length +
+        ' events have no revenue yet, so they are not counted. Fill it in via Edit booking.</div></div>');
     }
   }
 
@@ -2373,7 +2380,7 @@
 
     if (!data.length) {
       tbody.innerHTML = '<tr class="empty-row"><td colspan="' + (headCols.length + (ranked ? 4 : 3) + 1) +
-        '">Tidak ada data untuk filter ini.</td></tr>';
+        '">No data for this filter.</td></tr>';
       return;
     }
 
@@ -2384,7 +2391,7 @@
         '<td class="num">' + r.events + '</td>' +
         '<td class="num">' + rupiah(r.pax) + '</td>' +
         '<td class="num">Rp ' + rupiah(r.revenue) + '</td>' +
-        '<td><div class="share-bar" title="' + share + '% dari total revenue">' +
+        '<td><div class="share-bar" title="' + share + '% of total revenue">' +
         '<span style="width:' + share + '%"></span></div></td></tr>';
     }).join('') +
       '<tr class="total-row">' + (ranked ? '<td></td>' : '') + '<td>Total</td>' +
@@ -2448,10 +2455,10 @@
       it: '"' + company.toUpperCase() + '"\n' + booking.roomName + '\n' + booking.date,
       distribution: 'SM, Chief Engineer, EHK, HRM, FOM, FBM, CHEF , A&G',
       preparedBy: booking.pic || '',
-      dosm: 'Weni Fitriati',
+      dosm: '',
       fbProduct: '', fbService: '',
-      accountingManager: 'Diyan Setiawati',
-      generalManager: 'Intan Alice'
+      accountingManager: '',
+      generalManager: ''
     };
   }
 
@@ -2494,8 +2501,8 @@
       escapeHtml(booking.setup) + ' · PIC ' + escapeHtml(booking.pic) +
       ' · Status <strong>' + escapeHtml(booking.status) + '</strong>';
     $('beoStatusHint').textContent = isDefinite(booking)
-      ? 'Status Definite: dokumen dicetak lengkap dengan harga, invoice, dan blok approval.'
-      : 'Status Tentative: dokumen dicetak dengan tanda TENTATIVE, tanpa bagian Cashier/Accounting dan tanpa blok approval.';
+      ? 'Status Definite: printed in full, including prices, invoice and the approval block.'
+      : 'Status Tentative: printed with a TENTATIVE banner, without the Cashier/Accounting sections and without the approval block.';
     $('beoMoneyFields').classList.toggle('hidden', !isDefinite(booking));
     $('beoSaveBtn').classList.toggle('hidden', viewer);
     $('beoModal').classList.remove('hidden');
@@ -2555,7 +2562,7 @@
     gsRun('saveBeo', state.token, payload).then(function (saved) {
       $('beoSaveBtn').disabled = false;
       $('beoId').value = saved.id;
-      toast('BEO tersimpan.');
+      toast('BEO saved.');
     }, function (err) {
       $('beoSaveBtn').disabled = false;
       $('beoError').textContent = err.message || String(err);
@@ -2620,11 +2627,12 @@
       : '<table class="sign"><tr><td class="sign-head">Prepared &amp; Issue by,</td></tr>' +
         '<tr><td class="sign-box"></td></tr>' +
         '<tr><td class="sign-name">' + esc(d.preparedBy) + '<br><span>Banquet Sales</span></td></tr></table>' +
-        '<p class="tent-note">Dokumen sementara (TENTATIVE). Harga, invoice, dan persetujuan diterbitkan setelah status menjadi Definite.</p>';
+        '<p class="tent-note">Provisional document (TENTATIVE). Prices, invoice and approvals are issued once the status becomes Definite.</p>';
 
     // Returns a fragment; its styling lives in Stylesheet.html under
     // #beoPrintArea so the same rules drive both preview and print.
-    return '<div class="top"><div class="brand">MERCURE<small>HOTEL SOLO</small></div>' +
+    return '<div class="top"><div class="brand">' + esc(HOTEL_NAME) +
+      '<small>' + esc(HOTEL_LOCATION) + '</small></div>' +
       '<h1>Banquet Event Order</h1><div class="page-of">Page 1 of 1</div></div>' +
       (definite ? '' : '<div class="tent">TENTATIVE</div>') +
       '<div class="head"><table>' +
